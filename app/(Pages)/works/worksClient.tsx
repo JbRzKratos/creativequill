@@ -6,12 +6,11 @@ import Link from "next/link";
 import { useCardTilt } from "@/hooks/useCardTilt";
 
 function TiltImage({ src, alt }: { src: string; alt: string }) {
-  const { props, isHovered, mousePos, isMobile } = useCardTilt();
+  const { props, glareRef, isMobile } = useCardTilt();
   return (
     <div
       {...props}
       style={{
-        ...props.style,
         position: "relative",
         borderRadius: "var(--radius-lg)",
         overflow: "hidden",
@@ -20,9 +19,11 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         cursor: "pointer",
       }}
     >
-      <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-      {isHovered && !isMobile && (
+      <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      {/* Glare element — driven directly by DOM ref, zero re-renders */}
+      {!isMobile && (
         <div
+          ref={glareRef}
           style={{
             position: "absolute",
             top: 0,
@@ -31,7 +32,8 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
             height: "100%",
             pointerEvents: "none",
             zIndex: 3,
-            background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 60%)`,
+            opacity: 0,
+            transition: "opacity 200ms ease",
           }}
         />
       )}

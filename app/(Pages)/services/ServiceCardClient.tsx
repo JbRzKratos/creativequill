@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCardTilt } from "@/hooks/useCardTilt";
 
 export function ServiceCard({ svc, index }: { svc: any; index: number }) {
-  const { props, isHovered, mousePos, isMobile } = useCardTilt<HTMLAnchorElement>();
+  const { props, glareRef, isHovered, isMobile } = useCardTilt<HTMLAnchorElement>();
 
   const padZero = (n: number) => (n < 9 ? `0${n + 1}` : `${n + 1}`);
 
@@ -16,14 +16,14 @@ export function ServiceCard({ svc, index }: { svc: any; index: number }) {
       {...props}
       data-cursor="card"
       style={{
-        ...props.style,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Glare shine effect */}
-      {isHovered && !isMobile && (
+      {/* Glare shine effect — controlled directly via DOM ref, no re-renders */}
+      {!isMobile && (
         <div
+          ref={glareRef}
           style={{
             position: "absolute",
             top: 0,
@@ -32,7 +32,8 @@ export function ServiceCard({ svc, index }: { svc: any; index: number }) {
             height: "100%",
             pointerEvents: "none",
             zIndex: 3,
-            background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.06), transparent 60%)`,
+            opacity: 0,
+            transition: "opacity 200ms ease",
           }}
         />
       )}
