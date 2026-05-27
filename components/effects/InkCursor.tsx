@@ -31,10 +31,9 @@ export default function InkCursor() {
     const mediaHandler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     media.addEventListener("change", mediaHandler);
 
-    let timer: NodeJS.Timeout;
-    if (media.matches) {
-      timer = setTimeout(() => setIsMobile(true), 0);
-    }
+    const timer = setTimeout(() => {
+      setIsMobile(media.matches);
+    }, 0);
 
     // Hide standard cursor using styled stylesheet insertion
     let styleEl: HTMLStyleElement | null = null;
@@ -53,9 +52,7 @@ export default function InkCursor() {
       mouseY.set(e.clientY);
     };
 
-    if (!media.matches) {
-      window.addEventListener("mousemove", onMouseMove);
-    }
+    window.addEventListener("mousemove", onMouseMove);
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -73,9 +70,7 @@ export default function InkCursor() {
       }
     };
 
-    if (!media.matches) {
-      window.addEventListener("mouseover", handleMouseOver);
-    }
+    window.addEventListener("mouseover", handleMouseOver);
 
     const onClick = (e: MouseEvent) => {
       const id = splatIdRef.current++;
@@ -85,13 +80,11 @@ export default function InkCursor() {
       }, 400);
     };
 
-    if (!media.matches) {
-      window.addEventListener("click", onClick);
-    }
+    window.addEventListener("click", onClick);
 
     return () => {
       media.removeEventListener("change", mediaHandler);
-      if (timer) clearTimeout(timer);
+      clearTimeout(timer);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("click", onClick);
