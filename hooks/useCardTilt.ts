@@ -29,14 +29,22 @@ export function useCardTilt<T extends HTMLElement = HTMLDivElement>() {
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
     const mobile = media.matches;
-    setIsMobile(mobile);
     isMobileRef.current = mobile;
+
+    let timer: NodeJS.Timeout;
+    if (mobile) {
+      timer = setTimeout(() => setIsMobile(true), 0);
+    }
+
     const handler = (e: MediaQueryListEvent) => {
       setIsMobile(e.matches);
       isMobileRef.current = e.matches;
     };
     media.addEventListener("change", handler);
-    return () => media.removeEventListener("change", handler);
+    return () => {
+      media.removeEventListener("change", handler);
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const handleMouseEnter = useCallback(() => {

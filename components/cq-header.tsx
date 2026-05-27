@@ -61,8 +61,11 @@ export default function CQHeader() {
 
   // Close menu when route changes
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+    if (menuOpen) {
+      const timer = setTimeout(() => setMenuOpen(false), 0);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, menuOpen]);
 
   return (
     <>

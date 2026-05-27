@@ -5,6 +5,19 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useCardTilt } from "@/hooks/useCardTilt";
 
+export interface ProjectItem {
+  id: string;
+  label: string;
+  title: string;
+  subtitle: string;
+  desc: string;
+  outcome: string;
+  tags: string[];
+  deliverables: string[];
+  img: string;
+  accent: string;
+}
+
 function TiltImage({ src, alt }: { src: string; alt: string }) {
   const { props, glareRef, isMobile } = useCardTilt();
   return (
@@ -41,7 +54,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-export function HorizontalScrollCaseStudies({ projects }: { projects: any[] }) {
+export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectItem[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,

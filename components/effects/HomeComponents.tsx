@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 /* ── 1. PROXIMITY GRID ── */
-export function ProximityGrid({ hoverCTA }: { hoverCTA: boolean }) {
+export function ProximityGrid() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -121,13 +121,14 @@ export function ProximityGrid({ hoverCTA }: { hoverCTA: boolean }) {
   );
 }
 
+const phrases = [
+  "Bringing your brand stories to life...",
+  "Content that ranks, resonates, and converts...",
+  "The internet needs more human voices...",
+];
+
 /* ── 2. TYPEWRITER TAGLINE ── */
 export function TypewriterTagline() {
-  const phrases = [
-    "Bringing your brand stories to life...",
-    "Content that ranks, resonates, and converts...",
-    "The internet needs more human voices...",
-  ];
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -149,8 +150,10 @@ export function TypewriterTagline() {
     if (!isDeleting && text === currentPhrase) {
       timer = setTimeout(() => setIsDeleting(true), 3000);
     } else if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setPhraseIdx((prev) => (prev + 1) % phrases.length);
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+        setPhraseIdx((prev) => (prev + 1) % phrases.length);
+      }, 300);
     }
 
     return () => clearTimeout(timer);
@@ -184,7 +187,7 @@ function CountUp({ end, suffix = "", duration = 1500 }: { end: number; suffix?: 
 
   useEffect(() => {
     if (!isInView) return;
-    let startTime = performance.now();
+    const startTime = performance.now();
 
     const update = (now: number) => {
       const elapsed = now - startTime;
@@ -845,16 +848,22 @@ export function OpenForWorkBadge() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true);
 
+  // Read from localStorage on mount
   useEffect(() => {
     const isDismissed = localStorage.getItem("cq-badge-dismissed") === "true";
-    setDismissed(isDismissed);
+    if (!isDismissed) {
+      const timer = setTimeout(() => setDismissed(false), 0);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
+  // Listen to scroll if not dismissed
+  useEffect(() => {
+    if (dismissed) return;
     const handleScroll = () => {
-      if (!isDismissed) {
-        setVisible(window.scrollY > 300);
-      }
+      setVisible(window.scrollY > 300);
     };
-
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [dismissed]);

@@ -28,27 +28,34 @@ export default function InkCursor() {
 
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
-    setIsMobile(media.matches);
     const mediaHandler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     media.addEventListener("change", mediaHandler);
 
-    if (media.matches) return () => media.removeEventListener("change", mediaHandler);
+    let timer: NodeJS.Timeout;
+    if (media.matches) {
+      timer = setTimeout(() => setIsMobile(true), 0);
+    }
 
     // Hide standard cursor using styled stylesheet insertion
-    const styleEl = document.createElement("style");
-    styleEl.innerHTML = `
-      body, a, button, [role="button"], select, textarea, input {
-        cursor: none !important;
-      }
-    `;
-    document.head.appendChild(styleEl);
+    let styleEl: HTMLStyleElement | null = null;
+    if (!media.matches) {
+      styleEl = document.createElement("style");
+      styleEl.innerHTML = `
+        body, a, button, [role="button"], select, textarea, input {
+          cursor: none !important;
+        }
+      `;
+      document.head.appendChild(styleEl);
+    }
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
 
-    window.addEventListener("mousemove", onMouseMove);
+    if (!media.matches) {
+      window.addEventListener("mousemove", onMouseMove);
+    }
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -66,7 +73,9 @@ export default function InkCursor() {
       }
     };
 
-    window.addEventListener("mouseover", handleMouseOver);
+    if (!media.matches) {
+      window.addEventListener("mouseover", handleMouseOver);
+    }
 
     const onClick = (e: MouseEvent) => {
       const id = splatIdRef.current++;
@@ -76,14 +85,17 @@ export default function InkCursor() {
       }, 400);
     };
 
-    window.addEventListener("click", onClick);
+    if (!media.matches) {
+      window.addEventListener("click", onClick);
+    }
 
     return () => {
       media.removeEventListener("change", mediaHandler);
+      if (timer) clearTimeout(timer);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("click", onClick);
-      if (document.head.contains(styleEl)) {
+      if (styleEl && document.head.contains(styleEl)) {
         document.head.removeChild(styleEl);
       }
     };
@@ -98,7 +110,7 @@ export default function InkCursor() {
   let ringWidth = 28;
   let ringHeight = 28;
   let ringRadius = "50%";
-  let ringBg = "transparent";
+  const ringBg = "transparent";
   let ringBorder = "1px solid color-mix(in oklch, var(--foreground) 22%, transparent)";
   let dotContent = null;
 

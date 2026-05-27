@@ -4,7 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCardTilt } from "@/hooks/useCardTilt";
 
-export function ServiceCard({ svc, index }: { svc: any; index: number }) {
+export interface ServiceItem {
+  href: string;
+  icon: string;
+  name: string;
+  desc: string;
+  tags: string[];
+  price: string;
+  time: string;
+}
+
+export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number }) {
   const { props, glareRef, isHovered, isMobile } = useCardTilt<HTMLAnchorElement>();
 
   const padZero = (n: number) => (n < 9 ? `0${n + 1}` : `${n + 1}`);

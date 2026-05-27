@@ -3,6 +3,20 @@
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+export interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  img: string;
+  fallback: string;
+}
+
+export interface Step {
+  num: string;
+  title: string;
+  desc: string;
+}
+
 /* ── 1. PULL QUOTE ── */
 export function PullQuote() {
   return (
@@ -53,7 +67,7 @@ export function PullQuote() {
   );
 }
 
-export function TeamSection({ team }: { team: any[] }) {
+export function TeamSection({ team }: { team: TeamMember[] }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const favWords = ["Clarity", "Speed", "Polish", "Focus"];
 
@@ -189,7 +203,7 @@ export function TeamSection({ team }: { team: any[] }) {
 }
 
 /* ── 3. PROCESS TIMELINE ── */
-export function ProcessTimeline({ steps }: { steps: any[] }) {
+export function ProcessTimeline({ steps }: { steps: Step[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -229,7 +243,7 @@ export function ProcessTimeline({ steps }: { steps: any[] }) {
           }}
           className="cq-scroll-snap"
         >
-          {steps.map((step, i) => (
+          {steps.map((step) => (
             <div
               key={step.num}
               style={{

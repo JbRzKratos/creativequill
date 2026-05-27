@@ -178,15 +178,14 @@ export default function ContactPage() {
             s.toLowerCase().startsWith(svcParam.toLowerCase())
         );
         if (matched) {
-          setForm((f) => ({ ...f, service: matched }));
+          const timer = setTimeout(() => {
+            setForm((f) => ({ ...f, service: matched }));
+          }, 0);
+          return () => clearTimeout(timer);
         }
       }
     }
   }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();

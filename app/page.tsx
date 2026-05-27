@@ -381,7 +381,7 @@ function ScrambleText({ text }: { text: string }) {
   );
 }
 
-function FloatingQuill({ hoverCTA }: { hoverCTA: boolean }) {
+function FloatingQuill() {
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 800], [0, 180]);
 
@@ -460,7 +460,7 @@ export default function HomePage() {
       <main>
         {/* ── HERO ─────────────────────────────── */}
         <section className="hero-section">
-          <FloatingQuill hoverCTA={hoverCTA} />
+          <FloatingQuill />
 
           <div className="hero-inner">
             {/* Proximity dot background book card */}
@@ -477,7 +477,7 @@ export default function HomePage() {
             >
               <p className="hero-book-label">Creative Quill</p>
               <div style={{ flex: 1, position: "relative" }}>
-                <ProximityGrid hoverCTA={hoverCTA} />
+                <ProximityGrid />
                 <div className="hero-book-overlay">
                   <h2 className="hero-book-title">THE MANUSCRIPT</h2>
                 </div>
