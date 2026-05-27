@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,7 @@ const navLinks = [
 export default function CQHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
 
   // Close on resize to desktop
   useEffect(() => {
@@ -43,6 +44,20 @@ export default function CQHeader() {
     }
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+
+  // Measure header height and expose as CSS var so the fixed dropdown
+  // always sits flush below the header regardless of device / font scale.
+  useEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) {
+        const h = headerRef.current.getBoundingClientRect().height;
+        document.documentElement.style.setProperty("--cq-header-h", `${h}px`);
+      }
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   // Close menu when route changes
   useEffect(() => {
@@ -187,7 +202,13 @@ export default function CQHeader() {
           transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
           background: #121212;
           border-top: 1px solid #222222;
-          position: absolute; top: 100%; left: 0; width: 100%; z-index: 999;
+          /* Fixed to viewport top so it's always visible regardless of scroll */
+          position: fixed;
+          top: var(--cq-header-h, 56px); /* always flush below the sticky header */
+          left: 0;
+          width: 100%;
+          z-index: 999;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.35);
         }
         .cq-mobile-nav.open { max-height: 460px; opacity: 1; }
         .cq-mobile-nav-inner {
@@ -226,7 +247,7 @@ export default function CQHeader() {
         }
       `}</style>
 
-      <header className="cq-header">
+      <header className="cq-header" ref={headerRef}>
         <div className="cq-header-inner">
           <Link href="/" className="cq-logo-wrapper">
             <span className="cq-logo-brand">
