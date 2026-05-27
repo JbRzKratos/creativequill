@@ -833,6 +833,7 @@ export function ScrollProgress() {
         transformOrigin: "0%",
         zIndex: 100,
         opacity: visible ? 1 : 0,
+        pointerEvents: "none",
       }}
       transition={{ opacity: { duration: 0.2 } }}
     />

@@ -57,7 +57,7 @@ export default function CQHeader() {
           color: #ffffff;
           position: sticky;
           top: 0;
-          z-index: 50;
+          z-index: 1000;
           width: 100%;
           border-bottom: 1px solid #222222;
           overflow: visible !important;
@@ -177,7 +177,7 @@ export default function CQHeader() {
         .cq-mobile-overlay {
           display: none;
           position: fixed; inset: 0;
-          z-index: 39;
+          z-index: 998;
           background: rgba(0,0,0,0.5);
           backdrop-filter: blur(2px);
         }
@@ -187,7 +187,7 @@ export default function CQHeader() {
           transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
           background: #121212;
           border-top: 1px solid #222222;
-          position: absolute; top: 100%; left: 0; width: 100%; z-index: 50;
+          position: absolute; top: 100%; left: 0; width: 100%; z-index: 999;
         }
         .cq-mobile-nav.open { max-height: 460px; opacity: 1; }
         .cq-mobile-nav-inner {
