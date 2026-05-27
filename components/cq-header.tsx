@@ -70,22 +70,56 @@ export default function CQHeader() {
           justify-content: space-between;
           align-items: center;
         }
-        .cq-logo {
-          color: #ffffff;
+        .cq-logo-wrapper {
           text-decoration: none;
-          font-size: 0.85rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          font-weight: 600;
-          line-height: 1.2;
+          display: flex;
+          flex-direction: column;
+          line-height: 1.1;
         }
-        .cq-logo span {
+        .cq-logo-brand {
+          display: flex;
+          align-items: baseline;
+          gap: 0.15rem;
+        }
+        .cq-logo-creative {
+          font-family: var(--font-sans), sans-serif;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          transition: color 0.3s ease;
+        }
+        .cq-logo-quill {
+          font-family: var(--font-serif), serif;
+          font-style: italic;
+          color: var(--primary);
+          font-size: 1.1rem;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          position: relative;
+          transition: text-shadow 0.3s ease, transform 0.3s ease;
+          display: inline-block;
+        }
+        .cq-logo-wrapper:hover .cq-logo-quill {
+          text-shadow: 0 0 8px color-mix(in oklch, var(--primary) 50%, transparent);
+          transform: translateY(-1px) rotate(-2deg);
+        }
+        .cq-logo-wrapper:hover .cq-logo-creative {
+          color: var(--primary);
+        }
+        .cq-logo-tagline {
           display: block;
-          font-size: 0.6rem;
-          letter-spacing: 0.15em;
-          font-weight: 400;
-          opacity: 0.65;
+          font-size: 0.55rem;
+          letter-spacing: 0.16em;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.45);
           margin-top: 1px;
+          transition: color 0.3s ease;
+        }
+        .cq-logo-wrapper:hover .cq-logo-tagline {
+          color: rgba(255, 255, 255, 0.85);
         }
         .cq-nav { display: flex; gap: 1.75rem; align-items: center; }
         .cq-nav-link {
@@ -194,9 +228,12 @@ export default function CQHeader() {
 
       <header className="cq-header">
         <div className="cq-header-inner">
-          <Link href="/" className="cq-logo">
-            Creative Quill
-            <span>Content That Connects</span>
+          <Link href="/" className="cq-logo-wrapper">
+            <span className="cq-logo-brand">
+              <span className="cq-logo-creative">Creative</span>
+              <span className="cq-logo-quill">Quill</span>
+            </span>
+            <span className="cq-logo-tagline">Content That Connects</span>
           </Link>
 
           <nav className="cq-nav">

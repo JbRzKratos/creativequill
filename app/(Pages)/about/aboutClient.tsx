@@ -53,13 +53,12 @@ export function PullQuote() {
   );
 }
 
-/* ── 2. TEAM SECTION ── */
 export function TeamSection({ team }: { team: any[] }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const favWords = ["Clarity", "Speed", "Polish", "Focus"];
 
   return (
-    <div style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "repeat(3, 1fr)" }} className="cq-team-grid">
+    <div style={{ display: "grid", gap: "1.5rem" }} className="cq-team-grid">
       {team.map((member, i) => {
         const isFounder = i === 0;
         const isHovered = hoveredIdx === i;
@@ -68,7 +67,6 @@ export function TeamSection({ team }: { team: any[] }) {
           <div
             key={member.name}
             style={{
-              gridColumn: isFounder ? "span 2" : "span 1",
               border: "1px solid var(--border)",
               background: "var(--card)",
               borderRadius: "var(--radius-lg)",
@@ -80,12 +78,12 @@ export function TeamSection({ team }: { team: any[] }) {
             onMouseLeave={() => setHoveredIdx(null)}
             className="cq-member-card"
           >
-            <div style={{ display: "flex", flexDirection: isFounder ? "row" : "column", height: "100%" }} className="cq-member-layout">
+            <div style={{ display: "flex", flexDirection: "column", height: "100%" }} className="cq-member-layout">
               {/* Image */}
               <div
                 style={{
-                  width: isFounder ? "45%" : "100%",
-                  aspectRatio: isFounder ? "unset" : "4/4.5",
+                  width: "100%",
+                  aspectRatio: "4/4.5",
                   overflow: "hidden",
                   background: "var(--secondary)",
                   position: "relative",
@@ -178,11 +176,12 @@ export function TeamSection({ team }: { team: any[] }) {
       })}
 
       <style>{`
-        @media (max-width: 768px) {
+        .cq-team-grid { grid-template-columns: repeat(4, 1fr) !important; }
+        @media (max-width: 1024px) {
+          .cq-team-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 640px) {
           .cq-team-grid { grid-template-columns: 1fr !important; }
-          .cq-member-card { grid-column: span 1 !important; }
-          .cq-member-layout { flex-direction: column !important; }
-          .cq-member-img-wrap { width: 100% !important; aspectRatio: 4/4.5 !important; }
         }
       `}</style>
     </div>

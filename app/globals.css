@@ -181,7 +181,6 @@
 
 /* Prevent horizontal overflow from any element */
 section,
-main,
 footer,
 article {
   max-width: 100vw;
