@@ -3,6 +3,8 @@ import { Inter, Playfair_Display, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
+import InkCursor from "@/components/effects/InkCursor";
+import { ScrollProgress, OpenForWorkBadge, BackToTop } from "@/components/effects/HomeComponents";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -16,6 +18,7 @@ const playfair = Playfair_Display({
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  style: ["normal"],
 })
 
 export default function RootLayout({
@@ -30,7 +33,13 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable, playfair.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ScrollProgress />
+          <OpenForWorkBadge />
+          <BackToTop />
+          {children}
+          <InkCursor />
+        </ThemeProvider>
       </body>
     </html>
   )

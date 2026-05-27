@@ -2,8 +2,20 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
+import { useTextScramble } from "@/hooks/useTextScramble";
+import {
+  ProximityGrid,
+  TypewriterTagline,
+  StatsStrip,
+  ClientMarquee,
+  BentoGrid,
+  AiVsHuman,
+  ContentAuditCard,
+  SocialProofMarquee,
+} from "@/components/effects/HomeComponents";
 
 const pageStyles = `
   body { background: var(--muted); }
@@ -11,13 +23,17 @@ const pageStyles = `
   /* ── HERO ────────────────────────────────── */
   .hero-section {
     background: var(--background);
-    padding: 5rem 1.5rem 4rem;
+    padding: clamp(2.5rem, 8vw, 5rem) 1.25rem clamp(2rem, 6vw, 4rem);
+    position: relative;
+    overflow: hidden;
   }
   .hero-inner {
     max-width: 64rem; margin: 0 auto;
     display: flex; flex-wrap: wrap;
-    align-items: center; gap: 3.5rem;
+    align-items: center; gap: 2.5rem;
     justify-content: center;
+    position: relative;
+    z-index: 2;
   }
   .hero-book {
     position: relative; background: var(--card);
@@ -28,6 +44,8 @@ const pageStyles = `
     max-width: 300px; width: 100%;
     flex-shrink: 0;
   }
+  /* Hide book card on small screens to avoid layout crowding */
+  @media (max-width: 640px) { .hero-book { display: none; } }
   .hero-book:hover {
     box-shadow: 0 25px 65px color-mix(in oklch, var(--foreground) 20%, transparent);
   }
@@ -36,17 +54,12 @@ const pageStyles = `
     letter-spacing: 0.3em; color: var(--muted-foreground);
     margin-bottom: 1.5rem; text-transform: uppercase;
   }
-  .hero-book img {
-    width: 100%; height: 360px; object-fit: cover;
-    filter: grayscale(1) contrast(1.25);
-    border-radius: var(--radius-sm);
-    display: block;
-  }
   .hero-book-overlay {
     position: absolute; top: 50%; left: 0; width: 100%;
     background: color-mix(in oklch, var(--card) 92%, transparent);
     padding: 1rem 0; transform: translateY(-50%);
     text-align: center; backdrop-filter: blur(4px);
+    z-index: 5;
   }
   .hero-book-title {
     font-family: var(--font-serif);
@@ -86,12 +99,19 @@ const pageStyles = `
   .hero-badge-item {
     display: flex; align-items: center; gap: 0.5rem;
     font-size: 0.78rem; color: var(--muted-foreground);
+    min-height: 36px;
   }
   .hero-badge-dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--primary); flex-shrink: 0;
   }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+
+  /* Stroke effect for the word "Stories" */
+  .hero-stroke {
+    -webkit-text-stroke: 1.2px var(--foreground);
+    color: transparent;
+  }
 
   /* ── WHY US ──────────────────────────────── */
   .why-section {
@@ -112,17 +132,10 @@ const pageStyles = `
     letter-spacing: 0.15em; text-transform: uppercase;
     color: var(--muted-foreground);
   }
-  .why-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-  @media (max-width: 700px) { .why-grid { grid-template-columns: 1fr; } }
   .why-header {
-    grid-column: 1 / -1;
     display: grid; gap: 2rem;
     grid-template-columns: 1fr 1fr;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
   }
   @media (max-width: 700px) { .why-header { grid-template-columns: 1fr; } }
   .why-h2 {
@@ -134,62 +147,6 @@ const pageStyles = `
     font-size: 0.9rem; color: var(--muted-foreground);
     line-height: 1.75; margin: 0; align-self: end;
   }
-  .why-card {
-    border: 2px solid var(--border);
-    background: var(--card);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    display: grid; grid-template-columns: 1fr 1fr;
-    grid-column: 1 / -1;
-    transition: box-shadow 0.2s;
-  }
-  .why-card:hover { box-shadow: 0 4px 20px color-mix(in oklch, var(--foreground) 8%, transparent); }
-  .why-problem {
-    display: flex; align-items: center; justify-content: flex-end;
-    gap: 1rem; padding: 1.25rem 1.5rem;
-    border-right: 1px solid var(--border);
-  }
-  .why-problem-text { flex: 1; text-align: right; }
-  .why-problem-text h3 {
-    font-size: 0.875rem; font-weight: 600;
-    color: var(--foreground); margin: 0 0 0.25rem;
-  }
-  .why-problem-text p {
-    font-size: 0.78rem; color: var(--muted-foreground); margin: 0;
-    line-height: 1.6;
-  }
-  .why-x {
-    width: 2rem; height: 2rem; border-radius: 50%;
-    background: color-mix(in oklch, var(--destructive) 15%, transparent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 700;
-    color: var(--destructive); flex-shrink: 0;
-  }
-  .why-solution {
-    display: flex; align-items: center;
-    gap: 1rem; padding: 1.25rem 1.5rem;
-    background: color-mix(in oklch, var(--primary) 5%, transparent);
-  }
-  .why-check {
-    width: 2rem; height: 2rem; border-radius: 50%;
-    background: color-mix(in oklch, var(--primary) 15%, transparent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; color: var(--primary); flex-shrink: 0;
-  }
-  .why-solution-text h3 {
-    font-size: 0.875rem; font-weight: 600;
-    color: var(--foreground); margin: 0 0 0.25rem;
-  }
-  .why-solution-text p {
-    font-size: 0.78rem; color: var(--muted-foreground); margin: 0;
-    line-height: 1.6;
-  }
-  @media (max-width: 580px) {
-    .why-card { grid-template-columns: 1fr; }
-    .why-problem { border-right: none; border-bottom: 1px solid var(--border); justify-content: flex-start; }
-    .why-problem-text { text-align: left; }
-  }
-  .why-cta-wrap { text-align: center; margin-top: 2.5rem; }
 
   /* ── PROCESS ────────────────────────────── */
   .process-section {
@@ -255,17 +212,11 @@ const pageStyles = `
     padding: 1rem 1.25rem;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .process-step-card:hover {
-    border-color: color-mix(in oklch, var(--primary) 30%, transparent);
-    box-shadow: 0 4px 16px color-mix(in oklch, var(--foreground) 6%, transparent);
-  }
-  .process-step-h3 {
-    font-size: 0.95rem; font-weight: 600;
-    color: var(--foreground); margin: 0 0 0.35rem;
-  }
-  .process-step-desc {
-    font-size: 0.78rem; color: var(--muted-foreground);
-    line-height: 1.7; margin: 0;
+  @media (hover: hover) and (pointer: fine) {
+    .process-step-card:hover {
+      border-color: color-mix(in oklch, var(--primary) 30%, transparent);
+      box-shadow: 0 4px 16px color-mix(in oklch, var(--foreground) 6%, transparent);
+    }
   }
 
   /* ── REVIEWS ──────────────────────────────── */
@@ -320,7 +271,15 @@ const pageStyles = `
     line-height: 1.8; max-width: 28rem; margin: 0 auto 2.5rem;
   }
   .nl-form {
-    display: flex; max-width: 28rem; margin: 0 auto; border-radius: var(--radius-sm); overflow: hidden;
+    display: flex; max-width: 28rem; margin: 0 auto;
+    border-radius: var(--radius-sm); overflow: hidden;
+    flex-wrap: wrap;
+  }
+  /* Stack form on mobile */
+  @media (max-width: 480px) {
+    .nl-form { flex-direction: column; border-radius: var(--radius-md); overflow: visible; }
+    .nl-input { border-radius: var(--radius-sm); width: 100%; font-size: 16px !important; }
+    .nl-btn { border-radius: var(--radius-sm); width: 100%; border-left: none; border-top: 1px solid color-mix(in oklch, var(--primary) 20%, transparent); padding: 1rem; }
   }
   .nl-input {
     flex: 1; background: var(--primary-foreground);
@@ -385,24 +344,93 @@ const pageStyles = `
   .btn-outline:hover { background: var(--secondary); }
 `;
 
-const whyItems = [
-  {
-    problem: { title: "Time Constraints Slow Growth", desc: "Inconsistent publishing schedules hurt brand visibility and search rankings." },
-    solution: { title: "Lightning-Fast Turnaround", desc: "Professional content delivered within 48 hours keeps momentum strong and calendars full." },
-  },
-  {
-    problem: { title: "Generic Copy Falls Flat", desc: "Surface-level content fails to establish authority or build meaningful audience connections." },
-    solution: { title: "Story-Driven Engagement", desc: "Compelling narratives that reflect your brand voice, build trust, and turn readers into loyal customers." },
-  },
-  {
-    problem: { title: "Inconsistent Quality Damages Trust", desc: "Variable writing standards erode credibility and confuse your message." },
-    solution: { title: "Expert Craft. Every Time.", desc: "Dedicated writers ensure every piece maintains premium quality aligned with your brand standards." },
-  },
-  {
-    problem: { title: "AI Content That Sounds Like Everyone Else", desc: "Clients can't tell your brand apart because the content has no real voice or original insight." },
-    solution: { title: "Unmistakably You", desc: "We develop your brand voice from scratch and write content only your brand could publish — no generic filler, no recycled takes." },
-  },
-];
+function ScrambleText({ text }: { text: string }) {
+  const chars = useTextScramble(text);
+  return (
+    <>
+      {chars.map((charObj, idx) => {
+        let color = "var(--foreground)";
+        if (charObj.status === "resolving") color = "var(--primary)";
+        if (charObj.status === "scrambled") color = "var(--muted-foreground)";
+
+        // Outlined word "Stories" (index 5 to 11 in "Real Stories.")
+        const isStoriesWord = text.includes("Stories") && idx >= 5 && idx <= 11;
+
+        if (isStoriesWord) {
+          return (
+            <span
+              key={idx}
+              className="hero-stroke"
+              style={{
+                color: charObj.status === "resolved" ? "transparent" : color,
+                display: "inline-block",
+              }}
+            >
+              {charObj.char}
+            </span>
+          );
+        }
+
+        return (
+          <span key={idx} style={{ color, display: "inline-block" }}>
+            {charObj.char}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+function FloatingQuill({ hoverCTA }: { hoverCTA: boolean }) {
+  const { scrollY } = useScroll();
+  const yParallax = useTransform(scrollY, [0, 800], [0, 180]);
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        right: "3rem",
+        top: "35%",
+        y: yParallax,
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+      className="hidden lg:block"
+    >
+      <motion.svg
+        width="140"
+        height="200"
+        viewBox="0 0 100 150"
+        animate={{
+          y: [-8, 8],
+          rotate: [-2, 3],
+        }}
+        transition={{
+          repeat: Infinity,
+          repeatType: "reverse",
+          duration: 3.5,
+          ease: "easeInOut",
+        }}
+        style={{ opacity: 0.16, fill: "none", stroke: "var(--foreground)" }}
+      >
+        <path
+          d="M 50,140 Q 48,90 35,40 Q 30,20 40,10 Q 52,5 50,30 Q 48,55 50,80 Q 52,110 50,140"
+          strokeWidth="2"
+        />
+        <path d="M 45,95 Q 35,90 28,95" strokeWidth="1" />
+        <path d="M 46,80 Q 33,72 26,75" strokeWidth="1" />
+        <path d="M 47,65 Q 32,54 24,55" strokeWidth="1" />
+        <path d="M 48,50 Q 33,38 27,35" strokeWidth="1" />
+        <path d="M 49,35 Q 36,25 32,18" strokeWidth="1" />
+        <path d="M 49,95 Q 58,92 65,97" strokeWidth="1" />
+        <path d="M 48,80 Q 60,76 68,81" strokeWidth="1" />
+        <path d="M 47,65 Q 61,59 70,62" strokeWidth="1" />
+        <path d="M 47,50 Q 60,42 68,43" strokeWidth="1" />
+        <path d="M 48,35 Q 58,28 64,26" strokeWidth="1" />
+      </motion.svg>
+    </motion.div>
+  );
+}
 
 const processSteps = [
   { num: "1", title: "Voice Audit", desc: "Before we write anything, we study your existing content, competitors, and audience tone. So our first draft already sounds like you, not like us." },
@@ -422,97 +450,124 @@ const reviews = [
 export default function HomePage() {
   const [nlEmail, setNlEmail] = useState("");
   const [nlSent, setNlSent] = useState(false);
+  const [hoverCTA, setHoverCTA] = useState(false);
 
   return (
     <>
       <style>{pageStyles}</style>
       <CQHeader />
+
       <main>
         {/* ── HERO ─────────────────────────────── */}
         <section className="hero-section">
+          <FloatingQuill hoverCTA={hoverCTA} />
+
           <div className="hero-inner">
-            {/* Book card */}
-            <div className="hero-book">
+            {/* Proximity dot background book card */}
+            <div
+              className="hero-book"
+              style={{
+                height: "380px",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+              }}
+              data-cursor="card"
+            >
               <p className="hero-book-label">Creative Quill</p>
-              <img
-                src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop"
-                alt="Manuscript Development"
-              />
-              <div className="hero-book-overlay">
-                <h2 className="hero-book-title">THE MANUSCRIPT</h2>
+              <div style={{ flex: 1, position: "relative" }}>
+                <ProximityGrid hoverCTA={hoverCTA} />
+                <div className="hero-book-overlay">
+                  <h2 className="hero-book-title">THE MANUSCRIPT</h2>
+                </div>
               </div>
             </div>
 
             {/* Text */}
             <div className="hero-text">
-              <span className="hero-badge">Featured Service</span>
+              <span className="hero-badge" data-cursor="text">Featured Service</span>
               <h1 className="hero-h1">
-                Human Strategy.<br />Real Stories.<br />
-                <em>Not AI Filler.</em>
+                <ScrambleText text="Human Strategy." /><br />
+                <ScrambleText text="Real Stories." /><br />
+                <ScrambleText text="Not AI Filler." />
               </h1>
-              <p className="hero-sub">
-                Bringing your untold stories to life, from concept to completed manuscript.
+              <p className="hero-sub" data-cursor="text">
+                <TypewriterTagline />
               </p>
-              <p className="hero-desc">
+              <p className="hero-desc" data-cursor="text">
                 The internet is drowning in AI-generated content that says nothing.
                 Creative Quill crafts content with genuine voice, original insight,
                 and strategy — the kind that builds audiences, not just pageviews.
               </p>
-              <p className="hero-highlight">
+              <p className="hero-highlight" data-cursor="text">
                 Because when your content feels authentic, your business does too.
               </p>
               <div className="hero-badges">
                 {["24h Response Time", "Free Consultation", "Industry Expert Writers"].map((b) => (
-                  <span key={b} className="hero-badge-item">
+                  <span key={b} className="hero-badge-item" data-cursor="text">
                     <span className="hero-badge-dot" /> {b}
                   </span>
                 ))}
               </div>
               <div className="hero-actions">
-                <Link href="/services" className="btn-primary">Start Your Journey</Link>
-                <Link href="/works" className="btn-outline">Browse Our Works</Link>
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  <Link
+                    href="/services"
+                    className="btn-primary"
+                    onMouseEnter={() => setHoverCTA(true)}
+                    onMouseLeave={() => setHoverCTA(false)}
+                    data-cursor="button"
+                  >
+                    Start Your Journey
+                  </Link>
+                  <svg style={{ position: "absolute", bottom: -8, left: 0, width: "100%", height: 12, pointerEvents: "none" }}>
+                    <motion.path
+                      d="M 5,6 Q 50,14 140,6"
+                      stroke="var(--primary)"
+                      strokeWidth={2}
+                      fill="none"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: hoverCTA ? 1 : 0 }}
+                      transition={{ duration: 0.35 }}
+                    />
+                  </svg>
+                </div>
+                <Link href="/works" className="btn-outline" data-cursor="button">Browse Our Works</Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── WHY US ──────────────────────────── */}
+        {/* Stats strip & logo ticker */}
+        <section style={{ background: "var(--background)" }}>
+          <StatsStrip />
+          <ClientMarquee />
+        </section>
+
+        {/* ── WHY US (BENTO GRID) ──────────────── */}
         <section className="why-section">
           <div className="section-inner">
             <div className="section-label">
               <span className="section-label-line" />
               <span className="section-label-text">What Sets Us Apart</span>
             </div>
-            <div className="why-grid">
-              <div className="why-header">
-                <h2 className="why-h2">Strategic Content.<br />Measurable Growth.</h2>
-                <p className="why-h2-desc">
-                  Discover how Creative Quill transforms common content struggles into
-                  revenue-generating stories that captivate audiences and convert prospects.
-                </p>
-              </div>
-              {whyItems.map(({ problem, solution }) => (
-                <div key={problem.title} className="why-card">
-                  <div className="why-problem">
-                    <div className="why-problem-text">
-                      <h3>{problem.title}</h3>
-                      <p>{problem.desc}</p>
-                    </div>
-                    <div className="why-x">✗</div>
-                  </div>
-                  <div className="why-solution">
-                    <div className="why-check">✓</div>
-                    <div className="why-solution-text">
-                      <h3>{solution.title}</h3>
-                      <p>{solution.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="why-header">
+              <h2 className="why-h2" data-cursor="text">Strategic Content.<br />Measurable Growth.</h2>
+              <p className="why-h2-desc" data-cursor="text">
+                Discover how Creative Quill transforms common content struggles into
+                revenue-generating stories that captivate audiences and convert prospects.
+              </p>
             </div>
-            <div className="why-cta-wrap">
-              <Link href="/contact" className="btn-primary">Transform Your Content Strategy</Link>
-            </div>
+
+            <BentoGrid />
+          </div>
+        </section>
+
+        {/* ── AI VS HUMAN COMPARISON ──────────── */}
+        <section style={{ background: "var(--background)", padding: "2rem 1.5rem" }}>
+          <div className="section-inner">
+            <AiVsHuman />
           </div>
         </section>
 
@@ -526,8 +581,8 @@ export default function HomePage() {
             <div className="process-grid">
               {/* Left */}
               <div>
-                <h2 className="process-h2">Your Story. Our Craft.<br />Results That Matter.</h2>
-                <p className="process-desc">
+                <h2 className="process-h2" data-cursor="text">Your Story. Our Craft.<br />Results That Matter.</h2>
+                <p className="process-desc" data-cursor="text">
                   From discovery to delivery, our story-driven approach transforms your brand
                   message into compelling narratives that resonate with audiences and drive
                   measurable business outcomes. Every step is designed for clarity,
@@ -538,12 +593,12 @@ export default function HomePage() {
                   <h3 className="process-cta-h3">Let&apos;s Craft Content That Converts</h3>
                   <div className="process-checks">
                     {["48-Hour Delivery", "Multiple Revisions", "Premium Quality"].map((c) => (
-                      <span key={c} className="process-check">
+                      <span key={c} className="process-check" data-cursor="text">
                         <span className="process-check-dot" /> {c}
                       </span>
                     ))}
                   </div>
-                  <Link href="/contact" className="btn-primary" style={{ display: "block", textAlign: "center" }}>
+                  <Link href="/contact" className="btn-primary" style={{ display: "block", textAlign: "center" }} data-cursor="button">
                     Begin Your Journey Now
                   </Link>
                 </div>
@@ -554,7 +609,7 @@ export default function HomePage() {
                 {processSteps.map((step) => (
                   <div key={step.num} className="process-step">
                     <div className="process-step-num">{step.num}</div>
-                    <div className="process-step-card">
+                    <div className="process-step-card" data-cursor="card">
                       <h3 className="process-step-h3">{step.title}</h3>
                       <p className="process-step-desc">{step.desc}</p>
                     </div>
@@ -565,12 +620,19 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── REVIEWS ─────────────────────────── */}
+        {/* ── FREE AUDIT CARD ─────────────────── */}
+        <section style={{ background: "var(--background)", padding: "1rem 1.5rem" }}>
+          <div className="section-inner">
+            <ContentAuditCard />
+          </div>
+        </section>
+
+        {/* ── REVIEWS & MARQUEE ───────────────── */}
         <section className="reviews-section">
           <div className="section-inner">
             <div className="reviews-grid">
               {reviews.map(({ quote, author }) => (
-                <div key={author} className="review-card">
+                <div key={author} className="review-card" data-cursor="card">
                   <div className="review-stars">★★★★★</div>
                   <p className="review-quote">&ldquo;{quote}&rdquo;</p>
                   <p className="review-author">— {author}</p>
@@ -580,11 +642,13 @@ export default function HomePage() {
           </div>
         </section>
 
+        <SocialProofMarquee />
+
         {/* ── NEWSLETTER ──────────────────────── */}
         <section className="nl-section">
-          <h2 className="nl-h2">Join Our Network!</h2>
-          <p className="nl-sub">And Gain Exclusive Access to Writing Tips &amp; Updates!</p>
-          <p className="nl-desc">
+          <h2 className="nl-h2" data-cursor="text">Join Our Network!</h2>
+          <p className="nl-sub" data-cursor="text">And Gain Exclusive Access to Writing Tips &amp; Updates!</p>
+          <p className="nl-desc" data-cursor="text">
             Subscribe to receive expert advice on manuscript development, story arcs,
             and the publishing journey directly from our top ghostwriters.
           </p>
@@ -599,7 +663,7 @@ export default function HomePage() {
                 value={nlEmail} onChange={(e) => setNlEmail(e.target.value)}
                 aria-label="Email address"
               />
-              <button type="submit" className="nl-btn">Join</button>
+              <button type="submit" className="nl-btn" data-cursor="button">Join</button>
             </form>
           )}
         </section>
@@ -615,10 +679,10 @@ export default function HomePage() {
               />
             </div>
             <div style={{ flex: "1 1 280px" }}>
-              <h2 className="about-text-h2">
+              <h2 className="about-text-h2" data-cursor="text">
                 About <em>Creative Quill</em>
               </h2>
-              <p className="about-text-p">
+              <p className="about-text-p" data-cursor="text">
                 It all begins with an idea. Maybe you want to publish your first novel.
                 Maybe you&apos;re ready to share your memoir, or perhaps you have a story
                 that&apos;s waiting to be told. Whatever it is, the way you present your
@@ -626,11 +690,12 @@ export default function HomePage() {
                 We adapt to various tones, ranging from lighthearted fun to deep,
                 emotionally heavy stories, ensuring your vision remains uncompromised.
               </p>
-              <Link href="/about" className="btn-primary">Learn More</Link>
+              <Link href="/about" className="btn-primary" data-cursor="button">Learn More</Link>
             </div>
           </div>
         </section>
       </main>
+
       <CQFooter />
     </>
   );

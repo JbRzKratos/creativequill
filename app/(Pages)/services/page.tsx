@@ -2,13 +2,14 @@ import Link from "next/link";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import type { Metadata } from "next";
+import { ServiceCard, PricingCalculator } from "./ServiceCardClient";
 
 export const metadata: Metadata = {
   title: "Content Writing Services | Creative Quill",
   description: "Professional content writing services including blog writing, SEO content, brand storytelling, website copy, and more. Human-written, strategy-driven content that converts.",
 };
 
-const services = [
+export const services = [
   {
     icon: "blog",
     name: "Blog Writing",
@@ -65,8 +66,8 @@ const services = [
   },
 ];
 
-// Helper SVGs to replace emojis
-function StarIcon() {
+// Helper SVGs
+export function StarIcon() {
   return (
     <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20" style={{ display: "inline-block", verticalAlign: "middle" }}>
       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -74,15 +75,9 @@ function StarIcon() {
   );
 }
 
-function ClockIcon() {
-  return (
-    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: "inline-block", verticalAlign: "middle" }}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  );
-}
 
-function CheckIcon() {
+
+export function CheckIcon() {
   return (
     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} style={{ display: "inline-block", verticalAlign: "middle" }}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -90,50 +85,7 @@ function CheckIcon() {
   );
 }
 
-function ServiceIcon({ type }: { type: string }) {
-  const base = "w-5 h-5 text-current";
-  switch (type) {
-    case "blog":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      );
-    case "article":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-        </svg>
-      );
-    case "brand":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-        </svg>
-      );
-    case "website":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-        </svg>
-      );
-    case "seo":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      );
-    case "custom":
-      return (
-        <svg className={base} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 19v-8.93a2 2 0 01.89-1.664l8-5.333a2 2 0 012.22 0l8 5.333A2 2 0 0121 10.07V19a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeMiterlimit="10" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 14l8-5.333a2 2 0 012.22 0L21 14" strokeMiterlimit="10" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
+
 
 export default function ServicesPage() {
   return (
@@ -309,32 +261,16 @@ export default function ServicesPage() {
         {/* Service Cards */}
         <section className="sp-grid-section">
           <div className="sp-grid">
-            {services.map((svc) => (
-              <Link key={svc.name} href={svc.href} className="sp-card">
-                <div className="sp-card-icon">
-                  <ServiceIcon type={svc.icon} />
-                </div>
-                <h2 className="sp-card-name">{svc.name}</h2>
-                <p className="sp-card-desc">{svc.desc}</p>
-                <div className="sp-card-tags">
-                  {svc.tags.map((tag) => (
-                    <span key={tag} className="sp-tag">{tag}</span>
-                  ))}
-                </div>
-                <div className="sp-card-bottom">
-                  <span className="sp-card-price">{svc.price}</span>
-                  <span className="sp-card-time">
-                    <ClockIcon />
-                    <span>{svc.time}</span>
-                  </span>
-                </div>
-                <div className="sp-card-cta">Learn More →</div>
-              </Link>
+            {services.map((svc, index) => (
+              <ServiceCard key={svc.name} svc={svc} index={index} />
             ))}
           </div>
-          <p className="sp-not-sure">
+
+          <PricingCalculator />
+
+          <p className="sp-not-sure" style={{ marginTop: "3rem" }}>
             Not sure what you need?{" "}
-            <Link href="/contact">Talk to us</Link>
+            <Link href="/contact" data-cursor="button">Talk to us</Link>
             {" "}— we&apos;ll help you find the right solution.
           </p>
         </section>
@@ -353,15 +289,15 @@ export default function ServicesPage() {
             </p>
             <div className="sp-cta-checks">
               {["Human-Written Content", "48-Hour Delivery", "Multiple Revisions"].map((c) => (
-                <span key={c} className="sp-cta-check">
+                <span key={c} className="sp-cta-check" data-cursor="text">
                   <CheckIcon />
                   <span>{c}</span>
                 </span>
               ))}
             </div>
             <div className="sp-cta-actions">
-              <Link href="/contact" className="btn-light">Start Your Project</Link>
-              <Link href="/works" className="btn-ghost">See Our Work</Link>
+              <Link href="/contact" className="btn-light" data-cursor="button">Start Your Project</Link>
+              <Link href="/works" className="btn-ghost" data-cursor="button">See Our Work</Link>
             </div>
           </div>
         </section>

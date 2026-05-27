@@ -2,6 +2,7 @@ import Link from "next/link";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import type { Metadata } from "next";
+import { HorizontalScrollCaseStudies } from "./worksClient";
 
 export const metadata: Metadata = {
   title: "Our Works | Creative Quill — Content We've Crafted",
@@ -75,113 +76,6 @@ export default function WorksPage() {
           font-size: 0.95rem; color: var(--muted-foreground);
           line-height: 1.75; max-width: 36rem; margin: 0 auto;
         }
-
-        /* PROJECTS */
-        .wk-projects { background: var(--background); padding: 4rem 1.5rem 5rem; }
-        .wk-project-inner { max-width: 72rem; margin: 0 auto; }
-        .wk-project {
-          display: grid; gap: 3rem;
-          grid-template-columns: 1fr 1fr;
-          align-items: center;
-          padding: 3.5rem 0;
-          border-bottom: 1px solid var(--border);
-        }
-        .wk-project:last-child { border-bottom: none; }
-        .wk-project.reverse { direction: rtl; }
-        .wk-project.reverse > * { direction: ltr; }
-        @media (max-width: 800px) {
-          .wk-project, .wk-project.reverse { grid-template-columns: 1fr; direction: ltr; }
-        }
-        .wk-project-img-wrap {
-          position: relative; border-radius: var(--radius-lg); overflow: hidden;
-          aspect-ratio: 4/3;
-          box-shadow: 0 16px 48px color-mix(in oklch, var(--foreground) 18%, transparent);
-        }
-        .wk-project-img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          filter: grayscale(1) contrast(1.1);
-          transition: filter 0.4s ease;
-        }
-        .wk-project-img-wrap:hover .wk-project-img {
-          filter: grayscale(0.6) contrast(1.05);
-        }
-        .wk-project-label-wrap {
-          position: absolute; top: 1.25rem; left: 1.25rem;
-        }
-        .wk-project-label {
-          background: var(--primary); color: var(--primary-foreground);
-          font-size: 0.62rem; font-weight: 700;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          padding: 0.35rem 0.85rem;
-          border-radius: 999px;
-        }
-        .wk-project-content {}
-        .section-label {
-          display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
-        }
-        .section-label-line { width: 2rem; height: 1px; background: var(--border); }
-        .section-label-text {
-          font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em;
-          text-transform: uppercase; color: var(--muted-foreground);
-        }
-        .wk-project-h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          color: var(--foreground); margin: 0 0 0.4rem; line-height: 1.2;
-        }
-        .wk-project-subtitle {
-          font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
-          text-transform: uppercase; color: var(--primary); margin: 0 0 1.25rem;
-        }
-        .wk-project-desc {
-          font-size: 0.875rem; color: var(--muted-foreground);
-          line-height: 1.85; margin: 0 0 1rem;
-        }
-        .wk-project-outcome-box {
-          border-left: 3px solid var(--primary);
-          padding: 0.85rem 1rem;
-          background: color-mix(in oklch, var(--primary) 6%, var(--background));
-          border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-          margin-bottom: 1.25rem;
-        }
-        .wk-project-outcome-label {
-          font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; color: var(--primary); margin-bottom: 0.35rem;
-        }
-        .wk-project-outcome {
-          font-size: 0.82rem; color: var(--muted-foreground);
-          line-height: 1.7; margin: 0;
-        }
-        .wk-project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-        .wk-tag {
-          font-size: 0.68rem; color: var(--foreground);
-          border: 1px solid var(--border);
-          padding: 0.3rem 0.7rem;
-          border-radius: var(--radius-sm);
-          background: var(--secondary);
-        }
-        .wk-deliverables { margin-bottom: 1.5rem; }
-        .wk-deliverables-label {
-          font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.5rem;
-        }
-        .wk-deliverables-list {
-          display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem;
-        }
-        .wk-deliverable {
-          font-size: 0.78rem; color: var(--muted-foreground);
-          display: flex; align-items: center; gap: 0.35rem;
-        }
-        .wk-deliverable::before { content: "→"; color: var(--primary); }
-        .btn-primary {
-          display: inline-block; background: var(--primary); color: var(--primary-foreground);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 0.9rem 2rem;
-          border-radius: var(--radius-sm); text-decoration: none;
-          transition: opacity 0.2s;
-        }
-        .btn-primary:hover { opacity: 0.85; }
 
         /* PROCESS TEASER */
         .wk-process {
@@ -263,73 +157,20 @@ export default function WorksPage() {
         .btn-ghost:hover {
           background: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
         }
+        .btn-primary {
+          display: inline-block; background: var(--primary); color: var(--primary-foreground);
+          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+          text-transform: uppercase; padding: 0.9rem 2rem;
+          border-radius: var(--radius-sm); text-decoration: none;
+          transition: opacity 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.85; }
       `}</style>
 
       <CQHeader />
       <main>
-        {/* Hero */}
-        <section className="wk-hero">
-          <div className="wk-hero-inner">
-            <div className="wk-hero-badge">
-              <FolderIcon />
-              <span>Portfolio</span>
-            </div>
-            <h1 className="wk-hero-h1">
-              Stories We&apos;ve Crafted,<br />Results We&apos;ve Delivered
-            </h1>
-            <p className="wk-hero-desc">
-              Every project is a collaboration. Here&apos;s a look at some of the
-              work we&apos;re proud to have been part of.
-            </p>
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section className="wk-projects">
-          <div className="wk-project-inner">
-            {projects.map((project, i) => (
-              <div key={project.id} className={`wk-project${i % 2 === 1 ? " reverse" : ""}`}>
-                <div className="wk-project-img-wrap">
-                  <img
-                    src={project.img}
-                    alt={project.title}
-                    className="wk-project-img"
-                  />
-                  <div className="wk-project-label-wrap">
-                    <span className="wk-project-label">{project.label}</span>
-                  </div>
-                </div>
-                <div className="wk-project-content">
-                  <div className="section-label">
-                    <span className="section-label-line" />
-                    <span className="section-label-text">Case Study</span>
-                  </div>
-                  <h2 className="wk-project-h2">{project.title}</h2>
-                  <p className="wk-project-subtitle">{project.subtitle}</p>
-                  <p className="wk-project-desc">{project.desc}</p>
-                  <div className="wk-project-outcome-box">
-                    <p className="wk-project-outcome-label">Result</p>
-                    <p className="wk-project-outcome">{project.outcome}</p>
-                  </div>
-                  <div className="wk-project-tags">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="wk-tag">{tag}</span>
-                    ))}
-                  </div>
-                  <div className="wk-deliverables">
-                    <p className="wk-deliverables-label">Deliverables</p>
-                    <div className="wk-deliverables-list">
-                      {project.deliverables.map((d) => (
-                        <span key={d} className="wk-deliverable">{d}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <Link href="/contact" className="btn-primary">Start a Similar Project</Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Sticky Horizontal Scroll experience encapsulates the hero, selected projects, and outcomes */}
+        <HorizontalScrollCaseStudies projects={projects} />
 
         {/* Process teaser */}
         <section className="wk-process">
@@ -339,16 +180,16 @@ export default function WorksPage() {
                 <span className="section-label-line" />
                 <span className="section-label-text">How We Work</span>
               </div>
-              <h2 className="wk-process-h2">Every Project Follows a Proven Process</h2>
-              <p className="wk-process-desc">
+              <h2 className="wk-process-h2" data-cursor="text">Every Project Follows a Proven Process</h2>
+              <p className="wk-process-desc" data-cursor="text">
                 From the first call to the final file, each project is guided by
                 our 6-step framework — so nothing falls through the cracks.
               </p>
-              <Link href="/contact" className="btn-primary">Start Your Project</Link>
+              <Link href="/contact" className="btn-primary" data-cursor="button">Start Your Project</Link>
             </div>
             <div className="wk-steps">
               {["Voice Audit", "Connect", "Understand", "Strategize", "Deliver", "Refine"].map((step, i) => (
-                <div key={step} className="wk-step">
+                <div key={step} className="wk-step" data-cursor="card">
                   <div className="wk-step-num">0{i + 1}</div>
                   <div className="wk-step-title">{step}</div>
                   <div className="wk-step-desc">
@@ -362,13 +203,13 @@ export default function WorksPage() {
 
         {/* CTA */}
         <section className="wk-cta">
-          <h2 className="wk-cta-h2">Ready to Be Our Next Success Story?</h2>
-          <p className="wk-cta-desc">
+          <h2 className="wk-cta-h2" data-cursor="text">Ready to Be Our Next Success Story?</h2>
+          <p className="wk-cta-desc" data-cursor="text">
             Tell us about your project. We&apos;ll tell you exactly how we can make it better.
           </p>
           <div className="wk-cta-actions">
-            <Link href="/contact" className="btn-light">Start Your Project</Link>
-            <Link href="/services" className="btn-ghost">Browse Services</Link>
+            <Link href="/contact" className="btn-light" data-cursor="button">Start Your Project</Link>
+            <Link href="/services" className="btn-ghost" data-cursor="button">Browse Services</Link>
           </div>
         </section>
       </main>

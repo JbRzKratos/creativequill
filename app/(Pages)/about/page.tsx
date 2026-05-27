@@ -2,6 +2,7 @@ import Link from "next/link";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import type { Metadata } from "next";
+import { PullQuote, TeamSection, ProcessTimeline } from "./aboutClient";
 
 export const metadata: Metadata = {
   title: "About Us | Creative Quill — The Story Behind the Words",
@@ -55,6 +56,15 @@ const values = [
     title: "Your Growth Partner",
     desc: "We don't just deliver files. We track what's working, suggest new directions, and evolve with your brand. Think of us as your dedicated content team, not a vendor.",
   },
+];
+
+const steps = [
+  { num: "1", title: "Voice Audit", desc: "Before we write anything, we study your existing content, competitors, and audience tone. So our first draft already sounds like you, not like us." },
+  { num: "2", title: "Connect", desc: "Discover your story through our contact form, email, or phone for an initial discovery call. We'll explore your brand narrative, business objectives, and audience challenges." },
+  { num: "3", title: "Understand", desc: "We immerse ourselves in your brand world — analyzing target audiences, competitive positioning, voice guidelines, and content goals. Deep discovery ensures every word aligns with your strategic vision." },
+  { num: "4", title: "Strategize", desc: "Our strategists develop a tailored content roadmap with narrative frameworks, topic clusters, and tonal architecture designed to captivate your audience and amplify your message." },
+  { num: "5", title: "Deliver", desc: "Receive publication-ready content within 48 hours, professionally written, thoroughly researched, and polished to perfection. Every piece is optimized for engagement and ready to publish." },
+  { num: "6", title: "Refine", desc: "Your satisfaction drives our process. We offer multiple revision rounds to fine-tune content until it perfectly captures your vision and exceeds your expectations." },
 ];
 
 export default function AboutPage() {
@@ -224,44 +234,6 @@ export default function AboutPage() {
           font-size: 0.875rem; color: var(--muted-foreground);
           max-width: 32rem; margin: 0 auto; line-height: 1.75;
         }
-        .ab-team-grid {
-          display: grid; gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-        .ab-member {
-          border: 1px solid var(--border);
-          background: var(--card);
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-          transition: box-shadow 0.2s;
-        }
-        .ab-member:hover {
-          box-shadow: 0 12px 36px color-mix(in oklch, var(--foreground) 12%, transparent);
-        }
-        .ab-member-img-wrap {
-          width: 100%; aspect-ratio: 4/4.5; overflow: hidden;
-          background: var(--secondary);
-        }
-        .ab-member-img {
-          width: 100%; height: 100%;
-          object-fit: cover; object-position: top;
-          filter: grayscale(1) contrast(1.1);
-        }
-        .ab-member-info { padding: 1.25rem; }
-        .ab-member-name {
-          font-family: var(--font-serif);
-          font-size: 1.05rem; color: var(--foreground);
-          margin: 0 0 0.2rem;
-        }
-        .ab-member-role {
-          font-size: 0.68rem; font-weight: 600;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          color: var(--primary); margin: 0 0 0.75rem;
-        }
-        .ab-member-bio {
-          font-size: 0.78rem; color: var(--muted-foreground);
-          line-height: 1.7; margin: 0;
-        }
 
         /* CTA */
         .ab-cta {
@@ -287,24 +259,24 @@ export default function AboutPage() {
         {/* Hero */}
         <section className="ab-hero">
           <span className="ab-hero-eyebrow">Our Story</span>
-          <h1 className="ab-hero-h1">
+          <h1 className="ab-hero-h1" data-cursor="text">
             We&apos;re Not a Content Mill.<br />
             <em>We&apos;re Your Creative Partners.</em>
           </h1>
-          <p className="ab-hero-desc">
+          <p className="ab-hero-desc" data-cursor="text">
             Founded in 2024, Creative Quill was built on a simple belief: brilliant
             businesses deserve content that actually sounds like them — not like everyone else.
           </p>
           <div className="ab-hero-actions">
-            <Link href="/services" className="btn-light">See Our Services</Link>
-            <Link href="/contact" className="btn-ghost">Work With Us</Link>
+            <Link href="/services" className="btn-light" data-cursor="button">See Our Services</Link>
+            <Link href="/contact" className="btn-ghost" data-cursor="button">Work With Us</Link>
           </div>
         </section>
 
         {/* Origin Story */}
         <section className="ab-story">
           <div className="ab-story-inner">
-            <div className="ab-story-img">
+            <div className="ab-story-img" data-cursor="card">
               <img
                 src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=800&auto=format&fit=crop"
                 alt="Writing at desk"
@@ -319,22 +291,22 @@ export default function AboutPage() {
                 <span className="section-label-line" />
                 <span className="section-label-text">How It Started</span>
               </div>
-              <h2 className="ab-story-h2">
+              <h2 className="ab-story-h2" data-cursor="text">
                 Watching brilliant businesses fail with bland content — that&apos;s what started all this.
               </h2>
-              <p className="ab-story-p">
+              <p className="ab-story-p" data-cursor="text">
                 In 2024, we watched brilliant businesses get drowned out online —
                 not because their product was weak, but because their content had no real voice.
                 Blog posts written by AI. Website copy that could belong to anyone.
                 Social media that felt like it was checking a box.
               </p>
-              <p className="ab-story-p">
+              <p className="ab-story-p" data-cursor="text">
                 Creative Quill was built to fix that. We are not here to crank out
                 copy by the pound. We are here to figure out what makes your brand
                 genuinely different and then write in a way that makes your audience
                 feel it.
               </p>
-              <p className="ab-story-p">
+              <p className="ab-story-p" data-cursor="text">
                 Every piece of content we create is rooted in real strategy —
                 not templates, not volume, not AI shortcuts. Just thoughtful,
                 original writing that sounds unmistakably like you.
@@ -342,6 +314,11 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        {/* Viewport Pull Quote */}
+        <div style={{ background: "var(--background)", padding: "1rem 0" }}>
+          <PullQuote />
+        </div>
 
         {/* Values */}
         <section className="ab-values">
@@ -352,15 +329,15 @@ export default function AboutPage() {
                 <span className="section-label-text">What We Stand For</span>
                 <span className="section-label-line" />
               </div>
-              <h2 className="ab-values-h2">Our Core Values</h2>
-              <p className="ab-values-desc">
+              <h2 className="ab-values-h2" data-cursor="text">Our Core Values</h2>
+              <p className="ab-values-desc" data-cursor="text">
                 These aren&apos;t values we put on a wall. They&apos;re the decisions we make
                 on every project, with every client.
               </p>
             </div>
             <div className="ab-values-grid">
               {values.map((v) => (
-                <div key={v.title} className="ab-value-card">
+                <div key={v.title} className="ab-value-card" data-cursor="card">
                   <div className="ab-value-icon">{v.icon}</div>
                   <h3 className="ab-value-title">{v.title}</h3>
                   <p className="ab-value-desc">{v.desc}</p>
@@ -370,52 +347,53 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team */}
+        {/* Process Snap-scroll Timeline */}
+        <section style={{ background: "var(--background)", padding: "5rem 1.5rem", borderTop: "1px solid var(--border)" }}>
+          <div className="ab-team-inner" style={{ maxWidth: "72rem", margin: "0 auto" }}>
+            <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <div className="section-label" style={{ justifyContent: "center" }}>
+                <span className="section-label-line" />
+                <span className="section-label-text">Our Process</span>
+                <span className="section-label-line" />
+              </div>
+              <h2 className="ab-team-h2" data-cursor="text">How We Work</h2>
+              <p className="ab-team-desc" data-cursor="text">
+                From the first call to the final file, each project is guided by our 6-step framework.
+              </p>
+            </div>
+            <ProcessTimeline steps={steps} />
+          </div>
+        </section>
+
+        {/* Team Asymmetric monochrome cards */}
         <section className="ab-team">
           <div className="ab-team-inner">
-            <div className="ab-team-header">
+            <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
               <div className="section-label" style={{ justifyContent: "center" }}>
                 <span className="section-label-line" />
                 <span className="section-label-text">Meet the Team</span>
                 <span className="section-label-line" />
               </div>
-              <h2 className="ab-team-h2">The People Behind the Words</h2>
-              <p className="ab-team-desc">
+              <h2 className="ab-team-h2" data-cursor="text">The People Behind the Words</h2>
+              <p className="ab-team-desc" data-cursor="text">
                 A tight-knit team of writers, editors, and strategists who care deeply
                 about the work — and the businesses we do it for.
               </p>
             </div>
-            <div className="ab-team-grid">
-              {team.map((member) => (
-                <div key={member.name} className="ab-member">
-                  <div className="ab-member-img-wrap">
-                    <img
-                      src={member.fallback}
-                      alt={member.name}
-                      className="ab-member-img"
-                    />
-                  </div>
-                  <div className="ab-member-info">
-                    <h3 className="ab-member-name">{member.name}</h3>
-                    <p className="ab-member-role">{member.role}</p>
-                    <p className="ab-member-bio">{member.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TeamSection team={team} />
           </div>
         </section>
 
         {/* CTA */}
         <section className="ab-cta">
-          <h2 className="ab-cta-h2">Ready to Work With Us?</h2>
-          <p className="ab-cta-desc">
+          <h2 className="ab-cta-h2" data-cursor="text">Ready to Work With Us?</h2>
+          <p className="ab-cta-desc" data-cursor="text">
             Let&apos;s talk about your brand, your audience, and what kind of content
             would actually make a difference.
           </p>
           <div className="ab-cta-actions">
-            <Link href="/contact" className="btn-light">Start a Conversation</Link>
-            <Link href="/works" className="btn-ghost">See Our Work</Link>
+            <Link href="/contact" className="btn-light" data-cursor="button">Start a Conversation</Link>
+            <Link href="/works" className="btn-ghost" data-cursor="button">See Our Work</Link>
           </div>
         </section>
       </main>

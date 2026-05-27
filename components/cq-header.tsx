@@ -16,6 +16,7 @@ export default function CQHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Close on resize to desktop
   useEffect(() => {
     const handler = () => {
       if (window.innerWidth >= 768) setMenuOpen(false);
@@ -23,6 +24,30 @@ export default function CQHeader() {
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
+
+  // Close on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  // Close menu when route changes
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -104,39 +129,65 @@ export default function CQHeader() {
           background: none; border: none;
           color: #ffffff;
           cursor: pointer; font-size: 1.2rem;
-          padding: 0.4rem;
+          /* Ensure 44×44px touch target */
+          width: 44px; height: 44px;
           display: none;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          border-radius: 4px;
+          transition: background 0.15s;
         }
+        .cq-burger:active { background: rgba(255,255,255,0.08); }
+        .cq-mobile-overlay {
+          display: none;
+          position: fixed; inset: 0;
+          z-index: 39;
+          background: rgba(0,0,0,0.5);
+          backdrop-filter: blur(2px);
+        }
+        .cq-mobile-overlay.open { display: block; }
         .cq-mobile-nav {
           max-height: 0; opacity: 0; overflow: hidden;
-          transition: max-height 0.3s ease, opacity 0.3s ease;
+          transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
           background: #121212;
           border-top: 1px solid #222222;
-          position: absolute; top: 100%; left: 0; width: 100%; z-index: 40;
+          position: absolute; top: 100%; left: 0; width: 100%; z-index: 50;
         }
-        .cq-mobile-nav.open { max-height: 420px; opacity: 1; }
+        .cq-mobile-nav.open { max-height: 460px; opacity: 1; }
         .cq-mobile-nav-inner {
           display: flex; flex-direction: column; align-items: center;
-          padding: 1.25rem 1.5rem; gap: 0.75rem;
+          padding: 1rem 1.5rem 1.5rem; gap: 0;
+        }
+        /* Mobile nav links: full-width, 48px tap targets */
+        .cq-mobile-nav-inner .cq-nav-link {
+          width: 100%; text-align: center;
+          padding: 0.85rem 0;
+          min-height: 48px;
+          display: flex; align-items: center; justify-content: center;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .cq-mobile-divider {
           width: 100%; border: none;
           border-top: 1px solid #222222;
-          margin: 0.25rem 0;
+          margin: 0.5rem 0;
         }
         .cq-mobile-cta {
-          margin-top: 0.5rem;
+          margin-top: 0.75rem;
           background: var(--primary);
           color: var(--primary-foreground);
           font-size: 0.68rem; font-weight: 700;
           letter-spacing: 0.15em; text-transform: uppercase;
-          padding: 0.75rem 2rem;
+          padding: 0.9rem 2.5rem;
           border-radius: var(--radius-sm);
           text-decoration: none;
+          min-height: 48px;
+          display: flex; align-items: center; justify-content: center;
         }
         @media (max-width: 767px) {
           .cq-nav, .cq-header-actions { display: none !important; }
           .cq-burger { display: flex !important; }
+          .cq-header-inner { padding: 0.75rem 1rem; }
         }
       `}</style>
 
@@ -168,20 +219,38 @@ export default function CQHeader() {
           <button
             className="cq-burger"
             onClick={() => setMenuOpen((o) => !o)}
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
-            {menuOpen ? "✕" : "☰"}
+            {menuOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
           </button>
         </div>
 
-        <div className={`cq-mobile-nav${menuOpen ? " open" : ""}`}>
+        {/* Backdrop overlay — tap to close */}
+        <div
+          className={`cq-mobile-overlay${menuOpen ? " open" : ""}`}
+          onClick={() => setMenuOpen(false)}
+          aria-hidden="true"
+        />
+
+        <div className={`cq-mobile-nav${menuOpen ? " open" : ""}`} role="navigation" aria-label="Mobile navigation">
           <div className="cq-mobile-nav-inner">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
                 className={`cq-nav-link${pathname === href ? " active" : ""}`}
-                style={{ padding: "0.5rem 0" }}
                 onClick={() => setMenuOpen(false)}
               >
                 {label}
