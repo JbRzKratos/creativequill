@@ -124,7 +124,7 @@
     }
   body {
     @apply bg-background text-foreground;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     /* Smooth momentum scrolling on iOS */
@@ -132,7 +132,7 @@
     }
   html {
     @apply font-sans;
-    overflow-x: hidden;
+    overflow-x: clip;
     /* Use dynamic viewport height to fix iOS safari bar issue */
     min-height: 100dvh;
     scroll-behavior: smooth;
