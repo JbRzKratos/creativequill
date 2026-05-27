@@ -32,7 +32,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable, playfair.variable)}
     >
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <ScrollProgress />
           <OpenForWorkBadge />
