@@ -765,6 +765,8 @@ export default function ContactPage() {
                             <h2 className="conv-title" data-cursor="text">Hi! What&apos;s your name?</h2>
                             <div className="conv-input-wrap">
                               <input
+                                id="contact-name"
+                                name="name"
                                 type="text"
                                 className="conv-input-large"
                                 placeholder="Your name..."
@@ -777,6 +779,7 @@ export default function ContactPage() {
                                   }
                                 }}
                                 data-cursor="text"
+                                aria-label="Your name"
                               />
                             </div>
                           </div>
@@ -789,6 +792,8 @@ export default function ContactPage() {
                             </h2>
                             <div className="conv-input-wrap" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                               <input
+                                id="contact-email"
+                                name="email"
                                 type="email"
                                 className="conv-input-large"
                                 placeholder="yourname@example.com"
@@ -801,10 +806,13 @@ export default function ContactPage() {
                                   }
                                 }}
                                 data-cursor="text"
+                                aria-label="Your email address"
                               />
                               <div style={{ marginTop: "0.5rem" }}>
-                                <label className="ct-form-label" style={{ fontSize: "0.68rem" }}>Phone Number (optional)</label>
+                                <label htmlFor="contact-phone" className="ct-form-label" style={{ fontSize: "0.68rem" }}>Phone Number (optional)</label>
                                 <input
+                                  id="contact-phone"
+                                  name="phone"
                                   type="tel"
                                   className="conv-input-sub"
                                   placeholder="+91 98765 43210"
@@ -851,12 +859,15 @@ export default function ContactPage() {
                             <h2 className="conv-title" data-cursor="text">Tell us about your project</h2>
                             <div>
                               <textarea
+                                id="contact-details"
+                                name="details"
                                 className="conv-textarea"
                                 placeholder="What are your goals, target audience, references you like, and your timeline?"
                                 value={form.details}
                                 onChange={(e) => setForm({ ...form, details: e.target.value })}
                                 autoFocus
                                 data-cursor="text"
+                                aria-label="Project details"
                               />
                               {/* Character counter progress bar */}
                               <div className="conv-progress-bar-wrap">

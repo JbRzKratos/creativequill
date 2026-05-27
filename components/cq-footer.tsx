@@ -157,6 +157,8 @@ export default function CQFooter() {
                 }}
               >
                 <input
+                  id="footer-email"
+                  name="email"
                   type="email"
                   className="cq-nl-input"
                   placeholder="your@email.com"

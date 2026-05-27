@@ -171,10 +171,15 @@ export function PricingCalculator() {
       <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
         {/* Row 1: Service Type */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+          <label
+            htmlFor="service-calc-type"
+            style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}
+          >
             Service Type
           </label>
           <select
+            id="service-calc-type"
+            name="service-type"
             value={service}
             onChange={(e) => setService(e.target.value)}
             style={{
@@ -198,10 +203,15 @@ export function PricingCalculator() {
         {/* Row 2: Word Count */}
         {isPerWord && (
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+            <label
+              htmlFor="service-calc-words"
+              style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}
+            >
               Word Count
             </label>
             <input
+              id="service-calc-words"
+              name="word-count"
               type="number"
               value={wordCount}
               onChange={(e) => setWordCount(Math.max(100, parseInt(e.target.value) || 0))}

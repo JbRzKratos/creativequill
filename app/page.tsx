@@ -659,6 +659,8 @@ export default function HomePage() {
           ) : (
             <form className="nl-form" onSubmit={(e) => { e.preventDefault(); if (nlEmail) setNlSent(true); }}>
               <input
+                id="newsletter-email"
+                name="email"
                 type="email" className="nl-input" placeholder="Email Address" required
                 value={nlEmail} onChange={(e) => setNlEmail(e.target.value)}
                 aria-label="Email address"
