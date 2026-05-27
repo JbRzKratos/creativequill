@@ -212,6 +212,16 @@ export default function ServicesPage() {
           color: color-mix(in oklch, var(--primary-foreground) 80%, transparent);
         }
         .sp-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .btn-primary {
+          display: inline-block;
+          background: var(--primary);
+          color: var(--primary-foreground);
+          font-size: 0.7rem; font-weight: 700;
+          letter-spacing: 0.15em; text-transform: uppercase;
+          padding: 1rem 2rem; border-radius: var(--radius-sm);
+          text-decoration: none; transition: opacity 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.88; }
         .btn-light {
           display: inline-block;
           background: var(--primary-foreground); color: var(--primary);

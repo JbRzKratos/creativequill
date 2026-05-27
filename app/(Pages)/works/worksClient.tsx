@@ -242,6 +242,32 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: any[] }) {
       {/* Mobile Stack Experience */}
       <div className="block lg:hidden" style={{ background: "var(--background)", padding: "2rem 1.5rem" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "3.5rem" }}>
+          {/* Mobile Hero Header */}
+          <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                background: "color-mix(in oklch, var(--primary) 10%, transparent)",
+                color: "var(--primary)",
+                fontSize: "0.68rem",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "999px",
+                marginBottom: "1rem",
+              }}
+            >
+              Case Studies
+            </span>
+            <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "2.25rem", color: "var(--foreground)", margin: "0 0 1rem", lineHeight: 1.2 }}>
+              Stories We&apos;ve Crafted,<br /><em>Results We&apos;ve Delivered</em>
+            </h2>
+            <p style={{ fontSize: "0.85rem", color: "var(--muted-foreground)", lineHeight: 1.6, margin: "0 auto", maxWidth: "28rem" }}>
+              Browse through our featured works and see how we help businesses win with storytelling.
+            </p>
+          </div>
+
           {projects.map((project) => (
             <div key={project.id} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               <TiltImage src={project.img} alt={project.title} />

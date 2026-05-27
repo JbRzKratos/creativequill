@@ -182,9 +182,7 @@
 /* Prevent horizontal overflow from any element */
 section,
 main,
-header,
 footer,
-nav,
 article {
   max-width: 100vw;
   overflow-x: hidden;

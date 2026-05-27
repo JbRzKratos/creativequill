@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import CQHeader from "@/components/cq-header";
@@ -165,6 +165,24 @@ export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
+
+  // Pre-fill service from URL search parameters on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const svcParam = params.get("service");
+      if (svcParam) {
+        const matched = services.find(
+          (s) =>
+            s.toLowerCase() === svcParam.toLowerCase() ||
+            s.toLowerCase().startsWith(svcParam.toLowerCase())
+        );
+        if (matched) {
+          setForm((f) => ({ ...f, service: matched }));
+        }
+      }
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

@@ -60,6 +60,7 @@ export default function CQHeader() {
           z-index: 50;
           width: 100%;
           border-bottom: 1px solid #222222;
+          overflow: visible !important;
         }
         .cq-header-inner {
           max-width: 72rem;
@@ -191,7 +192,7 @@ export default function CQHeader() {
         }
       `}</style>
 
-      <header className="cq-header" style={{ position: "relative" }}>
+      <header className="cq-header">
         <div className="cq-header-inner">
           <Link href="/" className="cq-logo">
             Creative Quill
