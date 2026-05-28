@@ -49,19 +49,29 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
       )}
 
       {/* Watermark index */}
+      <style>{`
+        .sp-watermark {
+          font-size: 5.5rem;
+          opacity: 0.08 !important;
+        }
+        @media (min-width: 768px) {
+          .sp-watermark {
+            font-size: 7.5rem;
+            opacity: 0.12 !important;
+          }
+        }
+      `}</style>
       <span
         className="sp-watermark"
         style={{
           position: "absolute",
           bottom: "-15px",
           right: "15px",
-          fontSize: "7.5rem",
           fontFamily: "var(--font-serif)",
           fontWeight: 400,
           color: isHovered
             ? "color-mix(in oklch, var(--foreground) 16%, transparent)"
             : "var(--border)",
-          opacity: 0.16,
           lineHeight: 1,
           pointerEvents: "none",
           transition: "color 0.3s ease",
@@ -89,7 +99,9 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
             <span>{svc.time}</span>
           </span>
         </div>
-        <div className="sp-card-cta">Learn More →</div>
+        <div className="sp-card-cta">
+          Learn More <span>&rarr;</span>
+        </div>
       </div>
     </Link>
   );
@@ -136,13 +148,13 @@ export function PricingCalculator() {
 
   return (
     <div
+      className="p-5 sm:p-8 md:p-10 mx-auto"
       style={{
         background: "var(--card)",
         border: "1px solid var(--border)",
         borderRadius: "var(--radius-xl)",
-        padding: "2.5rem",
         maxWidth: "42rem",
-        margin: "4rem auto 0",
+        marginTop: "4rem",
       }}
     >
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -189,6 +201,7 @@ export function PricingCalculator() {
               background: "var(--background)",
               color: "var(--foreground)",
               outline: "none",
+              fontSize: "1rem", /* text-base to prevent Safari iOS zoom */
             }}
           >
             <option value="blog">Blog Writing (₹1.5/word)</option>
@@ -222,6 +235,7 @@ export function PricingCalculator() {
                 background: "var(--background)",
                 color: "var(--foreground)",
                 outline: "none",
+                fontSize: "1rem", /* text-base to prevent Safari iOS zoom */
               }}
             />
           </div>
@@ -232,12 +246,11 @@ export function PricingCalculator() {
           <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
             Turnaround
           </label>
-          <div style={{ display: "flex", gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
+          <div className="grid grid-cols-2" style={{ gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
             <button
               onClick={() => setTurnaround("standard")}
               style={{
-                flex: 1,
-                padding: "0.5rem 1rem",
+                padding: "0.75rem 1rem",
                 borderRadius: "var(--radius-sm)",
                 border: "none",
                 fontSize: "0.75rem",
@@ -252,8 +265,7 @@ export function PricingCalculator() {
             <button
               onClick={() => setTurnaround("rush")}
               style={{
-                flex: 1,
-                padding: "0.5rem 1rem",
+                padding: "0.75rem 1rem",
                 borderRadius: "var(--radius-sm)",
                 border: "none",
                 fontSize: "0.75rem",
@@ -273,12 +285,11 @@ export function PricingCalculator() {
           <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
             Revisions
           </label>
-          <div style={{ display: "flex", gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
+          <div className="grid grid-cols-2" style={{ gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
             <button
               onClick={() => setRevisions("standard")}
               style={{
-                flex: 1,
-                padding: "0.5rem 1rem",
+                padding: "0.75rem 1rem",
                 borderRadius: "var(--radius-sm)",
                 border: "none",
                 fontSize: "0.75rem",
@@ -293,8 +304,7 @@ export function PricingCalculator() {
             <button
               onClick={() => setRevisions("extra")}
               style={{
-                flex: 1,
-                padding: "0.5rem 1rem",
+                padding: "0.75rem 1rem",
                 borderRadius: "var(--radius-sm)",
                 border: "none",
                 fontSize: "0.75rem",
@@ -324,9 +334,9 @@ export function PricingCalculator() {
             Estimated Pricing
           </span>
           <span
+            className="text-2xl sm:text-3xl"
             style={{
               fontFamily: "var(--font-serif)",
-              fontSize: "1.85rem",
               fontWeight: 700,
               color: "var(--primary)",
               margin: "0.5rem 0 1rem",

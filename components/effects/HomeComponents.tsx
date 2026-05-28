@@ -216,72 +216,51 @@ export function StatsStrip() {
   return (
     <div
       style={{
-        borderTop: "1px solid var(--border)",
-        borderBottom: "1px solid var(--border)",
-        background: "var(--card)",
-        padding: "1.5rem 1rem",
-        margin: "2.5rem 0",
+        borderTop: "1px solid var(--cq-night-border, #2E2E2A)",
+        borderBottom: "1px solid var(--cq-night-border, #2E2E2A)",
+        background: "var(--cq-night, #0F0F0D)",
+        padding: "2rem 0",
       }}
     >
       <div
+        className="mx-auto px-4 md:px-6 lg:px-8"
         style={{
-          maxWidth: "64rem",
-          margin: "0 auto",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: "1.5rem",
+          maxWidth: "var(--max-width-content, 68rem)",
         }}
       >
-        {[
-          { num: 500000, suffix: "+", label: "Words Written" },
-          { num: 50, suffix: "+", label: "Happy Clients" },
-          { num: 100, suffix: "%", label: "Human-Written" },
-          { num: 48, suffix: "hrs", label: "Avg Delivery" },
-        ].map((stat, i, arr) => (
-          <div
-            key={stat.label}
-            style={{
-              flex: "1 1 120px",
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              /* vertical dividers hidden on mobile via CSS below */
-              borderRight: i < arr.length - 1 ? "1px solid var(--border)" : "none",
-            }}
-            className="cq-stat-item"
-          >
-            <span
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "1.75rem",
-                fontWeight: 700,
-                color: "var(--foreground)",
-              }}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--cq-night-border)] overflow-hidden">
+          {[
+            { num: 500000, suffix: "+", label: "Words Written" },
+            { num: 50, suffix: "+", label: "Happy Clients" },
+            { num: 100, suffix: "%", label: "Human-Written" },
+            { num: 48, suffix: "hrs", label: "Avg Delivery" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-[var(--cq-night)] p-6 text-center flex flex-col items-center justify-center"
             >
-              <CountUp end={stat.num} suffix={stat.suffix} />
-            </span>
-            <span
-              style={{
-                fontSize: "0.72rem",
-                letterSpacing: "0.05em",
-                color: "var(--muted-foreground)",
-                marginTop: "0.25rem",
-                textTransform: "uppercase",
-              }}
-            >
-              {stat.label}
-            </span>
-          </div>
-        ))}
+              <span
+                className="text-3xl sm:text-4xl font-light text-[var(--cq-cream)]"
+                style={{
+                  fontFamily: "var(--font-display), serif",
+                  letterSpacing: "var(--tracking-tighter, -0.04em)",
+                }}
+              >
+                <CountUp end={stat.num} suffix={stat.suffix} />
+              </span>
+              <span
+                className="text-[9px] sm:text-[10px] text-[var(--cq-ink-faint)] mt-1 uppercase"
+                style={{
+                  fontFamily: "var(--font-body), sans-serif",
+                  letterSpacing: "var(--tracking-wider, 0.06em)",
+                }}
+              >
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      <style>{`
-        @media (max-width: 640px) {
-          .cq-stat-item { border-right: none !important; flex: 1 1 calc(50% - 0.75rem); }
-        }
-      `}</style>
     </div>
   );
 }
@@ -352,43 +331,25 @@ export function ClientMarquee() {
 /* ── 5. BENTO GRID ── */
 export function BentoGrid() {
   return (
-    <div style={{ display: "grid", gap: "1.25rem", gridTemplateColumns: "repeat(3, 1fr)" }} className="cq-bento">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full cq-bento">
       {/* Cell 1: Unmistakably You (2 cols, tall) */}
       <div
+        className="col-span-1 sm:col-span-2 lg:col-span-2 border-2 border-[var(--border)] rounded-[var(--radius-xl)] p-6 md:p-9 flex flex-col justify-between relative overflow-hidden transition-all duration-300 bento-cell min-h-[140px]"
         style={{
-          gridColumn: "span 2",
           background: "color-mix(in oklch, var(--primary) 7%, var(--background))",
-          border: "2px solid var(--border)",
-          borderRadius: "var(--radius-xl)",
-          padding: "2.25rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          position: "relative",
-          overflow: "hidden",
-          transition: "border-color 0.2s",
         }}
-        className="bento-cell"
       >
         <div>
-          <span style={{ fontSize: "1.8rem", fontWeight: 700, opacity: 0.2, color: "var(--primary)" }}>01</span>
-          <div style={{ color: "var(--primary)", margin: "1rem 0" }}>
+          <span className="text-3xl font-bold opacity-20 text-[var(--primary)]">01</span>
+          <div className="text-[var(--primary)] my-4">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11a5 5 0 00-10 0c0 1.02.166 2 .47 2.932m16.513.08a13.947 13.947 0 011.539-1.118m-3.003-2.91a2.169 2.169 0 00-3.32-.34c-.738.67-1.19 1.63-1.19 2.69v.004c0 1.083-.496 2.05-1.288 2.696m7.133.076c.38.256.729.568 1.035.927m-2.422-2.903a9.004 9.004 0 01-1.127 3.045m-7.469-2.347c.8-.696 1.307-1.72 1.307-2.864V10" />
             </svg>
           </div>
-          <h3
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "1.35rem",
-              fontWeight: 600,
-              color: "var(--foreground)",
-              marginBottom: "0.75rem",
-            }}
-          >
+          <h3 className="font-serif text-xl font-semibold text-[var(--foreground)] mb-3">
             Unmistakably You
           </h3>
-          <p style={{ fontSize: "0.85rem", color: "var(--muted-foreground)", lineHeight: 1.65 }}>
+          <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
             We develop your brand voice guidelines from scratch and write content only you could publish —
             no generic filler, no recycled templates.
           </p>
@@ -397,26 +358,16 @@ export function BentoGrid() {
 
       {/* Cell 2: 48hr Turnaround (1 col) */}
       <div
-        style={{
-          background: "var(--primary)",
-          borderRadius: "var(--radius-xl)",
-          padding: "2rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          color: "var(--primary-foreground)",
-          border: "2px solid var(--primary)",
-        }}
-        className="bento-cell"
+        className="col-span-1 border-2 border-[var(--primary)] bg-[var(--primary)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between text-[var(--primary-foreground)] bento-cell min-h-[140px]"
       >
-        <span style={{ fontSize: "4rem", fontFamily: "var(--font-serif)", fontWeight: 700, color: "var(--primary-foreground)", opacity: 0.9 }}>
+        <span className="text-5xl md:text-6xl font-serif font-bold opacity-90">
           48h
         </span>
         <div>
-          <h3 style={{ fontSize: "0.95rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.5rem" }}>
+          <h3 className="text-xs font-bold uppercase tracking-wider mb-2">
             Turnaround
           </h3>
-          <p style={{ fontSize: "0.78rem", opacity: 0.8, lineHeight: 1.6 }}>
+          <p className="text-xs opacity-80 leading-relaxed">
             Professional publication-ready content delivered rapidly, keeping your brand momentum strong.
           </p>
         </div>
@@ -424,35 +375,18 @@ export function BentoGrid() {
 
       {/* Cell 3: Expert Craft (1 col) */}
       <div
-        style={{
-          background: "var(--card)",
-          border: "2px solid var(--border)",
-          borderRadius: "var(--radius-xl)",
-          padding: "2rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-        className="bento-cell"
+        className="col-span-1 border-2 border-[var(--border)] bg-[var(--card)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
       >
-        <div style={{ color: "var(--primary)" }}>
+        <div className="text-[var(--primary)]">
           <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
         </div>
         <div>
-          <h3
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "1.1rem",
-              fontWeight: 600,
-              color: "var(--foreground)",
-              marginBottom: "0.5rem",
-            }}
-          >
+          <h3 className="font-serif text-lg font-semibold text-[var(--foreground)] mb-2">
             Expert Craft
           </h3>
-          <p style={{ fontSize: "0.78rem", color: "var(--muted-foreground)", lineHeight: 1.6 }}>
+          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
             Every piece goes through strict multi-phase checks, ensuring flawless execution that builds trust.
           </p>
         </div>
@@ -460,43 +394,24 @@ export function BentoGrid() {
 
       {/* Cell 4: Story-Driven (1 col) */}
       <div
-        style={{
-          background: "var(--background)",
-          border: "2px solid var(--border)",
-          borderRadius: "var(--radius-xl)",
-          padding: "2rem",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          position: "relative",
-          overflow: "hidden",
-        }}
-        className="bento-cell"
+        className="col-span-1 border-2 border-[var(--border)] bg-[var(--background)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden bento-cell min-h-[140px]"
       >
         {/* Ink-textured graphic overlay */}
-        <div style={{ position: "absolute", right: -20, bottom: -20, opacity: 0.08, pointerEvents: "none" }}>
+        <div className="absolute right-[-20px] bottom-[-20px] opacity-8 pointer-events-none text-[var(--primary)]" style={{ opacity: 0.08 }}>
           <svg width="120" height="120" viewBox="0 0 100 100" fill="currentColor">
             <path d="M50 0 C75 25 100 50 50 100 C0 50 25 25 50 0 Z" />
           </svg>
         </div>
-        <div style={{ color: "var(--primary)" }}>
+        <div className="text-[var(--primary)]">
           <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
         </div>
         <div>
-          <h3
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: "1.1rem",
-              fontWeight: 600,
-              color: "var(--foreground)",
-              marginBottom: "0.5rem",
-            }}
-          >
+          <h3 className="font-serif text-lg font-semibold text-[var(--foreground)] mb-2">
             Story-Driven
           </h3>
-          <p style={{ fontSize: "0.78rem", color: "var(--muted-foreground)", lineHeight: 1.6 }}>
+          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
             Deep narrative strategy that connects emotionally with audiences, transforming readers into buyers.
           </p>
         </div>
@@ -504,29 +419,9 @@ export function BentoGrid() {
 
       {/* Cell 5: Pull Quote (2 cols) */}
       <div
-        style={{
-          gridColumn: "span 2",
-          background: "var(--card)",
-          border: "2px solid var(--border)",
-          borderRadius: "var(--radius-xl)",
-          padding: "2rem 2.25rem",
-          display: "flex",
-          alignItems: "center",
-        }}
-        className="bento-cell"
+        className="col-span-1 sm:col-span-2 lg:col-span-2 border-2 border-[var(--border)] bg-[var(--card)] rounded-[var(--radius-xl)] p-6 md:p-8 flex items-center bento-cell min-h-[140px]"
       >
-        <blockquote
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontSize: "1.2rem",
-            lineHeight: 1.6,
-            color: "var(--foreground)",
-            margin: 0,
-            borderLeft: "3px solid var(--primary)",
-            paddingLeft: "1.25rem",
-          }}
-        >
+        <blockquote className="font-serif italic text-lg leading-relaxed text-[var(--foreground)] border-l-4 border-[var(--primary)] pl-5 m-0">
           &ldquo;Strategic content isn&apos;t a cost — it&apos;s your best marketing investment.&rdquo;
         </blockquote>
       </div>
@@ -535,10 +430,6 @@ export function BentoGrid() {
         .bento-cell:hover {
           border-color: color-mix(in oklch, var(--primary) 35%, transparent) !important;
           box-shadow: 0 10px 24px color-mix(in oklch, var(--foreground) 7%, transparent);
-        }
-        @media (max-width: 768px) {
-          .cq-bento { grid-template-columns: 1fr !important; }
-          .bento-cell { grid-column: span 1 !important; }
         }
       `}</style>
     </div>
@@ -610,9 +501,14 @@ export function AiVsHuman() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "1fr 1fr" }} className="cq-split">
+      <div
+        style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "1fr 1fr" }}
+        className="cq-split"
+        data-active={showHuman ? "human" : "ai"}
+      >
         {/* Left: AI Generated */}
         <div
+          className="cq-ai-card"
           style={{
             background: "var(--card)",
             border: "1px solid var(--border)",
@@ -639,6 +535,7 @@ export function AiVsHuman() {
 
         {/* Right: Creative Quill */}
         <div
+          className="cq-human-card"
           style={{
             background: "var(--card)",
             border: "2px solid var(--primary)",
@@ -676,6 +573,18 @@ export function AiVsHuman() {
       <style>{`
         @media (max-width: 640px) {
           .cq-split { grid-template-columns: 1fr !important; }
+          .cq-split[data-active="human"] .cq-ai-card {
+            display: none !important;
+          }
+          .cq-split[data-active="ai"] .cq-human-card {
+            display: none !important;
+          }
+          .cq-split[data-active="human"] .cq-human-card {
+            opacity: 1 !important;
+          }
+          .cq-split[data-active="ai"] .cq-ai-card {
+            opacity: 1 !important;
+          }
         }
       `}</style>
     </div>
@@ -770,43 +679,111 @@ export function ContentAuditCard() {
 
 /* ── 8. SOCIAL PROOF MARQUEE ── */
 export function SocialProofMarquee() {
-  const reviews = [
-    { text: "Breathtaking romance prose, adapted perfectly.", client: "Sarah M." },
-    { text: "Hit every deadline, narrative was incredibly deep.", client: "David L." },
-    { text: "Outstanding editing, resolved major plot loops.", client: "Elena R." },
-    { text: "Premium copywriting that ranks and converts.", client: "TechCorp" },
+  const testimonials = [
+    { quote: "Creative Quill took my rough outline and transformed it into a breathtaking romance novel. Their ability to capture my voice was remarkable.", author: "Sarah M.", role: "Author" },
+    { quote: "The structured development process gave me so much peace of mind. They hit every deadline and character arcs were deep.", author: "David L.", role: "Novelist" },
+    { quote: "Exceptional editing and story planning. They resolved a major plot hole in my fantasy series, getting me back on track instantly.", author: "Elena R.", role: "Fantasy Writer" },
+    { quote: "Their team delivered clean, engaging content on-time, boosting our traffic. Professional from start to finish.", author: "TechCorp", role: "Content Manager" }
   ];
 
   return (
-    <div style={{ padding: "1.25rem 0", background: "var(--secondary)", borderTop: "1px solid var(--border)", overflow: "hidden" }}>
-      <div className="cq-marquee-container" style={{ display: "flex", overflow: "hidden", width: "100%" }}>
-        <div className="cq-marquee-inner-reverse" style={{ display: "flex", gap: "4rem", whiteSpace: "nowrap", alignItems: "center" }}>
-          {reviews.concat(reviews).map((r, idx) => (
-            <div key={idx} style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-              <span style={{ fontSize: "0.8rem", fontWeight: 500, color: "var(--foreground)" }}>
-                &ldquo;{r.text}&rdquo;
-              </span>
-              <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
-                — {r.client}
-              </span>
-              <span style={{ color: "var(--primary)", fontSize: "0.75rem" }}>◆</span>
+    <section className="section-sm" style={{ background: "var(--cq-cream-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", position: "relative" }}>
+      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+        <span className="label-text">What Our Clients Say</span>
+      </div>
+
+      <div className="cq-testimonial-marquee-container" style={{ display: "flex", overflow: "hidden", width: "100%", position: "relative" }}>
+        {/* Left fade overlay */}
+        <div style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: "80px",
+          background: "linear-gradient(to right, var(--cq-cream-mid), transparent)",
+          zIndex: 10,
+          pointerEvents: "none"
+        }} />
+        {/* Right fade overlay */}
+        <div style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: "80px",
+          background: "linear-gradient(to left, var(--cq-cream-mid), transparent)",
+          zIndex: 10,
+          pointerEvents: "none"
+        }} />
+
+        <div className="cq-testimonial-marquee-inner" style={{ display: "flex", gap: "1.5rem" }}>
+          {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
+            <div
+              key={idx}
+              className="cq-testimonial-card"
+              data-cursor="card"
+            >
+              <div>
+                <div className="text-xs sm:text-sm text-[var(--cq-teal)] mb-2 tracking-widest">★★★★★</div>
+                <div style={{ position: "relative" }}>
+                  <span style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "2.5rem",
+                    color: "var(--cq-cream-dark)",
+                    lineHeight: 0,
+                    position: "absolute",
+                    left: "-0.5rem",
+                    top: "-0.5rem",
+                    pointerEvents: "none"
+                  }}>&ldquo;</span>
+                  <p className="font-serif italic text-sm md:text-base font-light text-[var(--cq-ink-mid)] leading-relaxed pl-3" style={{ margin: 0, textIndent: "0.25rem" }}>
+                    {t.quote}
+                  </p>
+                </div>
+              </div>
+              <div style={{ borderTop: "1px solid var(--cq-cream-dark)", paddingTop: "0.75rem" }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--cq-ink)", margin: 0 }}>
+                  {t.author}
+                </p>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", color: "var(--cq-ink-muted)", margin: 0, letterSpacing: "var(--tracking-wide)" }}>
+                  {t.role}
+                </p>
+              </div>
             </div>
           ))}
         </div>
       </div>
       <style>{`
-        .cq-marquee-inner-reverse {
+        .cq-testimonial-card {
+          background: var(--cq-cream);
+          border: 1px solid var(--cq-cream-dark);
+          border-radius: var(--radius-lg);
+          padding: var(--space-6);
+          min-width: 260px;
+          max-width: 380px;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        @media (min-width: 768px) {
+          .cq-testimonial-card {
+            min-width: 320px;
+          }
+        }
+        .cq-testimonial-marquee-inner {
           animation: marquee-scroll-reverse 45s linear infinite;
         }
-        .cq-marquee-container:hover .cq-marquee-inner-reverse {
+        .cq-testimonial-marquee-container:hover .cq-testimonial-marquee-inner {
           animation-play-state: paused;
         }
         @keyframes marquee-scroll-reverse {
-          0% { transform: translateX(-50%); }
+          0% { transform: translateX(-33.33%); }
           100% { transform: translateX(0); }
         }
       `}</style>
-    </div>
+    </section>
   );
 }
 
@@ -878,26 +855,7 @@ export function OpenForWorkBadge() {
   if (dismissed || !visible) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        /* On mobile: center at bottom; On desktop: right side */
-        bottom: "1.5rem",
-        right: "1.5rem",
-        left: "auto",
-        zIndex: 99,
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-        boxShadow: "0 10px 24px rgba(0,0,0,0.12)",
-        borderRadius: "var(--radius-lg)",
-        padding: "0.85rem 1.25rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        maxWidth: "calc(100vw - 3rem)",
-      }}
-      className="cq-work-badge"
-    >
+    <div className="cq-work-badge">
       {/* Pulsing indicator */}
       <span style={{ position: "relative", display: "flex", height: "10px", width: "10px", flexShrink: 0 }}>
         <span style={{
@@ -922,7 +880,8 @@ export function OpenForWorkBadge() {
 
       <Link href="/contact" style={{ textDecoration: "none", display: "flex", flexDirection: "column" }}>
         <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-          Open For Work
+          <span className="block sm:hidden">Open for projects</span>
+          <span className="hidden sm:block">Open For Work</span>
         </span>
         <span style={{ fontSize: "0.68rem", color: "var(--muted-foreground)", marginTop: "2px" }}>
           Claim your free content audit →
@@ -940,8 +899,8 @@ export function OpenForWorkBadge() {
           color: "var(--muted-foreground)",
           marginLeft: "0.25rem",
           /* 44x44 touch target */
-          width: "32px",
-          height: "32px",
+          width: "44px",
+          height: "44px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -956,17 +915,32 @@ export function OpenForWorkBadge() {
       </button>
 
       <style>{`
+        .cq-work-badge {
+          position: fixed;
+          bottom: 1rem;
+          right: 1rem;
+          max-width: calc(100vw - 32px);
+          z-index: 40;
+          background: var(--card);
+          border: 1px solid var(--border);
+          box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+          border-radius: var(--radius-lg);
+          padding: 0.85rem 1.25rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+        @media (min-width: 768px) {
+          .cq-work-badge {
+            bottom: 1.5rem;
+            right: 1.5rem;
+            max-width: 360px;
+          }
+        }
         @keyframes cq-ping {
           75%, 100% {
             transform: scale(2.2);
             opacity: 0;
-          }
-        }
-        /* On small screens move badge to bottom-center */
-        @media (max-width: 480px) {
-          .cq-work-badge {
-            right: 1rem !important;
-            bottom: 1rem !important;
           }
         }
       `}</style>
@@ -993,36 +967,49 @@ export function BackToTop() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.button
-          onClick={scrollToTop}
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          aria-label="Back to top"
-          style={{
-            position: "fixed",
-            bottom: "1.5rem",
-            left: "1.5rem",
-            zIndex: 99,
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "var(--foreground)",
-            cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-          whileHover={{ scale: 1.1 }}
-          transition={{ scale: { duration: 0.2 } }}
-        >
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-          </svg>
-        </motion.button>
+        <>
+          <style>{`
+            .cq-back-to-top {
+              bottom: 1rem;
+              left: 1rem;
+              width: 44px;
+              height: 44px;
+            }
+            @media (min-width: 768px) {
+              .cq-back-to-top {
+                bottom: 1.5rem;
+                left: 1.5rem;
+              }
+            }
+          `}</style>
+          <motion.button
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            aria-label="Back to top"
+            className="cq-back-to-top"
+            style={{
+              position: "fixed",
+              zIndex: 40,
+              background: "var(--card)",
+              border: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--foreground)",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              borderRadius: "50%",
+            }}
+            whileHover={{ scale: 1.1 }}
+            transition={{ scale: { duration: 0.2 } }}
+          >
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </motion.button>
+        </>
       )}
     </AnimatePresence>
   );

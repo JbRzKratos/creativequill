@@ -99,18 +99,18 @@ export default function InkCursor() {
   let dotWidth = 10;
   let dotHeight = 10;
   let dotRadius = "50%";
-  let dotBg = "var(--primary)";
+  let dotBg = "rgba(13, 148, 136, 1)";
   let ringWidth = 28;
   let ringHeight = 28;
   let ringRadius = "50%";
   const ringBg = "transparent";
-  let ringBorder = "1px solid color-mix(in oklch, var(--foreground) 22%, transparent)";
+  let ringBorder = "1px solid rgba(28, 26, 23, 0.22)";
   let dotContent = null;
 
   if (cursorType === "button") {
     dotWidth = 52;
     dotHeight = 52;
-    dotBg = "var(--primary)";
+    dotBg = "rgba(13, 148, 136, 1)";
     ringWidth = 0;
     ringHeight = 0;
     dotContent = (
@@ -131,7 +131,7 @@ export default function InkCursor() {
     dotWidth = 60;
     dotHeight = 22;
     dotRadius = "12px";
-    dotBg = "color-mix(in oklch, var(--primary) 85%, transparent)";
+    dotBg = "rgba(13, 148, 136, 0.85)";
     ringWidth = 68;
     ringHeight = 30;
     ringRadius = "16px";
@@ -139,7 +139,7 @@ export default function InkCursor() {
     dotWidth = 2;
     dotHeight = 22;
     dotRadius = "0px";
-    dotBg = "var(--foreground)";
+    dotBg = "rgba(28, 26, 23, 1)";
     ringWidth = 0;
     ringHeight = 0;
     ringBorder = "none";
@@ -177,7 +177,7 @@ export default function InkCursor() {
                     cy={40}
                     r={3}
                     fill="var(--primary)"
-                    initial={{ cx: 40, cy: 40, opacity: 0.9 }}
+                    initial={{ cx: 40, cy: 40, r: 3, opacity: 0.9 }}
                     animate={{ cx: targetX, cy: targetY, r: 1, opacity: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                   />

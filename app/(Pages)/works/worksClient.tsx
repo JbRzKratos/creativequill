@@ -19,7 +19,7 @@ export interface ProjectItem {
 }
 
 function TiltImage({ src, alt }: { src: string; alt: string }) {
-  const { props, glareRef, isMobile } = useCardTilt();
+  const { props, glareRef, isHovered, isMobile } = useCardTilt();
   return (
     <div
       {...props}
@@ -28,11 +28,22 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         borderRadius: "var(--radius-lg)",
         overflow: "hidden",
         aspectRatio: "16/10",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+        boxShadow: "0 10px 30px rgba(28, 26, 23, 0.06)",
         cursor: "pointer",
       }}
     >
-      <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+          filter: isHovered ? "grayscale(0%)" : "grayscale(100%)",
+          transition: "filter 600ms ease",
+        }}
+      />
       {/* Glare element — driven directly by DOM ref, zero re-renders */}
       {!isMobile && (
         <div
@@ -60,25 +71,49 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
     target: containerRef,
   });
 
-  const xTranslation = useTransform(scrollYProgress, [0, 1], ["0vw", "-200vw"]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const categories = ["All", ...Array.from(new Set(projects.map(p => p.label)))];
+  
+  const filteredProjects = selectedCategory === "All"
+    ? projects
+    : projects.filter(p => p.label === selectedCategory);
+
+  const xTranslation = useTransform(scrollYProgress, [0, 1], ["0vw", `-${filteredProjects.length * 100}vw`]);
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
-    return scrollYProgress.onChange((latest) => {
-      if (latest < 0.35) {
-        setActiveIdx(0);
-      } else if (latest < 0.7) {
-        setActiveIdx(1);
-      } else {
-        setActiveIdx(2);
-      }
+    return scrollYProgress.on("change", (latest) => {
+      const step = 1 / (filteredProjects.length + 1);
+      const idx = Math.min(
+        filteredProjects.length,
+        Math.floor(latest / step)
+      );
+      setActiveIdx(idx);
     });
-  }, [scrollYProgress]);
+  }, [scrollYProgress, filteredProjects.length]);
 
   return (
     <div>
+      {/* Category Tabs Filter */}
+      <div style={{ maxWidth: "72rem", margin: "0 auto", padding: "1.5rem 1.5rem 0.5rem" }}>
+        <div className="cq-tabs-list">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`cq-tabs-trigger ${selectedCategory === cat ? "active" : ""}`}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setActiveIdx(0);
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Desktop Sticky Horizontal Scroll */}
-      <div className="hidden lg:block" ref={containerRef} style={{ height: "300vh", position: "relative" }}>
+      <div key={selectedCategory} className="hidden lg:block" ref={containerRef} style={{ height: `${(filteredProjects.length + 1) * 100}vh`, position: "relative" }}>
         <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
           
           {/* Section Progress Bar */}
@@ -100,7 +135,7 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
           <motion.div
             style={{
               display: "flex",
-              width: "300vw",
+              width: `${(filteredProjects.length + 1) * 100}vw`,
               height: "100%",
               x: xTranslation,
             }}
@@ -146,8 +181,8 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
               </div>
             </div>
 
-            {/* Slides 2 & 3: Case Studies */}
-            {projects.map((project) => (
+            {/* Slides: Case Studies */}
+            {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 style={{
@@ -221,7 +256,7 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
 
           {/* Dots Indicator at bottom center */}
           <div style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "0.75rem", zIndex: 10 }}>
-            {Array.from({ length: 3 }).map((_, idx) => (
+            {Array.from({ length: filteredProjects.length + 1 }).map((_, idx) => (
               <div
                 key={idx}
                 style={{
@@ -283,7 +318,7 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
             </p>
           </div>
 
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <div key={project.id} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               <TiltImage src={project.img} alt={project.title} />
               <div>
@@ -327,6 +362,40 @@ export function HorizontalScrollCaseStudies({ projects }: { projects: ProjectIte
         @keyframes cq-bounce {
           0%, 100% { transform: translateX(0); }
           50% { transform: translateX(4px); }
+        }
+        .cq-tabs-list {
+          display: flex;
+          overflow-x: auto;
+          white-space: nowrap;
+          padding-bottom: 0.5rem;
+          gap: 0.5rem;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          border-bottom: 1px solid var(--cq-cream-dark);
+          margin-top: 1rem;
+        }
+        .cq-tabs-list::-webkit-scrollbar {
+          display: none;
+        }
+        .cq-tabs-trigger {
+          flex-shrink: 0;
+          background: transparent;
+          border: none;
+          color: var(--cq-ink-muted);
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          padding: 0.5rem 1rem;
+          border-radius: var(--radius-sm);
+          cursor: pointer;
+          transition: color 0.2s, background-color 0.2s;
+          min-height: 44px;
+        }
+        .cq-tabs-trigger.active {
+          color: var(--cq-teal);
+          background: rgba(13, 148, 136, 0.1);
         }
       `}</style>
     </div>

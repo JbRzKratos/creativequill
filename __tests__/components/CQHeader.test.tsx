@@ -152,7 +152,7 @@ describe("CQHeader", () => {
     mockPathname.mockReturnValue("/services");
     render(<CQHeader />);
 
-    const serviceLinks = screen.getAllByRole("link", { name: "Services" });
+    const serviceLinks = screen.getAllByRole("link", { name: "Services", hidden: true });
     const hasActive = serviceLinks.some((el) => el.classList.contains("active"));
     expect(hasActive).toBe(true);
   });

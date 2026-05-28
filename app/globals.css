@@ -8,6 +8,9 @@
     --font-heading: var(--font-sans);
     --font-sans: var(--font-sans);
     --font-serif: var(--font-serif);
+    --font-display: var(--font-display);
+    --font-body: var(--font-body);
+
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,104 +42,309 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+
+    --color-cq-cream: var(--cq-cream);
+    --color-cq-cream-mid: var(--cq-cream-mid);
+    --color-cq-cream-dark: var(--cq-cream-dark);
+    --color-cq-beige: var(--cq-beige);
+    --color-cq-ink: var(--cq-ink);
+    --color-cq-ink-mid: var(--cq-ink-mid);
+    --color-cq-ink-muted: var(--cq-ink-muted);
+    --color-cq-ink-faint: var(--cq-ink-faint);
+    --color-cq-night: var(--cq-night);
+    --color-cq-night-mid: var(--cq-night-mid);
+    --color-cq-night-border: var(--cq-night-border);
+    --color-cq-teal: var(--cq-teal);
+    --color-cq-teal-hover: var(--cq-teal-hover);
+    --color-cq-teal-dark: var(--cq-teal-dark);
+    --color-cq-teal-subtle: var(--cq-teal-subtle);
+
+    --tracking-tighter: var(--tracking-tighter);
+    --tracking-tight: var(--tracking-tight);
+    --tracking-normal: var(--tracking-normal);
+    --tracking-wide: var(--tracking-wide);
+    --tracking-wider: var(--tracking-wider);
+    --tracking-widest: var(--tracking-widest);
+
+    --leading-display: var(--leading-display);
+    --leading-heading: var(--leading-heading);
+    --leading-body: var(--leading-body);
+    --leading-tight: var(--leading-tight);
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.72 0.18 190);
-    --primary-foreground: oklch(0.145 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.72 0.18 190);
-    --sidebar-primary-foreground: oklch(0.145 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-}
+  /* ── BRAND COLOR PRIMITIVES ── */
+  --cq-cream:         #FAF8F3;      /* main page background — warm off-white */
+  --cq-cream-mid:     #F2EDE4;      /* section alternate background */
+  --cq-cream-dark:    #E8E2D7;      /* card backgrounds, subtle borders */
+  --cq-beige:         #D4CBBA;      /* strong borders, dividers */
 
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.72 0.18 190);
-    --primary-foreground: oklch(0.145 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.72 0.18 190);
-    --sidebar-primary-foreground: oklch(0.145 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  --cq-ink:           #1C1A17;      /* primary text — warm near-black */
+  --cq-ink-mid:       #3D3A35;      /* secondary text */
+  --cq-ink-muted:     #7A7570;      /* muted/placeholder text */
+  --cq-ink-faint:     #B0AAA2;      /* very muted, captions */
+
+  --cq-night:         #0F0F0D;      /* navbar + stats strip background */
+  --cq-night-mid:     #1A1A17;      /* dark card backgrounds */
+  --cq-night-border:  #2E2E2A;      /* borders on dark surfaces */
+
+  /* TEAL — accent use ONLY. Never as a background fill. */
+  --cq-teal:          #0D9488;      /* primary accent: buttons, icons */
+  --cq-teal-hover:    #0F766E;      /* hover state */
+  --cq-teal-dark:     #134E4A;      /* teal on dark backgrounds */
+  --cq-teal-subtle:   #CCFBF1;      /* very light teal tint for badges only */
+
+  /* ── SEMANTIC TOKENS ── */
+  --color-bg-primary:     var(--cq-cream);
+  --color-bg-secondary:   var(--cq-cream-mid);
+  --color-bg-tertiary:    var(--cq-cream-dark);
+  --color-bg-dark:        var(--cq-night);
+  --color-bg-dark-mid:    var(--cq-night-mid);
+
+  --color-text-primary:   var(--cq-ink);
+  --color-text-secondary: var(--cq-ink-mid);
+  --color-text-muted:     var(--cq-ink-muted);
+  --color-text-faint:     var(--cq-ink-faint);
+  --color-text-inverse:   var(--cq-cream);
+  --color-text-accent:    var(--cq-teal);
+
+  --color-border:         var(--cq-cream-dark);
+  --color-border-mid:     var(--cq-beige);
+  --color-border-dark:    var(--cq-night-border);
+
+  /* ── shadcn REQUIRED TOKENS (tuned for warm cream theme) ── */
+  --background:             #FAF8F3;
+  --foreground:             #1C1A17;
+  --card:                   #F5F0E6;
+  --card-foreground:        #1C1A17;
+  --popover:                #FAF8F3;
+  --popover-foreground:     #1C1A17;
+  --primary:                #0D9488;
+  --primary-foreground:     #ffffff;
+  --secondary:              #F2EDE4;
+  --secondary-foreground:   #1C1A17;
+  --muted:                  #F2EDE4;
+  --muted-foreground:       #7A7570;
+  --accent:                 #E8E2D7;
+  --accent-foreground:      #1C1A17;
+  --destructive:            #dc2626;
+  --destructive-foreground: #ffffff;
+  --border:                 #E8E2D7;
+  --input:                  #E8E2D7;
+  --ring:                   #0D9488;
+  --radius:                 0.375rem;
+
+  /* ── TYPOGRAPHY ── */
+  --font-display:  var(--font-serif);
+  --font-body:     var(--font-sans);
+
+  /* ── LETTER SPACING — fixes the "no letter spacing" complaint ── */
+  --tracking-tighter: -0.04em;   /* large display headlines */
+  --tracking-tight:   -0.02em;   /* section headings */
+  --tracking-normal:  0em;
+  --tracking-wide:    0.06em;    /* label badges, small caps */
+  --tracking-wider:   0.12em;    /* section category labels */
+  --tracking-widest:  0.18em;    /* ticker text */
+
+  /* ── LINE HEIGHTS ── */
+  --leading-display:  1.05;   /* huge hero text */
+  --leading-heading:  1.15;   /* section headings */
+  --leading-body:     1.7;    /* paragraphs */
+  --leading-tight:    1.35;   /* card descriptions */
+
+  /* ── SPACING (tighter than before — fixes empty space complaint) ── */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-5:   1.25rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+
+  /* Section padding — REDUCED from before */
+  --section-py-sm:   var(--space-12);   /* 48px — tight sections */
+  --section-py-md:   var(--space-16);   /* 64px — normal sections */
+  --section-py-lg:   var(--space-20);   /* 80px — featured sections */
+
+  /* ── LAYOUT (tighter container) ── */
+  --max-width-content: 68rem;    /* 1088px — tighter than before (was 75rem) */
+  --max-width-narrow:  52rem;    /* 832px — for text-heavy sections */
+  --header-height:     4rem;
+
+  /* ── RADII ── */
+  --radius-sm:   0.25rem;
+  --radius-md:   0.375rem;
+  --radius-lg:   0.625rem;
+  --radius-xl:   0.875rem;
+  --radius-full: 9999px;
+
+  /* ── SHADOWS — warm tones, NO white shadows ── */
+  --shadow-sm:  0 1px 3px rgba(28, 26, 23, 0.06);
+  --shadow-md:  0 4px 12px rgba(28, 26, 23, 0.08);
+  --shadow-lg:  0 8px 24px rgba(28, 26, 23, 0.10);
+  --shadow-xl:  0 16px 40px rgba(28, 26, 23, 0.12);
+
+  /* ── TRANSITIONS ── */
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+  --transition-slow: 380ms ease;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
     box-sizing: border-box;
+    /* FIX: cursor:pointer on ALL interactive elements */
+    &:is(button, [role="button"], a, input[type="submit"], input[type="button"], label[for], select, option) {
+      cursor: pointer !important;
     }
-  body {
-    @apply bg-background text-foreground;
-    overflow-x: clip;
+    text-shadow: none !important;
+    filter: none;
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Smooth momentum scrolling on iOS */
-    -webkit-overflow-scrolling: touch;
-    }
-  html {
-    @apply font-sans;
-    overflow-x: clip;
-    /* Use dynamic viewport height to fix iOS safari bar issue */
+    /* Prevent dark mode from OS preference */
+    color-scheme: light only;
     min-height: 100dvh;
-    scroll-behavior: smooth;
-    }
+    overflow-x: clip;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: var(--leading-body);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    /* FIX: remove any white text-shadow / drop-shadow */
+    text-shadow: none !important;
+    -webkit-text-stroke: 0;
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ALL headings: Cormorant Garamond with proper letter spacing */
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--color-text-primary);
+    text-shadow: none !important;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-shadow: none !important;
+  }
+
+  h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    text-shadow: none !important;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: var(--leading-body);
+    color: var(--color-text-secondary);
+  }
+
+  em {
+    font-style: italic;
+    font-weight: inherit;
+    color: var(--cq-teal);
+  }
+
+  /* FIX: Universal cursor fix — every button/link gets pointer */
+  button,
+  [role="button"],
+  a,
+  [data-radix-collection-item],
+  [data-state],
+  .cursor-pointer {
+    cursor: pointer !important;
+  }
+
+  /* Exception: allow filter: grayscale on team images */
+  img.grayscale-hover {
+    filter: grayscale(100%) !important;
+    transition: filter var(--transition-slow);
+  }
+  img.grayscale-hover:hover {
+    filter: grayscale(0%) !important;
+  }
+
+  ::selection {
+    background-color: var(--cq-teal);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cq-teal);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer utilities {
+  .font-display        { font-family: var(--font-display); }
+  .font-display-italic { font-family: var(--font-display); font-style: italic; }
+
+  /* Tighter container — fixes empty space complaint */
+  .container-content {
+    max-width: var(--max-width-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  .container-narrow {
+    max-width: var(--max-width-narrow);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  /* Section padding variants — use these, not Tailwind py-24 */
+  .section-sm  { padding-top: var(--section-py-sm);  padding-bottom: var(--section-py-sm); }
+  .section-md  { padding-top: var(--section-py-md);  padding-bottom: var(--section-py-md); }
+  .section-lg  { padding-top: var(--section-py-lg);  padding-bottom: var(--section-py-lg); }
+
+  /* Label style — for section category badges */
+  .label-text {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Text balance */
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
 }
 
 /* ── MOBILE GLOBAL RESETS ──────────────────────────── */

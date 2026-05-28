@@ -91,163 +91,267 @@ export default function ServicesPage() {
   return (
     <>
       <style>{`
-        body { background: var(--muted); }
+        body { background: var(--cq-cream); }
 
         .sp-hero {
-          background: var(--background);
-          padding: 5rem 1.5rem 3.5rem;
-          border-bottom: 1px solid var(--border);
+          background: var(--cq-cream);
+          padding: var(--space-16) var(--space-6) var(--space-10);
+          border-bottom: 1px solid var(--cq-cream-dark);
         }
-        .sp-hero-inner { max-width: 72rem; margin: 0 auto; text-align: center; }
+        .sp-hero-inner { max-width: var(--max-width-narrow); margin: 0 auto; text-align: center; }
         .sp-hero-badge {
           display: inline-flex; align-items: center; gap: 0.5rem;
-          background: color-mix(in oklch, var(--primary) 10%, transparent);
-          color: var(--primary); border-radius: 999px;
-          padding: 0.35rem 1rem;
-          font-size: 0.7rem; font-weight: 600;
-          letter-spacing: 0.1em; text-transform: uppercase;
-          margin-bottom: 1.25rem;
+          background: var(--cq-cream-mid);
+          color: var(--cq-teal); border-radius: var(--radius-full);
+          padding: 0.35rem 0.85rem;
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500;
+          letter-spacing: var(--tracking-wider); text-transform: uppercase;
+          margin-bottom: 1rem;
+          border: 1px solid var(--cq-cream-dark);
         }
         .sp-hero-h1 {
-          font-family: var(--font-serif);
-          font-size: clamp(2rem, 5vw, 3rem);
-          color: var(--foreground); margin: 0 0 1rem; line-height: 1.2;
+          font-family: var(--font-display);
+          font-size: clamp(2.5rem, 6vw, 4rem);
+          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-display);
+          letter-spacing: var(--tracking-tighter);
         }
         .sp-hero-desc {
-          font-size: 0.95rem; color: var(--muted-foreground);
-          max-width: 36rem; margin: 0 auto; line-height: 1.75;
+          font-family: var(--font-body);
+          font-size: 1.0625rem; font-weight: 300; color: var(--cq-ink-mid);
+          max-width: 38rem; margin: 0 auto; line-height: var(--leading-body);
         }
 
-        .sp-grid-section { background: var(--background); padding: 3rem 1.5rem 5rem; }
+        .sp-grid-section { background: var(--cq-cream); padding: var(--space-12) var(--space-6); }
         .sp-grid {
-          max-width: 72rem; margin: 0 auto;
-          display: grid; gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          max-width: var(--max-width-content); margin: 0 auto;
+          display: grid; gap: var(--space-4);
+          grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) {
+          .sp-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+        @media (min-width: 1024px) {
+          .sp-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
         }
         .sp-card {
           display: flex; flex-direction: column;
-          border: 1px solid var(--border);
-          background: var(--card);
+          border: 1px solid var(--cq-cream-dark);
+          background: var(--cq-cream-mid);
           border-radius: var(--radius-lg);
-          padding: 1.5rem;
-          transition: border-color 0.2s, box-shadow 0.2s;
+          padding: var(--space-4);
+          transition: border-color var(--transition-base), box-shadow var(--transition-base);
           text-decoration: none; color: inherit;
         }
+        @media (min-width: 640px) {
+          .sp-card {
+            padding: var(--space-5);
+          }
+        }
         .sp-card:hover {
-          border-color: color-mix(in oklch, var(--primary) 35%, transparent);
-          box-shadow: 0 8px 32px color-mix(in oklch, var(--foreground) 10%, transparent);
+          border-color: var(--cq-beige);
+          box-shadow: var(--shadow-md);
         }
         .sp-card-icon {
-          width: 2.75rem; height: 2.75rem;
-          background: color-mix(in oklch, var(--primary) 10%, transparent);
+          width: 2.5rem; height: 2.5rem;
+          background: var(--cq-cream-dark);
           border-radius: var(--radius-md);
           display: flex; align-items: center; justify-content: center;
-          color: var(--primary); margin-bottom: 1rem; flex-shrink: 0;
+          color: var(--cq-teal); margin-bottom: 1rem; flex-shrink: 0;
         }
         .sp-card-name {
-          font-size: 1rem; font-weight: 600; color: var(--foreground);
+          font-family: var(--font-display);
+          font-size: 1.5rem; font-weight: 500; color: var(--cq-teal);
           margin: 0 0 0.5rem;
-          transition: color 0.2s;
+          letter-spacing: var(--tracking-tight);
+          transition: color var(--transition-fast);
         }
-        .sp-card:hover .sp-card-name { color: var(--primary); }
         .sp-card-desc {
-          font-size: 0.82rem; color: var(--muted-foreground);
-          line-height: 1.7; flex: 1; margin: 0 0 1rem;
+          font-family: var(--font-body);
+          font-size: 0.875rem; font-weight: 300; color: var(--cq-ink-mid);
+          line-height: var(--leading-tight); flex: 1; margin: 0 0 1.25rem;
         }
-        .sp-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+        .sp-card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
         .sp-tag {
-          font-size: 0.65rem; color: var(--muted-foreground);
-          display: flex; align-items: center; gap: 0.3rem;
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500; color: var(--cq-teal);
+          letter-spacing: var(--tracking-wide); text-transform: uppercase;
+          display: flex; align-items: center; gap: 0.35rem;
         }
         .sp-tag::before {
-          content: '✓'; font-size: 0.6rem;
-          color: var(--primary);
+          content: '';
+          display: inline-block;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background-color: var(--cq-teal);
         }
         .sp-card-bottom {
-          display: flex; align-items: center; justify-content: space-between;
-          border-top: 1px solid var(--border); padding-top: 1rem;
-          margin-bottom: 1rem;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.4rem;
+          border-top: 1px solid var(--cq-cream-dark);
+          padding-top: 0.85rem;
+          margin-bottom: 0.5rem;
         }
-        .sp-card-price { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+        @media (min-width: 440px) {
+          .sp-card-bottom {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+        .sp-card-price {
+          font-family: var(--font-display);
+          font-size: 1.25rem;
+          font-weight: 400;
+          color: var(--cq-ink);
+        }
         .sp-card-time {
-          font-size: 0.72rem; color: var(--muted-foreground);
+          font-family: var(--font-body);
+          font-size: 0.75rem; color: var(--cq-ink-muted);
           display: inline-flex; align-items: center; gap: 0.25rem;
         }
         .sp-card-cta {
-          display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-          background: var(--secondary); color: var(--foreground);
-          border-radius: var(--radius-md); padding: 0.6rem;
-          font-size: 0.78rem; font-weight: 500;
-          transition: background 0.2s, color 0.2s;
+          display: inline-flex; align-items: center; gap: 0.35rem;
+          background: transparent !important;
+          color: var(--cq-teal);
+          font-family: var(--font-body);
+          font-size: 0.8125rem; font-weight: 500;
+          letter-spacing: var(--tracking-wide);
+          text-transform: uppercase;
+          padding: 0;
+          margin-top: 0.5rem;
+          transition: color var(--transition-fast);
+        }
+        .sp-card-cta span {
+          display: inline-block;
+          transition: transform var(--transition-fast);
         }
         .sp-card:hover .sp-card-cta {
-          background: var(--primary); color: var(--primary-foreground);
+          color: var(--cq-teal-hover);
+        }
+        .sp-card:hover .sp-card-cta span {
+          transform: translateX(3px);
         }
 
-        .sp-cta-section { background: var(--primary); padding: 4rem 1.5rem; }
+        .sp-cta-section { background: var(--cq-cream); padding: var(--space-12) var(--space-6); }
         .sp-cta-box {
-          max-width: 48rem; margin: 0 auto;
-          border: 2px solid color-mix(in oklch, var(--primary-foreground) 20%, transparent);
+          max-width: var(--max-width-narrow); margin: 0 auto;
+          background: var(--cq-night);
+          border: 1px solid var(--cq-night-border);
           border-radius: var(--radius-xl);
-          padding: 2.5rem;
-          text-align: center;
+          padding: var(--space-8) var(--space-6);
+        }
+        @media (min-width: 768px) {
+          .sp-cta-box {
+            padding: var(--space-12) var(--space-16);
+          }
         }
         .sp-cta-h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.65rem, 3.5vw, 2.25rem);
-          color: var(--primary-foreground); margin: 0 0 0.75rem;
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 5vw, 3rem);
+          color: var(--cq-cream); margin: 0 0 1rem; line-height: var(--leading-heading);
+          letter-spacing: var(--tracking-tight);
         }
         .sp-cta-desc {
-          font-size: 0.875rem;
-          color: color-mix(in oklch, var(--primary-foreground) 70%, transparent);
-          line-height: 1.75; margin: 0 0 1.5rem; max-width: 32rem; margin-left: auto; margin-right: auto;
+          font-family: var(--font-body);
+          font-size: 0.95rem; font-weight: 300;
+          color: var(--cq-ink-faint);
+          line-height: var(--leading-body); margin: 0 auto 1.5rem; max-width: 32rem;
+        }
+        .sp-cta-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          align-items: center;
+          width: 100%;
+        }
+        @media (min-width: 640px) {
+          .sp-cta-actions {
+            flex-direction: row;
+            justify-content: center;
+            gap: 1rem;
+            width: auto;
+          }
+        }
+        .sp-cta-actions .btn-light,
+        .sp-cta-actions .btn-ghost {
+          width: 100%;
+          text-align: center;
+          height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        @media (min-width: 640px) {
+          .sp-cta-actions .btn-light,
+          .sp-cta-actions .btn-ghost {
+            width: auto;
+          }
         }
         .sp-cta-checks {
           display: flex; flex-wrap: wrap; justify-content: center;
-          gap: 1rem 2rem; margin-bottom: 2rem;
+          gap: 1rem; margin-bottom: 2rem;
         }
         .sp-cta-check {
           display: flex; align-items: center; gap: 0.4rem;
           font-size: 0.78rem;
-          color: color-mix(in oklch, var(--primary-foreground) 80%, transparent);
+          background: var(--cq-night-mid);
+          color: var(--cq-cream);
+          padding: 0.35rem 0.85rem;
+          border-radius: var(--radius-full);
+          border: 1px solid var(--cq-night-border);
         }
-        .sp-cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        .sp-cta-check svg {
+          color: var(--cq-teal);
+        }
+        
         .btn-primary {
           display: inline-block;
-          background: var(--primary);
-          color: var(--primary-foreground);
-          font-size: 0.7rem; font-weight: 700;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          padding: 1rem 2rem; border-radius: var(--radius-sm);
-          text-decoration: none; transition: opacity 0.2s;
+          background: var(--cq-teal);
+          color: white;
+          font-size: 0.75rem; font-weight: 500;
+          letter-spacing: var(--tracking-wide); text-transform: uppercase;
+          padding: 0.75rem 1.5rem; border-radius: var(--radius-sm);
+          text-decoration: none; transition: background var(--transition-fast);
         }
-        .btn-primary:hover { opacity: 0.88; }
+        .btn-primary:hover { background: var(--cq-teal-hover); }
+        
         .btn-light {
           display: inline-block;
-          background: var(--primary-foreground); color: var(--primary);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 1rem 2rem;
+          background: var(--cq-teal); color: white;
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
-          transition: opacity 0.2s;
+          transition: background var(--transition-fast);
         }
-        .btn-light:hover { opacity: 0.88; }
+        .btn-light:hover { background: var(--cq-teal-hover); }
+        
         .btn-ghost {
           display: inline-block;
-          background: transparent; color: var(--primary-foreground);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 1rem 2rem;
+          background: transparent; color: var(--cq-cream);
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
-          border: 1px solid color-mix(in oklch, var(--primary-foreground) 45%, transparent);
-          transition: background 0.2s;
+          border: 1px solid var(--cq-night-border);
+          transition: border-color var(--transition-fast), background var(--transition-fast);
         }
         .btn-ghost:hover {
-          background: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
+          border-color: var(--cq-cream);
+          background: rgba(255, 255, 255, 0.05);
         }
+        
         .sp-not-sure {
           text-align: center; padding: 1.5rem 0 0;
-          font-size: 0.875rem; color: var(--muted-foreground);
+          font-size: 0.875rem; color: var(--cq-ink-muted);
         }
-        .sp-not-sure a { color: var(--foreground); font-weight: 500; }
+        .sp-not-sure a { color: var(--cq-ink); font-weight: 500; }
         .sp-not-sure a:hover { text-decoration: underline; }
       `}</style>
 

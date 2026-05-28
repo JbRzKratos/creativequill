@@ -25,21 +25,50 @@ export function PullQuote() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.6 }}
       transition={{ duration: 0.65, ease: "easeOut" }}
+      className="cq-pullquote-container"
       style={{
         position: "relative",
-        padding: "3rem 1.5rem 3rem 2.5rem",
         borderLeft: "4px solid var(--primary)",
         maxWidth: "52rem",
-        margin: "4rem auto",
+        margin: "2rem auto",
       }}
     >
+      <style>{`
+        .cq-pullquote-container {
+          padding: 2rem 1rem 2rem 2rem;
+          margin: 2rem auto;
+        }
+        .cq-pullquote-mark {
+          font-size: 3.5rem;
+        }
+        .cq-pullquote-text {
+          font-size: 1.35rem;
+        }
+        @media (min-width: 768px) {
+          .cq-pullquote-container {
+            padding: 3rem 1.5rem 3rem 2.5rem;
+            margin: 4rem auto;
+          }
+          .cq-pullquote-mark {
+            font-size: 8rem;
+          }
+          .cq-pullquote-text {
+            font-size: 2rem;
+          }
+        }
+        @media (min-width: 1024px) {
+          .cq-pullquote-text {
+            font-size: 2.5rem;
+          }
+        }
+      `}</style>
       {/* Quotation mark decoration */}
       <span
+        className="cq-pullquote-mark"
         style={{
           position: "absolute",
-          top: "-2.5rem",
+          top: "-2.2rem",
           left: "0.5rem",
-          fontSize: "8rem",
           fontFamily: "var(--font-serif)",
           fontWeight: 700,
           color: "var(--border)",
@@ -51,9 +80,9 @@ export function PullQuote() {
         &ldquo;
       </span>
       <p
+        className="cq-pullquote-text"
         style={{
           fontFamily: "var(--font-serif)",
-          fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
           fontStyle: "italic",
           fontWeight: 600,
           lineHeight: 1.3,
@@ -139,7 +168,7 @@ export function TeamSection({ team }: { team: TeamMember[] }) {
               </div>
 
               {/* Info */}
-              <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="cq-member-info" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
                   <h3
                     style={{
@@ -170,6 +199,7 @@ export function TeamSection({ team }: { team: TeamMember[] }) {
 
                 {/* Favorite Word easter egg */}
                 <div
+                  className="cq-team-egg"
                   style={{
                     opacity: isHovered ? 0.75 : 0,
                     transition: "opacity 0.25s ease",
@@ -191,10 +221,19 @@ export function TeamSection({ team }: { team: TeamMember[] }) {
 
       <style>{`
         .cq-team-grid { grid-template-columns: repeat(4, 1fr) !important; }
+        .cq-member-info { padding: 0.75rem; }
+        .cq-team-egg { display: none; }
+        @media (min-width: 768px) {
+          .cq-member-info { padding: 1.5rem; }
+          .cq-team-egg { display: block; }
+        }
         @media (max-width: 1024px) {
           .cq-team-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 767px) {
+          .cq-team-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 480px) {
           .cq-team-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>

@@ -40,123 +40,189 @@ export default function WorksPage() {
   return (
     <>
       <style>{`
-        body { background: var(--muted); }
+        body { background: var(--cq-cream); }
 
         /* HERO */
         .wk-hero {
-          background: var(--background);
-          padding: 5rem 1.5rem;
-          border-bottom: 1px solid var(--border);
+          background: var(--cq-cream);
+          padding: var(--space-16) var(--space-6);
+          border-bottom: 1px solid var(--cq-cream-dark);
           text-align: center;
         }
-        .wk-hero-inner { max-width: 52rem; margin: 0 auto; }
+        .wk-hero-inner { max-width: var(--max-width-narrow); margin: 0 auto; }
         .wk-hero-badge {
           display: inline-flex; align-items: center; gap: 0.5rem;
-          background: color-mix(in oklch, var(--primary) 10%, transparent);
-          color: var(--primary); border-radius: 999px;
-          padding: 0.35rem 1rem;
-          font-size: 0.68rem; font-weight: 600;
-          letter-spacing: 0.1em; text-transform: uppercase;
-          margin-bottom: 1.25rem;
+          background: var(--cq-cream-mid);
+          color: var(--cq-teal); border-radius: var(--radius-full);
+          padding: 0.35rem 0.85rem;
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500;
+          letter-spacing: var(--tracking-wider); text-transform: uppercase;
+          margin-bottom: 1rem;
+          border: 1px solid var(--cq-cream-dark);
         }
         .wk-hero-h1 {
-          font-family: var(--font-serif);
-          font-size: clamp(2rem, 5vw, 3rem);
-          color: var(--foreground); margin: 0 0 1rem; line-height: 1.2;
+          font-family: var(--font-display);
+          font-size: clamp(2.5rem, 6vw, 4rem);
+          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-display);
+          letter-spacing: var(--tracking-tighter);
         }
         .wk-hero-desc {
-          font-size: 0.95rem; color: var(--muted-foreground);
-          line-height: 1.75; max-width: 36rem; margin: 0 auto;
+          font-family: var(--font-body);
+          font-size: 1.0625rem; font-weight: 300; color: var(--cq-ink-mid);
+          line-height: var(--leading-body); max-width: 36rem; margin: 0 auto;
         }
 
         /* PROCESS TEASER */
         .wk-process {
-          background: var(--muted); padding: 4rem 1.5rem;
-          border-top: 1px solid var(--border);
+          background: var(--cq-cream-mid); padding: var(--space-16) var(--space-6);
+          border-top: 1px solid var(--cq-cream-dark);
+          border-bottom: 1px solid var(--cq-cream-dark);
         }
         .wk-process-inner {
-          max-width: 72rem; margin: 0 auto;
-          display: grid; gap: 3rem;
+          max-width: var(--max-width-content); margin: 0 auto;
+          display: grid; gap: var(--space-8);
           grid-template-columns: 1fr 2fr;
           align-items: start;
         }
         @media (max-width: 800px) { .wk-process-inner { grid-template-columns: 1fr; } }
         .wk-process-h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.65rem, 3.5vw, 2.25rem);
-          color: var(--foreground); margin: 0 0 0.75rem;
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 5vw, 3rem);
+          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-heading);
+          letter-spacing: var(--tracking-tight);
         }
         .wk-process-desc {
-          font-size: 0.875rem; color: var(--muted-foreground);
-          line-height: 1.75; margin: 0 0 1.5rem;
+          font-family: var(--font-body);
+          font-size: 0.95rem; font-weight: 300; color: var(--cq-ink-mid);
+          line-height: var(--leading-body); margin: 0 0 1.5rem;
         }
         .wk-steps {
-          display: grid; gap: 1rem;
-          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          display: grid; gap: var(--space-4);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        @media (min-width: 640px) {
+          .wk-steps {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
+        @media (min-width: 768px) {
+          .wk-steps {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+          }
         }
         .wk-step {
-          background: var(--background); border: 1px solid var(--border);
-          border-radius: var(--radius-md); padding: 1.25rem;
-          transition: border-color 0.2s, box-shadow 0.2s;
+          background: var(--cq-cream); border: 1px solid var(--cq-cream-dark);
+          border-radius: var(--radius-lg); padding: var(--space-4);
+          transition: border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        @media (min-width: 640px) {
+          .wk-step {
+            padding: var(--space-5);
+          }
         }
         .wk-step:hover {
-          border-color: color-mix(in oklch, var(--primary) 30%, transparent);
-          box-shadow: 0 4px 16px color-mix(in oklch, var(--foreground) 6%, transparent);
+          border-color: var(--cq-beige);
+          box-shadow: var(--shadow-md);
         }
         .wk-step-num {
-          font-size: 1.5rem; font-weight: 700;
-          color: color-mix(in oklch, var(--primary) 25%, var(--border));
+          font-family: var(--font-display);
+          font-size: 2rem; font-weight: 400;
+          color: var(--cq-beige);
           line-height: 1; margin-bottom: 0.5rem;
         }
         .wk-step-title {
-          font-size: 0.85rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.3rem;
+          font-family: var(--font-body);
+          font-size: 0.95rem; font-weight: 600; color: var(--cq-ink); margin-bottom: 0.3rem;
         }
         .wk-step-desc {
-          font-size: 0.75rem; color: var(--muted-foreground); line-height: 1.65;
+          font-family: var(--font-body);
+          font-size: 0.8125rem; font-weight: 300; color: var(--cq-ink-muted); line-height: var(--leading-tight);
         }
 
         /* CTA */
-        .wk-cta { background: var(--primary); padding: 4.5rem 1.5rem; text-align: center; }
+        .wk-cta {
+          background: var(--cq-night);
+          padding: var(--space-16) var(--space-6);
+          text-align: center;
+        }
         .wk-cta-h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.75rem, 4vw, 2.5rem);
-          color: var(--primary-foreground); margin: 0 0 0.75rem;
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 5vw, 3rem);
+          color: var(--cq-cream); margin: 0 0 1rem; line-height: var(--leading-heading);
+          letter-spacing: var(--tracking-tight);
         }
         .wk-cta-desc {
-          font-size: 0.9rem;
-          color: color-mix(in oklch, var(--primary-foreground) 70%, transparent);
-          max-width: 28rem; margin: 0 auto 2rem; line-height: 1.75;
+          font-family: var(--font-body);
+          font-size: 0.95rem; font-weight: 300;
+          color: var(--cq-ink-faint);
+          max-width: 32rem; margin: 0 auto 2rem; line-height: var(--leading-body);
         }
-        .wk-cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+        .wk-cta-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75rem;
+          width: 100%;
+        }
+        @media (min-width: 640px) {
+          .wk-cta-actions {
+            flex-direction: row;
+            justify-content: center;
+            gap: 1rem;
+            width: auto;
+          }
+        }
+        .wk-cta-actions .btn-light,
+        .wk-cta-actions .btn-ghost {
+          width: 100%;
+          text-align: center;
+          height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        @media (min-width: 640px) {
+          .wk-cta-actions .btn-light,
+          .wk-cta-actions .btn-ghost {
+            width: auto;
+          }
+        }
+        
         .btn-light {
           display: inline-block;
-          background: var(--primary-foreground); color: var(--primary);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 1rem 2rem;
+          background: var(--cq-teal); color: white;
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
-          transition: opacity 0.2s;
+          transition: background var(--transition-fast);
         }
-        .btn-light:hover { opacity: 0.88; }
+        .btn-light:hover { background: var(--cq-teal-hover); }
+        
         .btn-ghost {
           display: inline-block;
-          background: transparent; color: var(--primary-foreground);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 1rem 2rem;
+          background: transparent; color: var(--cq-cream);
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
-          border: 1px solid color-mix(in oklch, var(--primary-foreground) 35%, transparent);
-          transition: background 0.2s;
+          border: 1px solid var(--cq-night-border);
+          transition: border-color var(--transition-fast), background var(--transition-fast);
         }
         .btn-ghost:hover {
-          background: color-mix(in oklch, var(--primary-foreground) 10%, transparent);
+          border-color: var(--cq-cream);
+          background: rgba(255, 255, 255, 0.05);
         }
+        
         .btn-primary {
-          display: inline-block; background: var(--primary); color: var(--primary-foreground);
-          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-          text-transform: uppercase; padding: 0.9rem 2rem;
+          display: inline-block;
+          background: var(--cq-teal); color: white;
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
-          transition: opacity 0.2s;
+          transition: background var(--transition-fast);
+          height: 44px;
         }
-        .btn-primary:hover { opacity: 0.85; }
+        .btn-primary:hover { background: var(--cq-teal-hover); }
       `}</style>
 
       <CQHeader />

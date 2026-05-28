@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import { useTextScramble } from "@/hooks/useTextScramble";
 import {
-  ProximityGrid,
-  TypewriterTagline,
   StatsStrip,
   ClientMarquee,
   BentoGrid,
@@ -18,330 +16,572 @@ import {
 } from "@/components/effects/HomeComponents";
 
 const pageStyles = `
-  body { background: var(--muted); }
+  body { background: var(--color-bg-primary); }
 
   /* ── HERO ────────────────────────────────── */
   .hero-section {
-    background: var(--background);
-    padding: clamp(2.5rem, 8vw, 5rem) 1.25rem clamp(2rem, 6vw, 4rem);
+    background: var(--color-bg-primary);
+    padding-top: calc(var(--header-height) + var(--space-12));
+    padding-bottom: var(--space-16);
     position: relative;
     overflow: hidden;
   }
   .hero-inner {
-    max-width: 64rem; margin: 0 auto;
-    display: flex; flex-wrap: wrap;
-    align-items: center; gap: 2.5rem;
-    justify-content: center;
+    max-width: var(--max-width-content);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-10);
+    align-items: center;
     position: relative;
     z-index: 2;
+    padding: 0 var(--space-6);
   }
-  .hero-book {
-    position: relative; background: var(--card);
-    padding: 1rem 1rem 3rem;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 20px 60px color-mix(in oklch, var(--foreground) 15%, transparent);
-    transition: box-shadow 0.3s ease;
-    max-width: 300px; width: 100%;
-    flex-shrink: 0;
+  @media (max-width: 1023px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: var(--space-8);
+      padding: 0 var(--space-4);
+    }
   }
-  /* Hide book card on small screens to avoid layout crowding */
-  @media (max-width: 640px) { .hero-book { display: none; } }
-  .hero-book:hover {
-    box-shadow: 0 25px 65px color-mix(in oklch, var(--foreground) 20%, transparent);
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .hero-book-label {
-    text-align: center; font-size: 0.55rem;
-    letter-spacing: 0.3em; color: var(--muted-foreground);
-    margin-bottom: 1.5rem; text-transform: uppercase;
+  @media (max-width: 1023px) {
+    .hero-text {
+      align-items: center;
+    }
   }
-  .hero-book-overlay {
-    position: absolute; top: 50%; left: 0; width: 100%;
-    background: color-mix(in oklch, var(--card) 92%, transparent);
-    padding: 1rem 0; transform: translateY(-50%);
-    text-align: center; backdrop-filter: blur(4px);
-    z-index: 5;
-  }
-  .hero-book-title {
-    font-family: var(--font-serif);
-    font-size: 1.4rem; letter-spacing: 0.2em;
-    color: var(--card-foreground); margin: 0;
-  }
-  .hero-text { flex: 1 1 300px; }
-  .hero-badge {
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.2em; color: var(--foreground);
-    text-transform: uppercase; display: block; margin-bottom: 1rem;
-  }
-  .hero-h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    color: var(--foreground); line-height: 1.15;
-    margin: 0 0 1rem;
-  }
-  .hero-sub {
-    font-family: var(--font-serif);
-    font-size: 1.1rem; color: var(--foreground);
-    line-height: 1.65; margin: 0 0 1rem;
-  }
-  .hero-desc {
-    font-size: 0.875rem; color: var(--muted-foreground);
-    line-height: 1.85; max-width: 28rem; margin: 0 0 1.75rem;
-  }
-  .hero-highlight {
-    font-size: 0.9rem; font-weight: 600;
-    color: var(--foreground); line-height: 1.65;
-    margin: 0 0 1.75rem;
-  }
-  .hero-badges {
-    display: flex; flex-wrap: wrap; gap: 1rem 1.5rem;
-    margin-bottom: 1.75rem;
-  }
-  .hero-badge-item {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.78rem; color: var(--muted-foreground);
-    min-height: 36px;
+  .hero-badge-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-4);
   }
   .hero-badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--primary); flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cq-teal);
   }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
-
-  /* Stroke effect for the word "Stories" */
-  .hero-stroke {
-    -webkit-text-stroke: 1.2px var(--foreground);
-    color: transparent;
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    text-shadow: none !important;
   }
-
-  /* ── WHY US ──────────────────────────────── */
-  .why-section {
-    background: var(--background);
-    padding: 4rem 1.5rem;
-    border-top: 1px solid var(--border);
+  @media (min-width: 768px) {
+    .hero-h1 {
+      font-size: 3rem;
+    }
   }
-  .section-inner { max-width: 72rem; margin: 0 auto; }
-  .section-label {
-    display: flex; align-items: center; gap: 0.75rem;
-    margin-bottom: 1.5rem;
+  @media (min-width: 1024px) {
+    .hero-h1 {
+      font-size: 3.75rem;
+    }
   }
-  .section-label-line {
-    width: 2rem; height: 1px; background: var(--border);
+  @media (min-width: 1280px) {
+    .hero-h1 {
+      font-size: 4.5rem;
+    }
   }
-  .section-label-text {
-    font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted-foreground);
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+    margin-bottom: var(--space-4);
   }
-  .why-header {
-    display: grid; gap: 2rem;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 2.5rem;
+  .hero-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+    max-width: 90%;
+    margin-bottom: var(--space-6);
   }
-  @media (max-width: 700px) { .why-header { grid-template-columns: 1fr; } }
-  .why-h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    color: var(--foreground); line-height: 1.2; margin: 0;
+  @media (min-width: 640px) {
+    .hero-desc {
+      max-width: 80%;
+    }
   }
-  .why-h2-desc {
-    font-size: 0.9rem; color: var(--muted-foreground);
-    line-height: 1.75; margin: 0; align-self: end;
+  @media (min-width: 768px) {
+    .hero-desc {
+      font-size: 1.125rem;
+    }
   }
-
-  /* ── PROCESS ────────────────────────────── */
-  .process-section {
-    background: var(--background);
-    padding: 4rem 1.5rem;
-    border-top: 1px solid var(--border);
+  @media (min-width: 1024px) {
+    .hero-desc {
+      max-width: 38ch;
+    }
   }
-  .process-grid {
-    display: grid; gap: 3rem;
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
+  .hero-features-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: var(--space-8);
   }
-  @media (max-width: 800px) { .process-grid { grid-template-columns: 1fr; } }
-  .process-h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    color: var(--foreground); line-height: 1.2; margin: 0 0 1rem;
+  @media (min-width: 640px) {
+    .hero-features-row {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+    }
   }
-  .process-desc {
-    font-size: 0.875rem; color: var(--muted-foreground);
-    line-height: 1.85; margin: 0 0 2rem;
+  .hero-feature-item {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
-  .process-cta-box {
-    border: 2px solid color-mix(in oklch, var(--primary) 30%, transparent);
-    background: color-mix(in oklch, var(--primary) 6%, var(--background));
-    border-radius: var(--radius-md); padding: 1.5rem;
+  @media (min-width: 768px) {
+    .hero-feature-item {
+      font-size: 0.8rem;
+    }
   }
-  .process-cta-badge {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: color-mix(in oklch, var(--primary) 12%, transparent);
-    color: var(--primary); border-radius: 999px;
-    padding: 0.35rem 0.85rem;
-    font-size: 0.68rem; font-weight: 600; margin-bottom: 0.75rem;
+  .hero-feature-sep {
+    color: var(--cq-beige);
+    display: none;
   }
-  .process-cta-h3 {
-    font-family: var(--font-serif);
-    font-size: 1.15rem; color: var(--foreground);
-    margin: 0 0 1rem;
+  @media (min-width: 640px) {
+    .hero-feature-sep {
+      display: inline;
+    }
   }
-  .process-checks { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
-  .process-check {
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.78rem; color: var(--muted-foreground);
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
   }
-  .process-check-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--primary); flex-shrink: 0;
-  }
-  .process-steps { display: flex; flex-direction: column; gap: 1rem; }
-  .process-step {
-    display: flex; align-items: flex-start; gap: 1rem; position: relative;
-  }
-  .process-step-num {
-    width: 3rem; height: 3rem; border-radius: 50%;
-    background: var(--primary); color: var(--primary-foreground);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; font-weight: 700;
-    flex-shrink: 0; position: relative; z-index: 1;
-  }
-  .process-step-card {
-    flex: 1; border: 2px solid var(--border);
-    background: var(--card); border-radius: var(--radius-md);
-    padding: 1rem 1.25rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .process-step-card:hover {
-      border-color: color-mix(in oklch, var(--primary) 30%, transparent);
-      box-shadow: 0 4px 16px color-mix(in oklch, var(--foreground) 6%, transparent);
+  @media (min-width: 640px) {
+    .hero-actions {
+      flex-direction: row;
+      gap: 1rem;
+      width: auto;
     }
   }
 
-  /* ── REVIEWS ──────────────────────────────── */
-  .reviews-section {
-    background: var(--background);
-    padding: 4rem 1.5rem;
+  /* Book visual column */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  @media (max-width: 1023px) {
+    .hero-visual {
+      display: none;
+    }
+  }
+
+  /* CSS-Only Book Component */
+  .book-container {
+    perspective: 600px;
+    width: 240px;
+    height: 320px;
+  }
+  .book {
+    width: 100%;
+    height: 100%;
+    background: #1B3A35; /* Forest green */
+    border-radius: var(--radius-sm) var(--radius-md) var(--radius-md) var(--radius-sm);
+    box-shadow: var(--shadow-xl);
+    transform: rotateY(-8deg) rotateX(3deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-8);
+    position: relative;
+    border-left: 3px solid rgba(255, 255, 255, 0.15);
+  }
+  .book-spine-line {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .book-title {
+    font-family: var(--font-display);
+    color: var(--cq-cream);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+  .book-author {
+    font-family: var(--font-body);
+    color: var(--cq-cream-dark);
+    font-size: 0.65rem;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* Botanical Sway */
+  .botanical-svg {
+    position: absolute;
+    right: -20px;
+    top: 10%;
+    height: 45%;
+    transform-origin: bottom center;
+    animation: sway 4s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes sway {
+    0% { transform: rotate(-2deg); }
+    100% { transform: rotate(2deg); }
+  }
+
+  /* Section Styles */
+  .why-section, .process-section, .about-section {
+    background: var(--color-bg-primary);
+    padding-top: var(--section-py-md);
+    padding-bottom: var(--section-py-md);
     border-top: 1px solid var(--border);
   }
-  .reviews-grid {
+  .section-inner {
+    max-width: var(--max-width-content);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+  .why-header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
   }
-  .review-card {
-    background: var(--secondary);
+  @media (max-width: 768px) {
+    .why-header {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+  }
+  .why-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-heading);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .why-h2-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+    margin-top: auto;
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-10);
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .process-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .process-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: var(--leading-heading);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+  .process-desc {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+    margin-bottom: var(--space-6);
+  }
+  .process-cta-box {
+    border: 1px solid var(--cq-cream-dark);
+    background: var(--cq-cream-mid);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+  }
+  .process-cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--cq-teal-subtle);
+    color: var(--cq-teal-hover);
+    border-radius: var(--radius-full);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+  .process-cta-h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+  .process-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: var(--space-4);
+  }
+  .process-check {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+  }
+  .process-check-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--cq-teal);
+  }
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  .process-step-num {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--cq-cream-dark);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .process-step-card {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: var(--color-bg-primary);
     border-radius: var(--radius-md);
-    padding: 2rem;
-    transition: box-shadow 0.2s;
+    padding: var(--space-4) var(--space-5);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   }
-  .review-card:hover {
-    box-shadow: 0 8px 32px color-mix(in oklch, var(--foreground) 10%, transparent);
+  .process-step-card:hover {
+    border-color: var(--cq-teal);
+    box-shadow: var(--shadow-sm);
   }
-  .review-stars { font-size: 0.85rem; color: var(--foreground); margin-bottom: 1rem; letter-spacing: 2px; }
-  .review-quote {
-    font-size: 0.83rem; color: var(--muted-foreground);
-    line-height: 1.8; margin-bottom: 1.25rem;
+  .process-step-h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
   }
-  .review-author {
-    font-size: 0.65rem; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--foreground);
+  .process-step-desc {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-tight);
   }
 
-  /* ── NEWSLETTER ──────────────────────────── */
+  /* ── NEWSLETTER (overhauled) ──────────────── */
   .nl-section {
-    background: var(--primary); padding: 4.5rem 1.5rem; text-align: center;
+    background: var(--cq-cream-mid);
+    border: 1px solid var(--cq-cream-dark);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-6);
+    text-align: center;
+    max-width: var(--max-width-narrow);
+    margin: var(--space-16) auto;
+  }
+  .nl-badge-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-2);
+  }
+  .nl-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cq-teal);
   }
   .nl-h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    color: var(--primary-foreground); margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
   }
   .nl-sub {
-    font-family: var(--font-serif); font-style: italic;
-    font-size: 1.05rem;
-    color: color-mix(in oklch, var(--primary-foreground) 75%, transparent);
-    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
   }
   .nl-desc {
-    font-size: 0.78rem;
-    color: color-mix(in oklch, var(--primary-foreground) 55%, transparent);
-    line-height: 1.8; max-width: 28rem; margin: 0 auto 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: var(--leading-body);
+    max-width: 42ch;
+    margin: 0 auto var(--space-6);
   }
   .nl-form {
-    display: flex; max-width: 28rem; margin: 0 auto;
-    border-radius: var(--radius-sm); overflow: hidden;
-    flex-wrap: wrap;
+    display: flex;
+    max-width: 28rem;
+    margin: 0 auto;
+    border: 1px solid var(--cq-beige);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
   }
-  /* Stack form on mobile */
   @media (max-width: 480px) {
-    .nl-form { flex-direction: column; border-radius: var(--radius-md); overflow: visible; }
-    .nl-input { border-radius: var(--radius-sm); width: 100%; font-size: 16px !important; }
-    .nl-btn { border-radius: var(--radius-sm); width: 100%; border-left: none; border-top: 1px solid color-mix(in oklch, var(--primary) 20%, transparent); padding: 1rem; }
+    .nl-form {
+      flex-direction: column;
+      border: none;
+      gap: var(--space-3);
+    }
+    .nl-input {
+      border: 1px solid var(--cq-beige);
+      border-radius: var(--radius-sm);
+    }
+    .nl-btn {
+      border-radius: var(--radius-sm);
+      padding: var(--space-4);
+    }
   }
   .nl-input {
-    flex: 1; background: var(--primary-foreground);
-    color: var(--primary); border: none;
-    padding: 0.85rem 1rem; font-size: 0.875rem; outline: none;
+    flex: 1;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    padding: 0.85rem 1rem;
+    font-size: 0.875rem;
+    border: none;
+    outline: none;
   }
-  .nl-input::placeholder { color: color-mix(in oklch, var(--primary) 55%, transparent); }
   .nl-btn {
-    background: var(--primary-foreground); color: var(--primary);
-    border: none; border-left: 1px solid color-mix(in oklch, var(--primary) 20%, transparent);
+    background: var(--cq-teal);
+    color: #ffffff;
     padding: 0.85rem 1.5rem;
-    font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
-  }
-  .nl-btn:hover { opacity: 0.82; }
-
-  /* ── ABOUT SNIPPET ───────────────────────── */
-  .about-section {
-    background: var(--background); padding: 5rem 1.5rem;
-  }
-  .about-inner {
-    max-width: 52rem; margin: 0 auto;
-    display: flex; flex-wrap: wrap;
-    align-items: center; gap: 2.5rem; justify-content: center;
-  }
-  .about-img-wrap { width: clamp(140px, 18vw, 220px); flex-shrink: 0; }
-  .about-img {
-    width: 100%; height: auto; object-fit: cover;
-    border-radius: var(--radius-md);
-    filter: grayscale(1) contrast(1.1);
-    box-shadow: 0 12px 40px color-mix(in oklch, var(--foreground) 15%, transparent);
-  }
-  .about-text-h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(1.65rem, 3.5vw, 2.25rem);
-    color: var(--foreground); margin: 0 0 1.25rem;
-  }
-  .about-text-p {
-    font-size: 0.875rem; color: var(--muted-foreground);
-    line-height: 1.85; margin: 0 0 2rem;
-  }
-
-  /* ── SHARED BUTTONS ──────────────────────── */
-  .btn-primary {
-    display: inline-block; background: var(--primary); color: var(--primary-foreground);
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; padding: 1rem 2rem;
-    border-radius: var(--radius-sm); border: 1px solid var(--primary);
-    text-decoration: none; text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    border: none;
     transition: opacity 0.2s;
   }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-outline {
-    display: inline-block; background: var(--background); color: var(--primary);
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; padding: 1rem 2rem;
-    border-radius: var(--radius-sm); border: 1px solid var(--primary);
-    text-decoration: none; text-align: center;
-    transition: background 0.2s;
+  .nl-btn:hover {
+    opacity: 0.88;
   }
-  .btn-outline:hover { background: var(--secondary); }
+
+  /* ── ABOUT SNIPPET ───────────────────────── */
+  .about-inner {
+    max-width: var(--max-width-narrow);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-6);
+  }
+  @media (min-width: 640px) {
+    .about-inner {
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+      gap: var(--space-8);
+    }
+  }
+  .about-img-wrap {
+    width: 200px;
+    flex-shrink: 0;
+  }
+  .about-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    filter: grayscale(100%);
+    transition: filter 600ms ease;
+    box-shadow: var(--shadow-md);
+  }
+  .about-img:hover {
+    filter: grayscale(0%);
+  }
+  .about-text-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+  .about-text-p {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: var(--leading-body);
+    margin-bottom: var(--space-6);
+  }
+
+  /* ── BUTTONS ────────────────────────────── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cq-teal);
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: opacity 0.2s;
+    border: none;
+  }
+  .btn-primary:hover {
+    opacity: 0.88;
+  }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--color-text-primary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--cq-beige);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover {
+    border-color: var(--color-text-primary);
+  }
 `;
 
 function ScrambleText({ text }: { text: string }) {
@@ -349,21 +589,21 @@ function ScrambleText({ text }: { text: string }) {
   return (
     <>
       {chars.map((charObj, idx) => {
-        let color = "var(--foreground)";
-        if (charObj.status === "resolving") color = "var(--primary)";
-        if (charObj.status === "scrambled") color = "var(--muted-foreground)";
+        let color = "var(--color-text-primary)";
+        if (charObj.status === "resolving") color = "var(--cq-teal)";
+        if (charObj.status === "scrambled") color = "var(--cq-ink-muted)";
 
-        // Outlined word "Stories" (index 5 to 11 in "Real Stories.")
         const isStoriesWord = text.includes("Stories") && idx >= 5 && idx <= 11;
+        const isImpactWord = text.includes("Impact") && idx >= 11 && idx <= 16;
 
-        if (isStoriesWord) {
+        if (isStoriesWord || isImpactWord) {
           return (
             <span
               key={idx}
-              className="hero-stroke"
               style={{
-                color: charObj.status === "resolved" ? "transparent" : color,
+                color: charObj.status === "resolved" ? "var(--cq-teal)" : color,
                 display: "inline-block",
+                fontStyle: charObj.status === "resolved" ? "italic" : "normal",
               }}
             >
               {charObj.char}
@@ -381,57 +621,6 @@ function ScrambleText({ text }: { text: string }) {
   );
 }
 
-function FloatingQuill() {
-  const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 800], [0, 180]);
-
-  return (
-    <motion.div
-      style={{
-        position: "absolute",
-        right: "3rem",
-        top: "35%",
-        y: yParallax,
-        pointerEvents: "none",
-        zIndex: 1,
-      }}
-      className="hidden lg:block"
-    >
-      <motion.svg
-        width="140"
-        height="200"
-        viewBox="0 0 100 150"
-        animate={{
-          y: [-8, 8],
-          rotate: [-2, 3],
-        }}
-        transition={{
-          repeat: Infinity,
-          repeatType: "reverse",
-          duration: 3.5,
-          ease: "easeInOut",
-        }}
-        style={{ opacity: 0.16, fill: "none", stroke: "var(--foreground)" }}
-      >
-        <path
-          d="M 50,140 Q 48,90 35,40 Q 30,20 40,10 Q 52,5 50,30 Q 48,55 50,80 Q 52,110 50,140"
-          strokeWidth="2"
-        />
-        <path d="M 45,95 Q 35,90 28,95" strokeWidth="1" />
-        <path d="M 46,80 Q 33,72 26,75" strokeWidth="1" />
-        <path d="M 47,65 Q 32,54 24,55" strokeWidth="1" />
-        <path d="M 48,50 Q 33,38 27,35" strokeWidth="1" />
-        <path d="M 49,35 Q 36,25 32,18" strokeWidth="1" />
-        <path d="M 49,95 Q 58,92 65,97" strokeWidth="1" />
-        <path d="M 48,80 Q 60,76 68,81" strokeWidth="1" />
-        <path d="M 47,65 Q 61,59 70,62" strokeWidth="1" />
-        <path d="M 47,50 Q 60,42 68,43" strokeWidth="1" />
-        <path d="M 48,35 Q 58,28 64,26" strokeWidth="1" />
-      </motion.svg>
-    </motion.div>
-  );
-}
-
 const processSteps = [
   { num: "1", title: "Voice Audit", desc: "Before we write anything, we study your existing content, competitors, and audience tone. So our first draft already sounds like you, not like us." },
   { num: "2", title: "Connect", desc: "Discover your story through our contact form, email, or phone for an initial discovery call. We'll explore your brand narrative, business objectives, and audience challenges." },
@@ -441,16 +630,11 @@ const processSteps = [
   { num: "6", title: "Refine", desc: "Your satisfaction drives our process. We offer multiple revision rounds to fine-tune content until it perfectly captures your vision and exceeds your expectations." },
 ];
 
-const reviews = [
-  { quote: "Creative Quill took my rough outline and transformed it into a breathtaking romance novel. Their ability to capture my intended voice while elevating the prose was truly remarkable. Highly recommended.", author: "Sarah M." },
-  { quote: "The structured development process gave me so much peace of mind. They hit every deadline and the character arcs were deeper than I ever imagined. My thriller is now ready for publishing.", author: "David L." },
-  { quote: "Exceptional editing and story planning. I came to them stuck on a major plot hole in my fantasy series, and their consultation services got me back on track instantly. Worth every penny.", author: "Elena R." },
-];
-
 export default function HomePage() {
   const [nlEmail, setNlEmail] = useState("");
   const [nlSent, setNlSent] = useState(false);
   const [hoverCTA, setHoverCTA] = useState(false);
+  const [openStepIdx, setOpenStepIdx] = useState<number | null>(0);
 
   return (
     <>
@@ -460,56 +644,42 @@ export default function HomePage() {
       <main>
         {/* ── HERO ─────────────────────────────── */}
         <section className="hero-section">
-          <FloatingQuill />
-
           <div className="hero-inner">
-            {/* Proximity dot background book card */}
-            <div
-              className="hero-book"
-              style={{
-                height: "380px",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                position: "relative",
-              }}
-              data-cursor="card"
-            >
-              <p className="hero-book-label">Creative Quill</p>
-              <div style={{ flex: 1, position: "relative" }}>
-                <ProximityGrid />
-                <div className="hero-book-overlay">
-                  <h2 className="hero-book-title">THE MANUSCRIPT</h2>
-                </div>
-              </div>
-            </div>
-
-            {/* Text */}
+            {/* Left Content Column */}
             <div className="hero-text">
-              <span className="hero-badge" data-cursor="text">Featured Service</span>
+              <div className="hero-badge-container">
+                <span className="hero-badge-dot" />
+                <span className="label-text">A CREATIVE CONTENT WRITING AGENCY</span>
+              </div>
               <h1 className="hero-h1">
                 <ScrambleText text="Human Strategy." /><br />
                 <ScrambleText text="Real Stories." /><br />
-                <ScrambleText text="Not AI Filler." />
+                <ScrambleText text="Measurable Impact." />
               </h1>
               <p className="hero-sub" data-cursor="text">
-                <TypewriterTagline />
+                WORDS THAT SATISFY. CONTENT THAT CONVERTS.
               </p>
               <p className="hero-desc" data-cursor="text">
-                The internet is drowning in AI-generated content that says nothing.
-                Creative Quill crafts content with genuine voice, original insight,
-                and strategy — the kind that builds audiences, not just pageviews.
+                We craft powerful content that builds trust, drives engagement,
+                and delivers real business results.
               </p>
-              <p className="hero-highlight" data-cursor="text">
-                Because when your content feels authentic, your business does too.
-              </p>
-              <div className="hero-badges">
-                {["24h Response Time", "Free Consultation", "Industry Expert Writers"].map((b) => (
-                  <span key={b} className="hero-badge-item" data-cursor="text">
-                    <span className="hero-badge-dot" /> {b}
-                  </span>
-                ))}
+
+              {/* Feature icons row */}
+              <div className="hero-features-row">
+                <div className="hero-feature-item">
+                  <span>Fast &amp; Reliable</span>
+                </div>
+                <span className="hero-feature-sep">|</span>
+                <div className="hero-feature-item">
+                  <span>Strategy &amp; Insight</span>
+                </div>
+                <span className="hero-feature-sep">|</span>
+                <div className="hero-feature-item">
+                  <span>Expert Writers</span>
+                </div>
               </div>
+
+              {/* Action buttons */}
               <div className="hero-actions">
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <Link
@@ -519,12 +689,12 @@ export default function HomePage() {
                     onMouseLeave={() => setHoverCTA(false)}
                     data-cursor="button"
                   >
-                    Start Your Journey
+                    START YOUR PROJECT &rarr;
                   </Link>
                   <svg style={{ position: "absolute", bottom: -8, left: 0, width: "100%", height: 12, pointerEvents: "none" }}>
                     <motion.path
                       d="M 5,6 Q 50,14 140,6"
-                      stroke="var(--primary)"
+                      stroke="var(--cq-teal)"
                       strokeWidth={2}
                       fill="none"
                       initial={{ pathLength: 0 }}
@@ -533,14 +703,60 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <Link href="/works" className="btn-outline" data-cursor="button">Browse Our Works</Link>
+                <Link href="/works" className="btn-outline" data-cursor="button">EXPLORE OUR WORK &rarr;</Link>
               </div>
+            </div>
+
+            {/* Right Visual Column */}
+            <div className="hero-visual">
+              {/* CSS-only Book Cover */}
+              <div className="book-container">
+                <div className="book">
+                  <div className="book-spine-line" />
+                  <p className="hero-book-label" style={{ color: "var(--cq-cream-dark)", opacity: 0.8, fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase" }}>Creative Quill</p>
+                  <div>
+                    <h2 className="book-title">THE MANUSCRIPT</h2>
+                    {/* Gold feather SVG */}
+                    <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", color: "#C4A882" }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+                        <line x1="16" y1="8" x2="2" y2="22" />
+                        <line x1="17.5" y1="15" x2="9" y2="15" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="book-author">Est. 2024</p>
+                </div>
+              </div>
+
+              {/* Dried botanical branch SVG illustration */}
+              <svg
+                className="botanical-svg"
+                width="80"
+                height="180"
+                viewBox="0 0 100 220"
+                fill="none"
+                stroke="#C4A882"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+              >
+                {/* Stem */}
+                <path d="M 50,210 Q 48,110 52,10" />
+                {/* Leaves */}
+                <path d="M 50,180 Q 25,160 15,165 Q 32,150 50,158" />
+                <path d="M 50,158 Q 75,138 85,143 Q 68,128 50,136" />
+                <path d="M 50,136 Q 28,116 18,121 Q 33,106 50,114" />
+                <path d="M 50,114 Q 72,94 82,99 Q 65,84 50,92" />
+                <path d="M 50,92 Q 30,72 20,77 Q 35,62 50,70" />
+                <path d="M 50,70 Q 70,50 80,55 Q 63,40 50,48" />
+                <path d="M 50,48 Q 32,28 24,33 Q 38,18 50,26" />
+              </svg>
             </div>
           </div>
         </section>
 
         {/* Stats strip & logo ticker */}
-        <section style={{ background: "var(--background)" }}>
+        <section style={{ background: "var(--color-bg-primary)" }}>
           <StatsStrip />
           <ClientMarquee />
         </section>
@@ -565,7 +781,7 @@ export default function HomePage() {
         </section>
 
         {/* ── AI VS HUMAN COMPARISON ──────────── */}
-        <section style={{ background: "var(--background)", padding: "2rem 1.5rem" }}>
+        <section style={{ background: "var(--color-bg-primary)", padding: "2rem 1.5rem" }}>
           <div className="section-inner">
             <AiVsHuman />
           </div>
@@ -605,47 +821,105 @@ export default function HomePage() {
               </div>
 
               {/* Steps */}
-              <div className="process-steps">
-                {processSteps.map((step) => (
-                  <div key={step.num} className="process-step">
-                    <div className="process-step-num">{step.num}</div>
-                    <div className="process-step-card" data-cursor="card">
-                      <h3 className="process-step-h3">{step.title}</h3>
-                      <p className="process-step-desc">{step.desc}</p>
+              <div className="w-full">
+                {/* Desktop Version */}
+                <div className="hidden md:flex flex-col gap-4">
+                  {processSteps.map((step) => (
+                    <div key={step.num} className="process-step">
+                      <div className="process-step-num">{step.num}</div>
+                      <div className="process-step-card" data-cursor="card">
+                        <h3 className="process-step-h3">{step.title}</h3>
+                        <p className="process-step-desc">{step.desc}</p>
+                      </div>
                     </div>
+                  ))}
+                </div>
+
+                {/* Mobile Version (Accordion) */}
+                <div className="block md:hidden">
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    {processSteps.map((step, i) => {
+                      const isStepOpen = openStepIdx === i;
+                      return (
+                        <div
+                          key={step.num}
+                          style={{
+                            border: "1px solid var(--border)",
+                            borderRadius: "var(--radius-md)",
+                            background: "var(--color-bg-primary)",
+                            overflow: "hidden",
+                          }}
+                        >
+                          <button
+                            onClick={() => setOpenStepIdx(isStepOpen ? null : i)}
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              padding: "1rem 1.25rem",
+                              border: "none",
+                              background: isStepOpen ? "var(--cq-cream-mid)" : "transparent",
+                              textAlign: "left",
+                              cursor: "pointer",
+                              transition: "background 0.2s",
+                              borderLeft: isStepOpen ? "4px solid var(--cq-teal)" : "none",
+                            }}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                              <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cq-teal)" }}>
+                                0{step.num}
+                              </span>
+                              <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                                {step.title}
+                              </span>
+                            </div>
+                            <span style={{ fontSize: "0.75rem", transition: "transform 0.2s", transform: isStepOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
+                              ▼
+                            </span>
+                          </button>
+                          
+                          <AnimatePresence initial={false}>
+                            {isStepOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                style={{ overflow: "hidden" }}
+                              >
+                                <div style={{ padding: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.85rem", color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
+                                  {step.desc}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* ── FREE AUDIT CARD ─────────────────── */}
-        <section style={{ background: "var(--background)", padding: "1rem 1.5rem" }}>
+        <section style={{ background: "var(--color-bg-primary)", padding: "1rem 1.5rem" }}>
           <div className="section-inner">
             <ContentAuditCard />
           </div>
         </section>
 
-        {/* ── REVIEWS & MARQUEE ───────────────── */}
-        <section className="reviews-section">
-          <div className="section-inner">
-            <div className="reviews-grid">
-              {reviews.map(({ quote, author }) => (
-                <div key={author} className="review-card" data-cursor="card">
-                  <div className="review-stars">★★★★★</div>
-                  <p className="review-quote">&ldquo;{quote}&rdquo;</p>
-                  <p className="review-author">— {author}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
+        {/* ── TESTIMONIALS (Marquee Only) ──────── */}
         <SocialProofMarquee />
 
         {/* ── NEWSLETTER ──────────────────────── */}
         <section className="nl-section">
+          <div className="nl-badge-container">
+            <span className="nl-badge-dot" />
+            <span className="label-text">Newsletter</span>
+          </div>
           <h2 className="nl-h2" data-cursor="text">Join Our Network!</h2>
           <p className="nl-sub" data-cursor="text">And Gain Exclusive Access to Writing Tips &amp; Updates!</p>
           <p className="nl-desc" data-cursor="text">
@@ -653,7 +927,7 @@ export default function HomePage() {
             and the publishing journey directly from our top ghostwriters.
           </p>
           {nlSent ? (
-            <p style={{ color: "var(--primary-foreground)", fontSize: "0.95rem" }}>
+            <p style={{ color: "var(--cq-teal)", fontSize: "0.95rem", fontWeight: 600 }}>
               ✓ You&apos;re subscribed — welcome aboard!
             </p>
           ) : (
@@ -672,27 +946,29 @@ export default function HomePage() {
 
         {/* ── ABOUT SNIPPET ───────────────────── */}
         <section className="about-section">
-          <div className="about-inner">
-            <div className="about-img-wrap">
-              <img
-                src="https://images.unsplash.com/photo-1455390582262-044cdead2708?q=80&w=600&auto=format&fit=crop"
-                alt="Creative Quill Desk"
-                className="about-img"
-              />
-            </div>
-            <div style={{ flex: "1 1 280px" }}>
-              <h2 className="about-text-h2" data-cursor="text">
-                About <em>Creative Quill</em>
-              </h2>
-              <p className="about-text-p" data-cursor="text">
-                It all begins with an idea. Maybe you want to publish your first novel.
-                Maybe you&apos;re ready to share your memoir, or perhaps you have a story
-                that&apos;s waiting to be told. Whatever it is, the way you present your
-                narrative can make all the difference in reaching your readers.
-                We adapt to various tones, ranging from lighthearted fun to deep,
-                emotionally heavy stories, ensuring your vision remains uncompromised.
-              </p>
-              <Link href="/about" className="btn-primary" data-cursor="button">Learn More</Link>
+          <div className="section-inner">
+            <div className="about-inner">
+              <div className="about-img-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1455390582262-044cdead2708?q=80&w=600&auto=format&fit=crop"
+                  alt="Creative Quill Desk"
+                  className="about-img"
+                />
+              </div>
+              <div style={{ flex: "1 1 280px" }}>
+                <h2 className="about-text-h2" data-cursor="text">
+                  About <em>Creative Quill</em>
+                </h2>
+                <p className="about-text-p" data-cursor="text">
+                  It all begins with an idea. Maybe you want to publish your first novel.
+                  Maybe you&apos;re ready to share your memoir, or perhaps you have a story
+                  that&apos;s waiting to be told. Whatever it is, the way you present your
+                  narrative can make all the difference in reaching your readers.
+                  We adapt to various tones, ranging from lighthearted fun to deep,
+                  emotionally heavy stories, ensuring your vision remains uncompromised.
+                </p>
+                <Link href="/about" className="btn-primary" data-cursor="button">Learn More</Link>
+              </div>
             </div>
           </div>
         </section>

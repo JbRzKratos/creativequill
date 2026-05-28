@@ -1,26 +1,46 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/works", label: "Works" },
-  { href: "/contact", label: "Contact" },
+const NAV_LINKS = [
+  { num: "01", label: "Home",     path: "/" },
+  { num: "02", label: "Services", path: "/services" },
+  { num: "03", label: "About",    path: "/about" },
+  { num: "04", label: "Works",    path: "/works" },
+  { num: "05", label: "Contact",  path: "/contact" },
 ];
 
-export default function CQHeader() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const headerRef = useRef<HTMLElement>(null);
+const tickerText = "HUMAN STRATEGY · REAL STORIES · NOT AI FILLER · CONTENT THAT CONVERTS · WORDS THAT SATISFY · 48HR DELIVERY · 100% HUMAN WRITTEN · ";
 
-  // Close on resize to desktop
+export default function CQHeader() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [tickerVisible, setTickerVisible] = useState(true);
+  const pathname = usePathname();
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (pathname !== prevPath) {
+    setPrevPath(pathname);
+    setIsOpen(false);
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 80);
+      setTickerVisible(y < 80);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close menu on resize to desktop width (lg breakpoint: 1024px)
   useEffect(() => {
     const handler = () => {
-      if (window.innerWidth >= 768) setMenuOpen(false);
+      if (window.innerWidth >= 1024) setIsOpen(false);
     };
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
@@ -29,300 +49,504 @@ export default function CQHeader() {
   // Close on Escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") setIsOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when overlay menu is open
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
       document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [menuOpen]);
-
-  // Measure header height and expose as CSS var so the fixed dropdown
-  // always sits flush below the header regardless of device / font scale.
-  useEffect(() => {
-    const updateHeight = () => {
-      if (headerRef.current) {
-        const h = headerRef.current.getBoundingClientRect().height;
-        document.documentElement.style.setProperty("--cq-header-h", `${h}px`);
-      }
     };
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
-
-  // Close menu when route changes by adjusting state during render
-  const [prevPathname, setPrevPathname] = useState(pathname);
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname);
-    setMenuOpen(false);
-  }
+  }, [isOpen]);
 
   return (
     <>
       <style>{`
-        .cq-header {
-          background: #121212;
-          color: #ffffff;
+        /* Keyframes for infinite scrolling ticker */
+        @keyframes tickerScroll {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .cq-header-root {
           position: sticky;
           top: 0;
-          z-index: 1000;
+          z-index: 50;
           width: 100%;
-          border-bottom: 1px solid #222222;
-          overflow: visible !important;
+          background: var(--cq-night);
         }
-        .cq-header-inner {
-          max-width: 72rem;
-          margin: 0 auto;
-          padding: 1.1rem 1.5rem;
+
+        .cq-ticker-container {
+          overflow: hidden;
+          width: 100%;
+          background: var(--cq-night);
+          border-bottom: 0.5px solid var(--cq-night-border);
           display: flex;
-          justify-content: space-between;
           align-items: center;
         }
-        .cq-logo-wrapper {
-          text-decoration: none;
-          display: flex;
-          flex-direction: column;
-          line-height: 1.1;
+
+        .cq-ticker-scrollable {
+          display: inline-flex;
+          white-space: nowrap;
+          animation: tickerScroll 28s linear infinite;
         }
-        .cq-logo-brand {
-          display: flex;
-          align-items: baseline;
-          gap: 0.15rem;
-        }
-        .cq-logo-creative {
-          font-family: var(--font-sans), sans-serif;
-          color: #ffffff;
-          font-size: 0.88rem;
-          font-weight: 800;
-          letter-spacing: 0.12em;
+
+        .cq-ticker-scrollable span {
+          font-family: var(--font-body), sans-serif;
+          font-size: 9.5px;
+          font-weight: 400;
+          letter-spacing: 0.2em;
+          color: #8A857A;
           text-transform: uppercase;
-          transition: color 0.3s ease;
         }
-        .cq-logo-quill {
-          font-family: var(--font-serif), serif;
-          font-style: italic;
-          color: var(--primary);
-          font-size: 1.1rem;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          position: relative;
-          transition: text-shadow 0.3s ease, transform 0.3s ease;
+
+        .cq-nav-container {
+          background: var(--cq-night);
+          border-bottom: 0.5px solid var(--cq-night-border);
+          transition: height 300ms ease, padding 300ms ease;
+          display: flex;
+          align-items: center;
+          width: 100%;
+        }
+
+        .cq-nav-inner {
+          width: 100%;
+          margin: 0 auto;
+          max-width: var(--max-width-content, 68rem);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 16px;
+        }
+        @media (min-width: 768px) {
+          .cq-nav-inner {
+            padding: 0 20px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .cq-nav-inner {
+            padding: 0 32px;
+          }
+        }
+
+        /* Logo styles */
+        .cq-logo-link {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+        }
+        .cq-logo-symbol {
+          font-size: 12px;
+          color: var(--cq-teal);
+          transition: transform 300ms ease;
           display: inline-block;
         }
-        .cq-logo-wrapper:hover .cq-logo-quill {
-          text-shadow: 0 0 8px color-mix(in oklch, var(--primary) 50%, transparent);
-          transform: translateY(-1px) rotate(-2deg);
+        @media (min-width: 1024px) {
+          .cq-logo-symbol {
+            font-size: 14px;
+          }
         }
-        .cq-logo-wrapper:hover .cq-logo-creative {
-          color: var(--primary);
+        .cq-logo-link:hover .cq-logo-symbol {
+          transform: rotate(30deg);
         }
-        .cq-logo-tagline {
-          display: block;
-          font-size: 0.55rem;
-          letter-spacing: 0.16em;
-          font-weight: 500;
+        .cq-logo-stack {
+          display: flex;
+          flex-direction: column;
+          line-height: 1;
+        }
+        .cq-logo-top {
+          font-family: var(--font-body), sans-serif;
+          font-size: 8px;
+          font-weight: 200;
+          letter-spacing: 0.32em;
+          color: #5A564F;
           text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.45);
+        }
+        @media (min-width: 1024px) {
+          .cq-logo-top {
+            font-size: 9px;
+          }
+        }
+        .cq-logo-bottom {
+          font-family: var(--font-display), serif;
+          font-style: italic;
+          font-weight: 300;
+          font-size: 18px;
+          color: var(--cq-cream);
+          line-height: 1.15;
           margin-top: 1px;
-          transition: color 0.3s ease;
         }
-        .cq-logo-wrapper:hover .cq-logo-tagline {
-          color: rgba(255, 255, 255, 0.85);
+        @media (min-width: 1024px) {
+          .cq-logo-bottom {
+            font-size: 21px;
+          }
         }
-        .cq-nav { display: flex; gap: 1.75rem; align-items: center; }
-        .cq-nav-link {
-          position: relative;
-          color: rgba(255, 255, 255, 0.70);
-          text-decoration: none;
-          font-size: 0.68rem;
-          letter-spacing: 0.2em;
-          font-weight: 500;
-          text-transform: uppercase;
-          transition: color 0.2s;
-          padding-bottom: 2px;
-        }
-        .cq-nav-link::after {
-          content: '';
-          position: absolute;
-          bottom: -2px; left: 0;
-          width: 0; height: 1px;
-          background: var(--primary);
-          transition: width 0.25s ease;
-        }
-        .cq-nav-link:hover,
-        .cq-nav-link.active { color: var(--primary); }
-        .cq-nav-link:hover::after,
-        .cq-nav-link.active::after { width: 100%; }
-        .cq-header-actions { display: flex; align-items: center; gap: 1rem; }
-        .cq-btn-talk {
-          background: var(--primary);
-          color: var(--primary-foreground);
-          font-size: 0.68rem;
-          font-weight: 700;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          padding: 0.55rem 1.25rem;
-          border-radius: var(--radius-sm);
-          text-decoration: none;
-          transition: opacity 0.2s;
-          white-space: nowrap;
-        }
-        .cq-btn-talk:hover { opacity: 0.88; }
-        .cq-burger {
-          background: none; border: none;
-          color: #ffffff;
-          cursor: pointer; font-size: 1.2rem;
-          /* Ensure 44×44px touch target */
-          width: 44px; height: 44px;
+
+        /* Desktop Nav Link styles */
+        .cq-desktop-nav {
           display: none;
+        }
+        @media (min-width: 1024px) {
+          .cq-desktop-nav {
+            display: flex;
+            gap: 28px;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+        .cq-nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+          text-decoration: none;
+        }
+        .nav-number {
+          font-family: var(--font-body), sans-serif;
+          font-size: 8.5px;
+          font-weight: 400;
+          letter-spacing: 0.05em;
+          color: #6E6962;
+          transition: color 150ms ease;
+        }
+        .nav-label {
+          font-family: var(--font-body), sans-serif;
+          font-size: 9.5px;
+          font-weight: 400;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #A8A39A;
+          transition: color 150ms ease;
+        }
+        .nav-dot {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: transparent;
+          transition: background 150ms ease;
+        }
+        .cq-nav-item:hover .nav-number,
+        .cq-nav-item.active .nav-number {
+          color: var(--cq-teal);
+        }
+        .cq-nav-item:hover .nav-label,
+        .cq-nav-item.active .nav-label {
+          color: var(--cq-cream);
+        }
+        .cq-nav-item.active .nav-dot {
+          background: var(--cq-teal);
+        }
+
+        /* CTA Button right */
+        .cq-nav-right {
+          display: flex;
+          align-items: center;
+        }
+        .cq-nav-cta {
+          display: none;
+        }
+        @media (min-width: 1024px) {
+          .cq-nav-cta {
+            display: inline-flex;
+            align-items: center;
+            background: var(--cq-teal);
+            color: #ffffff;
+            font-family: var(--font-body), sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 9px 18px;
+            border-radius: 2px;
+            border: none;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 200ms ease;
+            text-decoration: none;
+          }
+          .cq-nav-cta:hover {
+            background: var(--cq-teal-hover);
+          }
+          .cq-nav-cta span {
+            display: inline-block;
+            transition: transform 200ms ease;
+            margin-left: 4px;
+          }
+          .cq-nav-cta:hover span {
+            transform: translateX(4px);
+          }
+        }
+
+        .cq-burger-btn {
+          display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0;
-          border-radius: 4px;
-          transition: background 0.15s;
+          background: none;
+          border: none;
+          cursor: pointer;
+          width: 44px;
+          height: 44px;
+          padding: 0;
+          color: var(--cq-cream);
         }
-        .cq-burger:active { background: rgba(255,255,255,0.08); }
-        .cq-mobile-overlay {
-          display: none;
-          position: fixed; inset: 0;
-          z-index: 998;
-          background: rgba(0,0,0,0.5);
-          backdrop-filter: blur(2px);
+        @media (min-width: 1024px) {
+          .cq-burger-btn {
+            display: none;
+          }
         }
-        .cq-mobile-overlay.open { display: block; }
-        .cq-mobile-nav {
-          max-height: 0; opacity: 0; overflow: hidden;
-          transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
-          background: #121212;
-          border-top: 1px solid #222222;
-          /* Fixed to viewport top so it's always visible regardless of scroll */
-          position: fixed;
-          top: var(--cq-header-h, 56px); /* always flush below the sticky header */
-          left: 0;
-          width: 100%;
-          z-index: 999;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+
+        /* Overlay Link overlay text */
+        .cq-overlay-link-span {
+          font-family: var(--font-display), serif;
+          font-size: clamp(36px, 8vw, 52px);
+          font-weight: 300;
+          color: #A8A39A;
+          line-height: 1;
+          transition: color 200ms;
         }
-        .cq-mobile-nav.open { max-height: 460px; opacity: 1; }
-        .cq-mobile-nav-inner {
-          display: flex; flex-direction: column; align-items: center;
-          padding: 1rem 1.5rem 1.5rem; gap: 0;
+        .cq-overlay-link-item:hover .cq-overlay-link-span,
+        .cq-overlay-link-item.active .cq-overlay-link-span {
+          color: var(--cq-cream);
         }
-        /* Mobile nav links: full-width, 48px tap targets */
-        .cq-mobile-nav-inner .cq-nav-link {
-          width: 100%; text-align: center;
-          padding: 0.85rem 0;
-          min-height: 48px;
-          display: flex; align-items: center; justify-content: center;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
+        .cq-overlay-link-item:hover .cq-overlay-link-span {
+          color: var(--cq-teal);
         }
-        .cq-mobile-divider {
-          width: 100%; border: none;
-          border-top: 1px solid #222222;
-          margin: 0.5rem 0;
-        }
-        .cq-mobile-cta {
-          margin-top: 0.75rem;
-          background: var(--primary);
-          color: var(--primary-foreground);
-          font-size: 0.68rem; font-weight: 700;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          padding: 0.9rem 2.5rem;
-          border-radius: var(--radius-sm);
+
+        /* CTA mobile inside overlay */
+        .cq-mobile-overlay-cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--cq-teal);
+          color: #ffffff;
+          font-family: var(--font-body), sans-serif;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 12px 18px;
+          border-radius: 2px;
+          border: none;
+          white-space: nowrap;
+          cursor: pointer;
+          transition: background 200ms ease;
           text-decoration: none;
-          min-height: 48px;
-          display: flex; align-items: center; justify-content: center;
+          width: 100%;
+          min-height: 44px;
         }
-        @media (max-width: 767px) {
-          .cq-nav, .cq-header-actions { display: none !important; }
-          .cq-burger { display: flex !important; }
-          .cq-header-inner { padding: 0.75rem 1rem; }
+        .cq-mobile-overlay-cta:hover {
+          background: var(--cq-teal-hover);
+        }
+        .cq-mobile-overlay-cta span {
+          display: inline-block;
+          transition: transform 200ms ease;
+          margin-left: 4px;
+        }
+        .cq-mobile-overlay-cta:hover span {
+          transform: translateX(4px);
         }
       `}</style>
 
-      <header className="cq-header" ref={headerRef}>
-        <div className="cq-header-inner">
-          <Link href="/" className="cq-logo-wrapper">
-            <span className="cq-logo-brand">
-              <span className="cq-logo-creative">Creative</span>
-              <span className="cq-logo-quill">Quill</span>
-            </span>
-            <span className="cq-logo-tagline">Content That Connects</span>
-          </Link>
+      <header className="cq-header-root">
+        {/* Layer 1: Accent Line */}
+        <div style={{ height: 2, background: "linear-gradient(90deg, var(--cq-teal), var(--cq-teal-hover))", position: "relative" }} />
 
-          <nav className="cq-nav">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`cq-nav-link${pathname === href ? " active" : ""}`}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+        {/* Layer 2: Ticker Bar */}
+        <AnimatePresence initial={false}>
+          {tickerVisible && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 26, opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="cq-ticker-container"
+            >
+              <div className="cq-ticker-scrollable">
+                <span>{tickerText}</span>
+                <span>{tickerText}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          <div className="cq-header-actions">
-            <Link href="/contact" className="cq-btn-talk">
-              Let&apos;s Talk
-            </Link>
-          </div>
-
-          <button
-            className="cq-burger"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
-          </button>
-        </div>
-
-        {/* Backdrop overlay — tap to close */}
+        {/* Layer 3: Main Nav Bar */}
         <div
-          className={`cq-mobile-overlay${menuOpen ? " open" : ""}`}
-          onClick={() => setMenuOpen(false)}
-          aria-hidden="true"
-        />
-
-        <div className={`cq-mobile-nav${menuOpen ? " open" : ""}`} role="navigation" aria-label="Mobile navigation">
-          <div className="cq-mobile-nav-inner">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`cq-nav-link${pathname === href ? " active" : ""}`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-            <hr className="cq-mobile-divider" />
-            <Link href="/contact" className="cq-mobile-cta" onClick={() => setMenuOpen(false)}>
-              Let&apos;s Talk
+          className="cq-nav-container"
+          style={{
+            height: scrolled ? 52 : 62,
+          }}
+        >
+          <div className="cq-nav-inner">
+            {/* Logo */}
+            <Link href="/" className="cq-logo-link" aria-label="Creative Quill">
+              <span className="cq-logo-symbol">✦</span>
+              <div className="cq-logo-stack">
+                <span className="cq-logo-top">Creative</span>
+                <span className="cq-logo-bottom">Quill</span>
+              </div>
             </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="cq-desktop-nav">
+              {NAV_LINKS.map((link) => {
+                const isActive = pathname === link.path;
+                return (
+                  <Link
+                    href={link.path}
+                    key={link.path}
+                    className={`cq-nav-item${isActive ? " active" : ""}`}
+                    aria-label={link.label}
+                  >
+                    <span className="nav-number">{link.num}</span>
+                    <span className="nav-label">{link.label}</span>
+                    <div className="nav-dot" />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right: CTA & Hamburger */}
+            <div className="cq-nav-right">
+              <Button asChild className="cq-nav-cta">
+                <Link href="/contact">
+                  Let&apos;s Talk <span>&rarr;</span>
+                </Link>
+              </Button>
+
+              <button
+                className="cq-burger-btn"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "flex-end" }}>
+                  <motion.div
+                    animate={isOpen ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    style={{ width: 22, height: 1.5, background: "var(--cq-cream)", transformOrigin: "center" }}
+                  />
+                  <motion.div
+                    animate={isOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    style={{ width: 16, height: 1.5, background: "var(--cq-cream)", transformOrigin: "right" }}
+                  />
+                  <motion.div
+                    animate={isOpen ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    style={{ width: 22, height: 1.5, background: "var(--cq-cream)", transformOrigin: "center" }}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Full-Screen Overlay Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+              animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
+              exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              className="cq-mobile-overlay"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setIsOpen(false);
+                }
+              }}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 49,
+                background: "var(--cq-night)",
+                paddingTop: "calc(var(--header-height, 4rem) + 16px)",
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                paddingBottom: "40px",
+                display: "flex",
+                flexDirection: "column",
+                height: "100dvh",
+                overflowY: "auto",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 0, flex: 1, padding: "20px 0" }}>
+                {NAV_LINKS.map((link, index) => {
+                  const isActive = pathname === link.path;
+                  return (
+                    <Link
+                      href={link.path}
+                      key={link.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`cq-overlay-link-item${isActive ? " active" : ""}`}
+                      aria-label={link.label}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.07, duration: 0.35, ease: "easeOut" }}
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: "12px",
+                          borderBottom: "0.5px solid var(--cq-night-border)",
+                          padding: "14px 0",
+                        }}
+                      >
+                        <span style={{ fontSize: "10px", color: "#6E6962", minWidth: "20px", fontFamily: "var(--font-body), sans-serif" }}>
+                          {link.num}
+                        </span>
+                        <span className="cq-overlay-link-span">
+                          {link.label}
+                        </span>
+                      </motion.div>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div
+                style={{
+                  borderTop: "0.5px solid var(--cq-night-border)",
+                  paddingTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                  alignItems: "center",
+                }}
+              >
+                <Button asChild className="cq-mobile-overlay-cta">
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsOpen(false)}
+                    data-cursor="button"
+                  >
+                    Let&apos;s Talk <span>&rarr;</span>
+                  </Link>
+                </Button>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    color: "#4A4842",
+                    letterSpacing: "0.05em",
+                    fontFamily: "var(--font-body), sans-serif",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  +91 88071 90545
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </>
   );

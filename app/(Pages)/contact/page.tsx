@@ -162,6 +162,7 @@ export default function ContactPage() {
     name: "", email: "", phone: "", service: "", details: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
@@ -174,8 +175,8 @@ export default function ContactPage() {
       if (svcParam) {
         const matched = services.find(
           (s) =>
-            s.toLowerCase() === svcParam.toLowerCase() ||
-            s.toLowerCase().startsWith(svcParam.toLowerCase())
+             s.toLowerCase() === svcParam.toLowerCase() ||
+             s.toLowerCase().startsWith(svcParam.toLowerCase())
         );
         if (matched) {
           const timer = setTimeout(() => {
@@ -189,7 +190,11 @@ export default function ContactPage() {
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1200);
   };
 
   const goToStep = (nextStep: number) => {
@@ -200,61 +205,74 @@ export default function ContactPage() {
   return (
     <>
       <style>{`
-        body { background: var(--muted); }
+        body { background: var(--cq-cream); }
 
         /* HERO */
         .ct-hero {
-          background: var(--background);
-          padding: 5rem 1.5rem 3.5rem;
-          border-bottom: 1px solid var(--border);
+          background: var(--cq-cream);
+          padding: var(--space-16) var(--space-6);
+          border-bottom: 1px solid var(--cq-cream-dark);
           text-align: center;
         }
-        .ct-hero-inner { max-width: 52rem; margin: 0 auto; }
+        .ct-hero-inner { max-width: var(--max-width-narrow); margin: 0 auto; }
         .ct-hero-badge {
           display: inline-flex; align-items: center; gap: 0.5rem;
-          background: color-mix(in oklch, var(--primary) 10%, transparent);
-          color: var(--primary); border-radius: 999px;
-          padding: 0.35rem 1rem;
-          font-size: 0.68rem; font-weight: 600;
-          letter-spacing: 0.1em; text-transform: uppercase;
-          margin-bottom: 1.25rem;
+          background: var(--cq-cream-mid);
+          color: var(--cq-teal); border-radius: var(--radius-full);
+          padding: 0.35rem 0.85rem;
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500;
+          letter-spacing: var(--tracking-wider); text-transform: uppercase;
+          margin-bottom: 1rem;
+          border: 1px solid var(--cq-cream-dark);
         }
         .ct-hero-h1 {
-          font-family: var(--font-serif);
-          font-size: clamp(2rem, 5vw, 3rem);
-          color: var(--foreground); margin: 0 0 1rem; line-height: 1.2;
+          font-family: var(--font-display);
+          font-size: clamp(2.5rem, 6vw, 4rem);
+          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-display);
+          letter-spacing: var(--tracking-tighter);
         }
         .ct-hero-desc {
-          font-size: 0.95rem; color: var(--muted-foreground);
-          line-height: 1.75; max-width: 36rem; margin: 0 auto;
+          font-family: var(--font-body);
+          font-size: 1.0625rem; font-weight: 300; color: var(--cq-ink-mid);
+          line-height: var(--leading-body); max-width: 36rem; margin: 0 auto;
         }
 
         /* MAIN GRID */
         .ct-main {
-          background: var(--background);
-          padding: 4rem 1.5rem 5rem;
+          background: var(--cq-cream);
+          padding: var(--space-12) var(--space-6);
         }
         .ct-main-inner {
-          max-width: 72rem; margin: 0 auto;
-          display: grid; gap: 3rem;
-          grid-template-columns: 5fr 4fr;
-          align-items: start;
+          max-width: var(--max-width-content); margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
         }
-        @media (max-width: 860px) { .ct-main-inner { grid-template-columns: 1fr; } }
+        @media (min-width: 1024px) {
+          .ct-main-inner {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 3rem;
+            align-items: start;
+          }
+        }
 
         /* FORM */
         .ct-form-card {
-          border: 1px solid var(--border);
-          background: var(--card);
+          border: 1px solid var(--cq-cream-dark);
+          background: var(--cq-cream-mid);
           border-radius: var(--radius-lg);
-          padding: 2rem;
+          padding: var(--space-6);
         }
         .ct-form-title {
-          font-family: var(--font-serif);
-          font-size: 1.4rem; color: var(--foreground); margin: 0 0 0.4rem;
+          font-family: var(--font-display);
+          font-size: 1.5rem; color: var(--cq-ink); margin: 0 0 0.5rem;
+          letter-spacing: var(--tracking-tight);
         }
         .ct-form-subtitle {
-          font-size: 0.8rem; color: var(--muted-foreground); margin: 0 0 1.75rem;
+          font-family: var(--font-body);
+          font-size: 0.875rem; color: var(--cq-ink-muted); margin: 0 0 1.75rem;
         }
         .ct-form-grid {
           display: grid; gap: 1rem;
@@ -264,51 +282,67 @@ export default function ContactPage() {
         .ct-form-group { display: flex; flex-direction: column; gap: 0.4rem; }
         .ct-form-group.full { grid-column: 1 / -1; }
         .ct-form-label {
-          font-size: 0.7rem; font-weight: 600;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          color: var(--foreground);
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500;
+          letter-spacing: var(--tracking-wider); text-transform: uppercase;
+          color: var(--cq-ink);
         }
-        .ct-form-label span { color: var(--muted-foreground); font-weight: 400; }
-        .ct-input, .ct-select, .ct-textarea {
-          background: var(--background);
-          border: 1px solid var(--border);
+        .ct-form-label span { color: var(--cq-ink-muted); font-weight: 400; }
+        .ct-input, .ct-select {
+          background: var(--cq-cream);
+          border: 1px solid var(--cq-cream-dark);
           border-radius: var(--radius-sm);
           padding: 0.75rem 1rem;
-          font-size: 0.875rem; color: var(--foreground);
+          font-size: 0.875rem; color: var(--cq-ink);
           outline: none;
-          transition: border-color 0.2s, box-shadow 0.2s;
-          font-family: var(--font-sans);
+          transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+          font-family: var(--font-body);
           width: 100%;
+          min-height: 44px;
+        }
+        .ct-textarea {
+          background: var(--cq-cream);
+          border: 1px solid var(--cq-cream-dark);
+          border-radius: var(--radius-sm);
+          padding: 0.75rem 1rem;
+          font-size: 0.875rem; color: var(--cq-ink);
+          outline: none;
+          transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+          font-family: var(--font-body);
+          width: 100%;
+          min-height: 120px;
+          resize: vertical;
         }
         .ct-input::placeholder, .ct-textarea::placeholder {
-          color: var(--muted-foreground);
+          color: var(--cq-ink-muted);
         }
         .ct-input:focus, .ct-select:focus, .ct-textarea:focus {
-          border-color: var(--primary);
-          box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 15%, transparent);
+          border-color: var(--cq-teal);
+          box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
         }
         .ct-select { appearance: none; cursor: pointer; }
-        .ct-textarea { min-height: 120px; resize: vertical; }
         .ct-form-footer {
           margin-top: 1.5rem; display: flex;
           align-items: center; justify-content: space-between;
           flex-wrap: wrap; gap: 1rem;
         }
         .ct-form-note {
-          font-size: 0.72rem; color: var(--muted-foreground); line-height: 1.6;
+          font-family: var(--font-body);
+          font-size: 0.75rem; color: var(--cq-ink-muted); line-height: 1.6;
           max-width: 20rem;
         }
         .ct-submit {
-          background: var(--primary); color: var(--primary-foreground);
+          background: var(--cq-teal); color: white;
           border: none; cursor: pointer;
-          font-size: 0.7rem; font-weight: 700;
-          letter-spacing: 0.15em; text-transform: uppercase;
-          padding: 1rem 2rem; border-radius: var(--radius-sm);
-          transition: opacity 0.2s;
+          font-family: var(--font-body);
+          font-size: 0.75rem; font-weight: 500;
+          letter-spacing: var(--tracking-wide); text-transform: uppercase;
+          padding: 0.75rem 1.5rem; border-radius: var(--radius-sm);
+          transition: background var(--transition-fast);
           white-space: nowrap;
-          min-height: 48px;
+          min-height: 44px;
         }
-        .ct-submit:hover { opacity: 0.85; }
+        .ct-submit:hover { background: var(--cq-teal-hover); }
         /* On mobile: full-width submit */
         @media (max-width: 480px) {
           .ct-submit { width: 100%; }
@@ -319,45 +353,65 @@ export default function ContactPage() {
         }
         .ct-success-icon {
           margin-bottom: 1rem;
+          color: var(--cq-teal);
         }
         .ct-success-h3 {
-          font-family: var(--font-serif);
-          font-size: 1.5rem; color: var(--foreground); margin: 0 0 0.75rem;
+          font-family: var(--font-display);
+          font-size: 1.75rem; color: var(--cq-ink); margin: 0 0 0.75rem;
+          letter-spacing: var(--tracking-tight);
         }
         .ct-success-p {
-          font-size: 0.875rem; color: var(--muted-foreground); line-height: 1.75;
+          font-family: var(--font-body);
+          font-size: 0.95rem; color: var(--cq-ink-muted); line-height: var(--leading-body);
         }
 
         /* SIDEBAR */
-        .ct-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+        .ct-sidebar {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        @media (min-width: 640px) and (max-width: 1023px) {
+          .ct-sidebar {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
         .ct-info-card {
-          border: 1px solid var(--border);
-          background: var(--card);
+          border: 1px solid var(--cq-cream-dark);
+          background: var(--cq-cream-mid);
           border-radius: var(--radius-lg);
-          padding: 1.5rem;
+          padding: var(--space-4);
+        }
+        @media (min-width: 640px) {
+          .ct-info-card {
+            padding: var(--space-5);
+          }
         }
         .ct-info-card-icon {
           margin-bottom: 0.75rem;
-          color: var(--primary);
+          color: var(--cq-teal);
         }
         .ct-info-card-title {
-          font-size: 0.8rem; font-weight: 700;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          color: var(--foreground); margin: 0 0 0.35rem;
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500;
+          letter-spacing: var(--tracking-wider); text-transform: uppercase;
+          color: var(--cq-ink-muted); margin: 0 0 0.35rem;
         }
         .ct-info-card-value {
-          font-size: 0.9rem; color: var(--foreground);
+          font-family: var(--font-body);
+          font-size: 0.95rem; color: var(--cq-ink);
           font-weight: 500; margin: 0 0 0.2rem;
         }
         .ct-info-card-note {
-          font-size: 0.75rem; color: var(--muted-foreground); margin: 0;
+          font-family: var(--font-body);
+          font-size: 0.75rem; color: var(--cq-ink-muted); margin: 0;
         }
         .ct-info-card a {
-          color: var(--foreground);
+          color: var(--cq-ink);
           text-decoration: none;
-          transition: color 0.2s;
+          transition: color var(--transition-fast);
         }
-        .ct-info-card a:hover { color: var(--primary); }
+        .ct-info-card a:hover { color: var(--cq-teal); }
         .ct-quick-links-card {
           border: 1px solid var(--border);
           background: var(--secondary);
@@ -386,38 +440,45 @@ export default function ContactPage() {
         }
 
         /* FAQ */
-        .ct-faq { background: var(--muted); padding: 4.5rem 1.5rem; border-top: 1px solid var(--border); }
-        .ct-faq-inner { max-width: 52rem; margin: 0 auto; }
+        .ct-faq {
+          background: var(--cq-cream-mid);
+          padding: var(--space-16) var(--space-6);
+          border-top: 1px solid var(--cq-cream-dark);
+        }
+        .ct-faq-inner { max-width: var(--max-width-narrow); margin: 0 auto; }
         .ct-faq-header { text-align: center; margin-bottom: 2.5rem; }
         .section-label {
           display: flex; align-items: center; gap: 0.75rem;
           margin-bottom: 1rem;
           justify-content: center;
         }
-        .section-label-line { width: 2rem; height: 1px; background: var(--border); }
+        .section-label-line { width: 2rem; height: 1px; background: var(--cq-cream-dark); }
         .section-label-text {
-          font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em;
-          text-transform: uppercase; color: var(--muted-foreground);
+          font-family: var(--font-body);
+          font-size: 0.6875rem; font-weight: 500; letter-spacing: var(--tracking-wider);
+          text-transform: uppercase; color: var(--cq-ink-muted);
         }
         .ct-faq-h2 {
-          font-family: var(--font-serif);
-          font-size: clamp(1.65rem, 3.5vw, 2.25rem);
-          color: var(--foreground); margin: 0 0 0.5rem;
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 5vw, 3rem);
+          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-heading);
+          letter-spacing: var(--tracking-tight);
         }
         .ct-faq-desc {
-          font-size: 0.875rem; color: var(--muted-foreground);
-          max-width: 32rem; margin: 0 auto; line-height: 1.75;
+          font-family: var(--font-body);
+          font-size: 0.95rem; font-weight: 300; color: var(--cq-ink-muted);
+          max-width: 32rem; margin: 0 auto; line-height: var(--leading-body);
         }
         .ct-faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
         .ct-faq-item {
-          border: 1px solid var(--border);
-          background: var(--background);
+          border: 1px solid var(--cq-cream-dark);
+          background: var(--cq-cream);
           border-radius: var(--radius-md);
           overflow: hidden;
-          transition: border-color 0.2s;
+          transition: border-color var(--transition-fast);
         }
         .ct-faq-item.open {
-          border-color: color-mix(in oklch, var(--primary) 30%, transparent);
+          border-color: var(--cq-teal);
         }
         .ct-faq-btn {
           width: 100%; background: none; border: none; cursor: pointer;
@@ -427,14 +488,15 @@ export default function ContactPage() {
           min-height: 52px;
         }
         .ct-faq-q {
-          font-size: 0.875rem; font-weight: 600; color: var(--foreground);
+          font-family: var(--font-body);
+          font-size: 0.875rem; font-weight: 600; color: var(--cq-ink);
           line-height: 1.45;
         }
         .ct-faq-chevron {
           width: 1.5rem; height: 1.5rem; border-radius: 50%;
-          background: var(--secondary);
+          background: var(--cq-cream-mid);
           display: flex; align-items: center; justify-content: center;
-          font-size: 0.7rem; color: var(--foreground); flex-shrink: 0;
+          font-size: 0.7rem; color: var(--cq-ink); flex-shrink: 0;
           transition: transform 0.25s;
         }
         .ct-faq-item.open .ct-faq-chevron { transform: rotate(180deg); }
@@ -442,9 +504,21 @@ export default function ContactPage() {
           max-height: 0; overflow: hidden;
           transition: max-height 0.35s ease, padding 0.25s ease;
           padding: 0 1.25rem;
-          font-size: 0.83rem; color: var(--muted-foreground); line-height: 1.8;
+          font-family: var(--font-body);
+          font-size: 0.875rem; font-weight: 300; color: var(--cq-ink-muted); line-height: var(--leading-body);
         }
         .ct-faq-item.open .ct-faq-body { max-height: 200px; padding: 0 1.25rem 1.25rem; }
+        @media (max-width: 768px) {
+          .ct-faq-btn {
+            padding: 1rem;
+          }
+          .ct-faq-body {
+            padding: 0 1rem;
+          }
+          .ct-faq-item.open .ct-faq-body {
+            padding: 0 1rem 1rem;
+          }
+        }
 
         /* Conversational Wizard Styles */
         .conv-wrapper {
@@ -482,6 +556,7 @@ export default function ContactPage() {
           outline: none;
           transition: border-color 0.3s;
           text-align: left;
+          min-height: 44px;
         }
         .conv-input-large:focus {
           border-color: var(--primary);
@@ -500,34 +575,42 @@ export default function ContactPage() {
           color: var(--foreground);
           outline: none;
           transition: border-color 0.3s;
+          min-height: 44px;
         }
         .conv-input-sub:focus {
           border-color: var(--primary);
         }
         .conv-service-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0.75rem;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.5rem;
           margin-bottom: 1.5rem;
         }
-        @media (max-width: 500px) {
+        @media (min-width: 768px) {
           .conv-service-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
           }
         }
         .conv-service-card {
           border: 1px solid var(--border);
           background: var(--background);
           border-radius: var(--radius-md);
-          padding: 0.85rem 1rem;
+          padding: 0.75rem;
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.5rem;
           cursor: pointer;
           transition: border-color 0.2s ease, background 0.2s ease;
           text-align: left;
-          /* 48px min height for touch targets */
-          min-height: 48px;
+          min-height: 44px;
+        }
+        @media (min-width: 768px) {
+          .conv-service-card {
+            padding: 0.85rem 1rem;
+            gap: 0.75rem;
+            min-height: 48px;
+          }
         }
         @media (hover: hover) {
           .conv-service-card:hover {
@@ -559,7 +642,7 @@ export default function ContactPage() {
           border-radius: var(--radius-md);
           background: var(--background);
           padding: 0.85rem 1rem;
-          font-size: 0.95rem;
+          font-size: 1rem;
           color: var(--foreground);
           outline: none;
           resize: none;
@@ -633,6 +716,7 @@ export default function ContactPage() {
         .conv-btn-back {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 0.4rem;
           background: transparent;
           color: var(--muted-foreground);
@@ -645,6 +729,8 @@ export default function ContactPage() {
           padding: 0.6rem 1rem;
           border-radius: var(--radius-sm);
           transition: color 0.2s;
+          min-height: 44px;
+          min-width: 44px;
         }
         .conv-btn-back:hover {
           color: var(--foreground);
@@ -663,7 +749,9 @@ export default function ContactPage() {
           transition: opacity 0.2s;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 0.4rem;
+          min-height: 44px;
         }
         .conv-btn-next:hover:not(:disabled) {
           opacity: 0.88;
@@ -671,6 +759,13 @@ export default function ContactPage() {
         .conv-btn-next:disabled {
           opacity: 0.4;
           cursor: not-allowed;
+        }
+
+        /* Prevent iOS auto-zoom by forcing minimum 16px font-size on mobile inputs */
+        @media (max-width: 768px) {
+          .ct-input, .ct-select, .ct-textarea, .conv-textarea, .conv-input-large, .conv-input-sub {
+            font-size: 16px !important;
+          }
         }
       `}</style>
 
@@ -711,25 +806,19 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <div className="conv-wrapper">
-                  {/* Progress Bar (4 segments) */}
-                  <div style={{ display: "flex", gap: "0.5rem", marginBottom: "2rem" }}>
-                    {Array.from({ length: 4 }).map((_, i) => {
-                      let bg = "var(--border)";
-                      if (i + 1 < step) bg = "var(--muted-foreground)"; // completed
-                      else if (i + 1 === step) bg = "var(--foreground)"; // active
-                      return (
-                        <div
-                          key={i}
-                          style={{
-                            flex: 1,
-                            height: "4px",
-                            borderRadius: "2px",
-                            background: bg,
-                            transition: "background-color 0.3s ease",
-                          }}
-                        />
-                      );
-                    })}
+                  {/* Progress Bar (Teal fill) */}
+                  <div style={{ width: "100%", height: "2px", background: "var(--cq-cream-dark)", marginBottom: "2rem", position: "relative" }}>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        height: "100%",
+                        background: "var(--cq-teal)",
+                        width: `${((step - 1) / 4) * 100}%`,
+                        transition: "width 0.3s ease",
+                      }}
+                    />
                   </div>
 
                   {/* Step container with AnimatePresence */}
@@ -960,10 +1049,22 @@ export default function ContactPage() {
                         <button
                           type="button"
                           className="conv-btn-next"
+                          disabled={loading}
                           onClick={() => handleSubmit()}
                           data-cursor="button"
+                          style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
                         >
-                          Send It
+                          {loading ? (
+                            <>
+                              <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" style={{ display: "inline-block" }}>
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                              </svg>
+                              <span>Sending...</span>
+                            </>
+                          ) : (
+                            <span>Send It</span>
+                          )}
                         </button>
                       </div>
                     )}
@@ -1007,19 +1108,20 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="ct-quick-links-card">
-                <p className="ct-quick-links-title">Explore More</p>
-                <div className="ct-quick-links">
-                  <Link href="/services" className="ct-quick-link">
-                    <span>Our Services</span><span>→</span>
-                  </Link>
-                  <Link href="/works" className="ct-quick-link">
-                    <span>Portfolio</span><span>→</span>
-                  </Link>
-                  <Link href="/about" className="ct-quick-link">
-                    <span>About Us</span><span>→</span>
-                  </Link>
+              <div className="ct-info-card" style={{ background: "var(--cq-cream-mid)", borderColor: "var(--cq-cream-dark)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
+                  <span style={{ color: "var(--cq-teal)", display: "inline-flex" }}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                  <p className="ct-info-card-title" style={{ margin: 0 }}>While You Wait</p>
                 </div>
+                <p className="ct-info-card-value" style={{ fontSize: "0.875rem", fontWeight: 600 }}>Average response time: Under 2 hours</p>
+                <p className="ct-info-card-note" style={{ marginBottom: "1rem" }}>Free strategy call included with every inquiry.</p>
+                <Link href="/works" style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem", color: "var(--cq-teal)", fontSize: "0.8125rem", fontWeight: 500 }} data-cursor="button">
+                  Browse our work <span style={{ transition: "transform var(--transition-fast)" }}>&rarr;</span>
+                </Link>
               </div>
             </div>
           </div>
