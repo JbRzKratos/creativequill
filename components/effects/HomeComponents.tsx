@@ -460,7 +460,7 @@ export function AiVsHuman() {
     <div style={{ margin: "4rem 0" }} className="w-full">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <span className="badge-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
           </svg>
           The Difference

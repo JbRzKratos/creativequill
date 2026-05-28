@@ -418,7 +418,7 @@ export function ServiceDetailClient({ slug, service }: { slug: string; service: 
             <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
               <div>
                 <span className="badge-label mb-4">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .3 2.5 1 3.5l.5 1" />
                     <path d="M9 18h6" />
                     <path d="M10 22h4" />
@@ -451,7 +451,7 @@ export function ServiceDetailClient({ slug, service }: { slug: string; service: 
           <div className="container-content">
             <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
               <span className="badge-label self-center md:self-start">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 11 12 14 22 4" />
                   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                 </svg>
@@ -488,7 +488,7 @@ export function ServiceDetailClient({ slug, service }: { slug: string; service: 
           <div className="container-content">
             <div className="flex flex-col gap-2 mb-10 text-center">
               <span className="badge-label self-center">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
                 </svg>
@@ -525,7 +525,7 @@ export function ServiceDetailClient({ slug, service }: { slug: string; service: 
           <div className="container-content">
             <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
               <span className="badge-label self-center md:self-start">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                   <line x1="12" y1="17" x2="12.01" y2="17" />
