@@ -337,6 +337,7 @@ export function ProcessTimeline({ steps }: { steps: Step[] }) {
               >
                 <button
                   onClick={() => setOpenIdx(isOpen ? null : i)}
+                  aria-expanded={isOpen}
                   style={{
                     width: "100%",
                     display: "flex",

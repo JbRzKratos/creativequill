@@ -135,7 +135,7 @@ export function TypewriterTagline() {
 
   useEffect(() => {
     const currentPhrase = phrases[phraseIdx];
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
 
     if (isDeleting) {
       timer = setTimeout(() => {
@@ -184,6 +184,7 @@ function CountUp({ end, suffix = "", duration = 1500 }: { end: number; suffix?: 
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const rafHandle = useRef<number>(0);
 
   useEffect(() => {
     if (!isInView) return;
@@ -196,13 +197,14 @@ function CountUp({ end, suffix = "", duration = 1500 }: { end: number; suffix?: 
       setCount(Math.floor(ease * end));
 
       if (progress < 1) {
-        requestAnimationFrame(update);
+        rafHandle.current = requestAnimationFrame(update);
       } else {
         setCount(end);
       }
     };
 
-    requestAnimationFrame(update);
+    rafHandle.current = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafHandle.current);
   }, [end, duration, isInView]);
 
   return (
@@ -291,7 +293,7 @@ export function ClientMarquee() {
           {/* List 1 */}
           {logos.concat(logos).map((logo, idx) => (
             <span
-              key={idx}
+              key={`logo-${idx}`}
               style={{
                 fontFamily: "var(--font-serif)",
                 fontWeight: 600,
@@ -502,6 +504,12 @@ export function AiVsHuman() {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        role="slider"
+        aria-label="Compare AI-generated vs human-written content"
+        aria-valuenow={Math.round(sliderPos)}
+        aria-valuemin={5}
+        aria-valuemax={95}
+        tabIndex={0}
         className="relative mx-auto w-full max-w-[580px] h-[340px] select-none overflow-hidden touch-none"
         style={{
           borderRadius: "var(--radius-xl)",
@@ -749,7 +757,7 @@ export function SocialProofMarquee() {
         >
           {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
             <div
-              key={idx}
+              key={`testimonial-${idx}`}
               className="cq-testimonial-card"
               data-cursor="card"
             >

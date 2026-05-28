@@ -44,7 +44,7 @@ describe("CQFooter", () => {
   it("renders the email contact link", () => {
     render(<CQFooter />);
     const emailLink = screen.getByRole("link", { name: /email/i });
-    expect(emailLink).toHaveAttribute("href", "mailto:sanzstudios14@gmail.com");
+    expect(emailLink).toHaveAttribute("href", "mailto:hello@creativequill.co.in");
   });
 
   it("renders the phone contact link", () => {

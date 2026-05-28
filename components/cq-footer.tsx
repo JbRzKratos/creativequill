@@ -274,7 +274,7 @@ export default function CQFooter() {
               businesses into industry leaders.
             </p>
             <div className="cq-footer-socials">
-              <a href="mailto:sanzstudios14@gmail.com" aria-label="Mail">
+              <a href="mailto:hello@creativequill.co.in" aria-label="Mail">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -351,7 +351,7 @@ export default function CQFooter() {
         <div className="cq-footer-bottom">
           <span>&copy; 2026 Creative Quill. All Rights Reserved.</span>
           <div className="cq-footer-bottom-links">
-            <a href="mailto:sanzstudios14@gmail.com" className="cq-footer-bottom-link">
+            <a href="mailto:hello@creativequill.co.in" className="cq-footer-bottom-link">
               Email
             </a>
             <a href="tel:+918807190545" className="cq-footer-bottom-link">

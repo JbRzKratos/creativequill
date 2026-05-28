@@ -4,7 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import InkCursor from "@/components/effects/InkCursor";
-import { ScrollProgress, BackToTop } from "@/components/effects/HomeComponents";
+import { BackToTop } from "@/components/effects/HomeComponents";
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -35,7 +35,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning>
         <ThemeProvider>
-          <ScrollProgress />
+
           <BackToTop />
           {children}
           <InkCursor />

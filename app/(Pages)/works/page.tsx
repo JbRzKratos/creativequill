@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";

@@ -428,7 +428,8 @@
 
   /* Disable expensive hover-only effects on touch */
   .cq-marquee-container:hover .cq-marquee-inner,
-  .cq-marquee-container:hover .cq-marquee-inner-reverse {
+  .cq-testimonial-marquee-container:hover .cq-testimonial-marquee-inner,
+  .cq-process-marquee-container:hover .cq-process-marquee-inner {
     animation-play-state: running !important;
   }
 
@@ -440,7 +441,8 @@
 
 /* GPU compositing for animated elements */
 .cq-marquee-inner,
-.cq-marquee-inner-reverse {
+.cq-testimonial-marquee-inner,
+.cq-process-marquee-inner {
   will-change: transform;
 }
 
@@ -464,7 +466,8 @@ article {
   }
 
   .cq-marquee-inner,
-  .cq-marquee-inner-reverse {
+  .cq-testimonial-marquee-inner,
+  .cq-process-marquee-inner {
     animation: none !important;
   }
 }

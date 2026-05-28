@@ -143,7 +143,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <style jsx global>{`
+      <style>{`
         /* Prevent iOS auto-zoom */
         @media (max-width: 768px) {
           input, textarea {

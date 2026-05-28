@@ -675,6 +675,8 @@ function FaqSection() {
                 >
                   <button
                     onClick={() => setOpenIdx(isOpen ? null : realIdx)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${realIdx}`}
                     className="w-full px-5 py-4 flex items-center justify-between text-left font-body font-medium text-sm text-[var(--cq-ink)]"
                   >
                     <span>{faq.q}</span>
@@ -685,6 +687,7 @@ function FaqSection() {
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
+                        id={`faq-answer-${realIdx}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -713,6 +716,8 @@ function FaqSection() {
                 >
                   <button
                     onClick={() => setOpenIdx(isOpen ? null : realIdx)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${realIdx}`}
                     className="w-full px-5 py-4 flex items-center justify-between text-left font-body font-medium text-sm text-[var(--cq-ink)]"
                   >
                     <span>{faq.q}</span>
@@ -723,6 +728,7 @@ function FaqSection() {
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
+                        id={`faq-answer-${realIdx}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -959,7 +965,7 @@ export default function HomePage() {
                 style={{ animationPlayState: isProcessPaused ? "paused" : "running" }}
               >
                 {processSteps.concat(processSteps).concat(processSteps).map((step, idx) => (
-                  <div key={idx} className="cq-process-card" data-cursor="card">
+                  <div key={`process-${idx}`} className="cq-process-card" data-cursor="card">
                     <span className="cq-process-card-num">0{step.num}</span>
                     <h3 className="cq-process-card-title">{step.title}</h3>
                     <p className="cq-process-card-desc">{step.desc}</p>
