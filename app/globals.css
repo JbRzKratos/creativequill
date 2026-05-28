@@ -47,6 +47,10 @@
     --radius-lg: var(--radius-lg);
     --radius-xl: var(--radius-xl);
 
+    --color-cq-parchment: var(--cq-parchment);
+    --color-cq-parchment-mid: var(--cq-parchment-mid);
+    --color-cq-parchment-deep: var(--cq-parchment-deep);
+    --color-cq-linen: var(--cq-linen);
     --color-cq-cream: var(--cq-cream);
     --color-cq-cream-mid: var(--cq-cream-mid);
     --color-cq-cream-dark: var(--cq-cream-dark);
@@ -58,105 +62,130 @@
     --color-cq-night: var(--cq-night);
     --color-cq-night-mid: var(--cq-night-mid);
     --color-cq-night-border: var(--cq-night-border);
+    --color-cq-forest: var(--cq-forest);
+    --color-cq-forest-hover: var(--cq-forest-hover);
+    --color-cq-forest-light: var(--cq-forest-light);
     --color-cq-teal: var(--cq-teal);
     --color-cq-teal-hover: var(--cq-teal-hover);
     --color-cq-teal-dark: var(--cq-teal-dark);
     --color-cq-teal-subtle: var(--cq-teal-subtle);
+    --color-cq-teal-text: var(--cq-teal-text);
 
-    --tracking-tighter: var(--tracking-tighter);
-    --tracking-tight: var(--tracking-tight);
-    --tracking-normal: var(--tracking-normal);
-    --tracking-wide: var(--tracking-wide);
-    --tracking-wider: var(--tracking-wider);
-    --tracking-widest: var(--tracking-widest);
-
-    --leading-display: var(--leading-display);
-    --leading-heading: var(--leading-heading);
-    --leading-body: var(--leading-body);
-    --leading-tight: var(--leading-tight);
+    --radius-xs: var(--radius-xs);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+    --radius-2xl: var(--radius-2xl);
+    --radius-full: var(--radius-full);
 }
 
 :root {
   /* ── BRAND COLOR PRIMITIVES ── */
-  --cq-cream:         #FAF8F3;      /* main page background — warm off-white */
-  --cq-cream-mid:     #F2EDE4;      /* section alternate background */
-  --cq-cream-dark:    #E8E2D7;      /* card backgrounds, subtle borders */
-  --cq-beige:         #D4CBBA;      /* strong borders, dividers */
+  --cq-parchment:     #FAF6EE;   /* main page bg — beautiful warm cream/beige */
+  --cq-parchment-mid: #F3ECE0;   /* alternate section bg — slightly darker cream */
+  --cq-parchment-deep:#EAE0D0;   /* card bg, subtle fills — rich warm sand */
+  --cq-linen:         #DDD4BE;   /* strong borders, dividers — warm clay outline */
 
-  --cq-ink:           #1C1A17;      /* primary text — warm near-black */
-  --cq-ink-mid:       #3D3A35;      /* secondary text */
-  --cq-ink-muted:     #7A7570;      /* muted/placeholder text */
-  --cq-ink-faint:     #B0AAA2;      /* very muted, captions */
+  /* Synonyms to keep backwards compatibility */
+  --cq-cream:         var(--cq-parchment);
+  --cq-cream-mid:     var(--cq-parchment-mid);
+  --cq-cream-dark:    var(--cq-parchment-deep);
+  --cq-beige:         var(--cq-linen);
 
-  --cq-night:         #0F0F0D;      /* navbar + stats strip background */
-  --cq-night-mid:     #1A1A17;      /* dark card backgrounds */
-  --cq-night-border:  #2E2E2A;      /* borders on dark surfaces */
+  /* Ink — warm near-black family */
+  --cq-ink:           #1A1612;   /* primary text — warm charcoal black */
+  --cq-ink-mid:       #3C352E;   /* secondary text */
+  --cq-ink-muted:     #756C60;   /* muted text */
+  --cq-ink-faint:     #A59B8E;   /* placeholder, captions */
 
-  /* TEAL — accent use ONLY. Never as a background fill. */
-  --cq-teal:          #0D9488;      /* primary accent: buttons, icons */
-  --cq-teal-hover:    #0F766E;      /* hover state */
-  --cq-teal-dark:     #134E4A;      /* teal on dark backgrounds */
-  --cq-teal-subtle:   #CCFBF1;      /* very light teal tint for badges only */
+  /* Dark surfaces */
+  --cq-night:         #12100E;   /* navbar, dark sections — deep warm black */
+  --cq-night-mid:     #1E1A16;   /* dark cards */
+  --cq-night-border:  #2E2822;   /* borders on dark */
+
+  /* Forest Green — PRIMARY ACTION COLOR (replaces green for buttons/nav) */
+  --cq-forest:        #1A1612;   /* solid warm black for primary buttons, active states */
+  --cq-forest-hover:  #332D27;   /* button hover state */
+  --cq-forest-light:  #ECE6DC;   /* soft beige tint for badges */
+
+  /* Teal — SECONDARY ACCENT (quote background, clay highlights) */
+  --cq-teal:          #D7CBB5;   /* medium warm clay/sand from the screenshot */
+  --cq-teal-hover:    #CBBFB0;   /* slightly darker sand */
+  --cq-teal-dark:     #A29680;
+  --cq-teal-subtle:   #F3ECE0;
+  --cq-teal-text:     #1A1612;   /* text ON teal backgrounds — always dark charcoal for visibility! */
 
   /* ── SEMANTIC TOKENS ── */
-  --color-bg-primary:     var(--cq-cream);
-  --color-bg-secondary:   var(--cq-cream-mid);
-  --color-bg-tertiary:    var(--cq-cream-dark);
+  --color-bg-primary:     var(--cq-parchment);
+  --color-bg-secondary:   var(--cq-parchment-mid);
+  --color-bg-tertiary:    var(--cq-parchment-deep);
   --color-bg-dark:        var(--cq-night);
   --color-bg-dark-mid:    var(--cq-night-mid);
+  --color-bg-quote:       var(--cq-teal);
 
   --color-text-primary:   var(--cq-ink);
   --color-text-secondary: var(--cq-ink-mid);
   --color-text-muted:     var(--cq-ink-muted);
   --color-text-faint:     var(--cq-ink-faint);
-  --color-text-inverse:   var(--cq-cream);
-  --color-text-accent:    var(--cq-teal);
+  --color-text-inverse:   var(--cq-parchment);
+  --color-text-accent:    var(--cq-forest);
+  --color-text-on-teal:   var(--cq-teal-text);
 
-  --color-border:         var(--cq-cream-dark);
-  --color-border-mid:     var(--cq-beige);
+  --color-border:         var(--cq-parchment-deep);
+  --color-border-mid:     var(--cq-linen);
   --color-border-dark:    var(--cq-night-border);
 
-  /* ── shadcn REQUIRED TOKENS (tuned for warm cream theme) ── */
-  --background:             #FAF8F3;
-  --foreground:             #1C1A17;
-  --card:                   #F5F0E6;
-  --card-foreground:        #1C1A17;
-  --popover:                #FAF8F3;
-  --popover-foreground:     #1C1A17;
-  --primary:                #0D9488;
-  --primary-foreground:     #ffffff;
-  --secondary:              #F2EDE4;
-  --secondary-foreground:   #1C1A17;
-  --muted:                  #F2EDE4;
-  --muted-foreground:       #7A7570;
-  --accent:                 #E8E2D7;
-  --accent-foreground:      #1C1A17;
+  /* ── shadcn REQUIRED TOKENS (tuned for new theme) ── */
+  --background:             #FAF6EE;
+  --foreground:             #1A1612;
+  --card:                   #F3ECE0;
+  --card-foreground:        #1A1612;
+  --popover:                #FAF6EE;
+  --popover-foreground:     #1A1612;
+  --primary:                #1A1612;
+  --primary-foreground:     #FAF6EE;
+  --secondary:              #F3ECE0;
+  --secondary-foreground:   #1A1612;
+  --muted:                  #F3ECE0;
+  --muted-foreground:       #756C60;
+  --accent:                 #EAE0D0;
+  --accent-foreground:      #1A1612;
   --destructive:            #dc2626;
   --destructive-foreground: #ffffff;
-  --border:                 #E8E2D7;
-  --input:                  #E8E2D7;
-  --ring:                   #0D9488;
+  --border:                 #EAE0D0;
+  --input:                  #EAE0D0;
+  --ring:                   #1A1612;
   --radius:                 0.375rem;
+
+  /* ── RADIUS TOKENS (feedback #4) ── */
+  --radius-xs:   0.125rem;  /* 2px ── sharp, editorial */
+  --radius-sm:   0.25rem;   /* 4px */
+  --radius-md:   0.375rem;  /* 6px ── default */
+  --radius-lg:   0.625rem;  /* 10px ── cards */
+  --radius-xl:   0.875rem;  /* 14px ── large cards */
+  --radius-2xl:  1.25rem;   /* 20px ── panels */
+  --radius-full: 9999px;    /* pills */
 
   /* ── TYPOGRAPHY ── */
   --font-display:  var(--font-serif);
   --font-body:     var(--font-sans);
 
-  /* ── LETTER SPACING — fixes the "no letter spacing" complaint ── */
-  --tracking-tighter: -0.04em;   /* large display headlines */
-  --tracking-tight:   -0.02em;   /* section headings */
+  /* ── LETTER SPACING ── */
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.02em;
   --tracking-normal:  0em;
-  --tracking-wide:    0.06em;    /* label badges, small caps */
-  --tracking-wider:   0.12em;    /* section category labels */
-  --tracking-widest:  0.18em;    /* ticker text */
+  --tracking-wide:    0.06em;
+  --tracking-wider:   0.12em;
+  --tracking-widest:  0.18em;
 
   /* ── LINE HEIGHTS ── */
-  --leading-display:  1.05;   /* huge hero text */
-  --leading-heading:  1.15;   /* section headings */
-  --leading-body:     1.7;    /* paragraphs */
-  --leading-tight:    1.35;   /* card descriptions */
+  --leading-display:  1.05;
+  --leading-heading:  1.15;
+  --leading-body:     1.7;
+  --leading-tight:    1.35;
 
-  /* ── SPACING (tighter than before — fixes empty space complaint) ── */
+  /* ── SPACING ── */
   --space-1:   0.25rem;
   --space-2:   0.5rem;
   --space-3:   0.75rem;
@@ -170,36 +199,23 @@
   --space-20:  5rem;
   --space-24:  6rem;
 
-  /* Section padding — REDUCED from before */
-  --section-py-sm:   var(--space-12);   /* 48px — tight sections */
-  --section-py-md:   var(--space-16);   /* 64px — normal sections */
-  --section-py-lg:   var(--space-20);   /* 80px — featured sections */
+  --section-py-sm:   var(--space-12);
+  --section-py-md:   var(--space-16);
+  --section-py-lg:   var(--space-20);
 
-  /* ── LAYOUT (tighter container) ── */
-  --max-width-content: 68rem;    /* 1088px — tighter than before (was 75rem) */
-  --max-width-narrow:  52rem;    /* 832px — for text-heavy sections */
+  --max-width-content: 68rem;
+  --max-width-narrow:  52rem;
   --header-height:     4rem;
 
-  /* ── RADII ── */
-  --radius-sm:   0.25rem;
-  --radius-md:   0.375rem;
-  --radius-lg:   0.625rem;
-  --radius-xl:   0.875rem;
-  --radius-full: 9999px;
+  --shadow-sm:  0 1px 3px rgba(22, 18, 14, 0.06);
+  --shadow-md:  0 4px 12px rgba(22, 18, 14, 0.08);
+  --shadow-lg:  0 8px 24px rgba(22, 18, 14, 0.10);
+  --shadow-xl:  0 16px 40px rgba(22, 18, 14, 0.12);
 
-  /* ── SHADOWS — warm tones, NO white shadows ── */
-  --shadow-sm:  0 1px 3px rgba(28, 26, 23, 0.06);
-  --shadow-md:  0 4px 12px rgba(28, 26, 23, 0.08);
-  --shadow-lg:  0 8px 24px rgba(28, 26, 23, 0.10);
-  --shadow-xl:  0 16px 40px rgba(28, 26, 23, 0.12);
-
-  /* ── TRANSITIONS ── */
   --transition-fast: 150ms ease;
   --transition-base: 220ms ease;
   --transition-slow: 380ms ease;
-}
-
-@layer base {
+}@layer base {
   * {
     box-sizing: border-box;
     /* FIX: cursor:pointer on ALL interactive elements */
@@ -272,7 +288,7 @@
   em {
     font-style: italic;
     font-weight: inherit;
-    color: var(--cq-teal);
+    color: inherit;
   }
 
   /* FIX: Universal cursor fix — every button/link gets pointer */
@@ -296,11 +312,11 @@
 
   ::selection {
     background-color: var(--cq-teal);
-    color: #fff;
+    color: var(--cq-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--cq-teal);
+    outline: 2px solid var(--cq-forest);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
@@ -340,6 +356,47 @@
     letter-spacing: var(--tracking-wider);
     text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  /* Variant A: Section category label (feedback #4) */
+  .badge-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 0.5px solid var(--cq-linen);
+    border-radius: var(--radius-full);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--cq-ink-muted);
+    line-height: 1.2;
+  }
+  .badge-label::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--cq-forest);
+  }
+
+  /* Variant B: Feature/tag badge (feedback #4) */
+  .badge-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--cq-parchment-deep);
+    border: 0.5px solid var(--cq-linen);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--cq-ink-mid);
+    line-height: 1.2;
   }
 
   /* Text balance */

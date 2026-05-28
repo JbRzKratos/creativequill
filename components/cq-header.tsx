@@ -14,12 +14,9 @@ const NAV_LINKS = [
   { num: "05", label: "Contact",  path: "/contact" },
 ];
 
-const tickerText = "HUMAN STRATEGY · REAL STORIES · NOT AI FILLER · CONTENT THAT CONVERTS · WORDS THAT SATISFY · 48HR DELIVERY · 100% HUMAN WRITTEN · ";
-
 export default function CQHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [tickerVisible, setTickerVisible] = useState(true);
   const pathname = usePathname();
   const [prevPath, setPrevPath] = useState(pathname);
   if (pathname !== prevPath) {
@@ -31,7 +28,6 @@ export default function CQHeader() {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 80);
-      setTickerVisible(y < 80);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -66,42 +62,12 @@ export default function CQHeader() {
   return (
     <>
       <style>{`
-        /* Keyframes for infinite scrolling ticker */
-        @keyframes tickerScroll {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
-        }
-
         .cq-header-root {
           position: sticky;
           top: 0;
           z-index: 50;
           width: 100%;
           background: var(--cq-night);
-        }
-
-        .cq-ticker-container {
-          overflow: hidden;
-          width: 100%;
-          background: var(--cq-night);
-          border-bottom: 0.5px solid var(--cq-night-border);
-          display: flex;
-          align-items: center;
-        }
-
-        .cq-ticker-scrollable {
-          display: inline-flex;
-          white-space: nowrap;
-          animation: tickerScroll 28s linear infinite;
-        }
-
-        .cq-ticker-scrollable span {
-          font-family: var(--font-body), sans-serif;
-          font-size: 9.5px;
-          font-weight: 400;
-          letter-spacing: 0.2em;
-          color: #8A857A;
-          text-transform: uppercase;
         }
 
         .cq-nav-container {
@@ -164,7 +130,7 @@ export default function CQHeader() {
           font-size: 8px;
           font-weight: 200;
           letter-spacing: 0.32em;
-          color: #5A564F;
+          color: var(--cq-linen);
           text-transform: uppercase;
         }
         @media (min-width: 1024px) {
@@ -213,7 +179,7 @@ export default function CQHeader() {
           font-size: 8.5px;
           font-weight: 400;
           letter-spacing: 0.05em;
-          color: #6E6962;
+          color: #9C978E;
           transition: color 150ms ease;
         }
         .nav-label {
@@ -222,7 +188,7 @@ export default function CQHeader() {
           font-weight: 400;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #A8A39A;
+          color: #C6BAA8;
           transition: color 150ms ease;
         }
         .nav-dot {
@@ -256,8 +222,8 @@ export default function CQHeader() {
           .cq-nav-cta {
             display: inline-flex;
             align-items: center;
-            background: var(--cq-teal);
-            color: #ffffff;
+            background: var(--cq-parchment);
+            color: var(--cq-night);
             font-family: var(--font-body), sans-serif;
             font-size: 10px;
             font-weight: 500;
@@ -272,7 +238,7 @@ export default function CQHeader() {
             text-decoration: none;
           }
           .cq-nav-cta:hover {
-            background: var(--cq-teal-hover);
+            background: var(--cq-parchment-deep);
           }
           .cq-nav-cta span {
             display: inline-block;
@@ -324,8 +290,8 @@ export default function CQHeader() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          background: var(--cq-teal);
-          color: #ffffff;
+          background: var(--cq-parchment);
+          color: var(--cq-night);
           font-family: var(--font-body), sans-serif;
           font-size: 10px;
           font-weight: 500;
@@ -342,7 +308,7 @@ export default function CQHeader() {
           min-height: 44px;
         }
         .cq-mobile-overlay-cta:hover {
-          background: var(--cq-teal-hover);
+          background: var(--cq-parchment-deep);
         }
         .cq-mobile-overlay-cta span {
           display: inline-block;
@@ -356,27 +322,9 @@ export default function CQHeader() {
 
       <header className="cq-header-root">
         {/* Layer 1: Accent Line */}
-        <div style={{ height: 2, background: "linear-gradient(90deg, var(--cq-teal), var(--cq-teal-hover))", position: "relative" }} />
+        <div style={{ height: 2, background: "linear-gradient(90deg, var(--cq-forest), var(--cq-teal))", position: "relative" }} />
 
-        {/* Layer 2: Ticker Bar */}
-        <AnimatePresence initial={false}>
-          {tickerVisible && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 26, opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="cq-ticker-container"
-            >
-              <div className="cq-ticker-scrollable">
-                <span>{tickerText}</span>
-                <span>{tickerText}</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Layer 3: Main Nav Bar */}
+        {/* Layer 2: Main Nav Bar */}
         <div
           className="cq-nav-container"
           style={{

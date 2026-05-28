@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Splat {
   id: number;
@@ -11,20 +11,8 @@ interface Splat {
 
 export default function InkCursor() {
   const [isMobile, setIsMobile] = useState(true);
-  const [cursorType, setCursorType] = useState<"default" | "button" | "card" | "text">("default");
   const [splats, setSplats] = useState<Splat[]>([]);
   const splatIdRef = useRef(0);
-
-  // Position motion values
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
-
-  // Springs configuration
-  const springConfig = { damping: 35, stiffness: 350, mass: 0.35 };
-  const springConfigRing = { damping: 25, stiffness: 180, mass: 0.55 };
-
-  const ringX = useSpring(mouseX, springConfigRing);
-  const ringY = useSpring(mouseY, springConfigRing);
 
   useEffect(() => {
     const media = window.matchMedia("(pointer: coarse)");
@@ -34,43 +22,6 @@ export default function InkCursor() {
     const timer = setTimeout(() => {
       setIsMobile(media.matches);
     }, 0);
-
-    // Hide standard cursor using styled stylesheet insertion
-    let styleEl: HTMLStyleElement | null = null;
-    if (!media.matches) {
-      styleEl = document.createElement("style");
-      styleEl.innerHTML = `
-        body, a, button, [role="button"], select, textarea, input {
-          cursor: none !important;
-        }
-      `;
-      document.head.appendChild(styleEl);
-    }
-
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
-
-    window.addEventListener("mousemove", onMouseMove);
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-      const cursorAttr = target.closest("[data-cursor]")?.getAttribute("data-cursor");
-
-      if (cursorAttr === "button") {
-        setCursorType("button");
-      } else if (cursorAttr === "card") {
-        setCursorType("card");
-      } else if (cursorAttr === "text") {
-        setCursorType("text");
-      } else {
-        setCursorType("default");
-      }
-    };
-
-    window.addEventListener("mouseover", handleMouseOver);
 
     const onClick = (e: MouseEvent) => {
       const id = splatIdRef.current++;
@@ -85,68 +36,14 @@ export default function InkCursor() {
     return () => {
       media.removeEventListener("change", mediaHandler);
       clearTimeout(timer);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("click", onClick);
-      if (styleEl && document.head.contains(styleEl)) {
-        document.head.removeChild(styleEl);
-      }
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
   if (isMobile) return null;
 
-  let dotWidth = 10;
-  let dotHeight = 10;
-  let dotRadius = "50%";
-  let dotBg = "rgba(13, 148, 136, 1)";
-  let ringWidth = 28;
-  let ringHeight = 28;
-  let ringRadius = "50%";
-  const ringBg = "transparent";
-  let ringBorder = "1px solid rgba(28, 26, 23, 0.22)";
-  let dotContent = null;
-
-  if (cursorType === "button") {
-    dotWidth = 52;
-    dotHeight = 52;
-    dotBg = "rgba(13, 148, 136, 1)";
-    ringWidth = 0;
-    ringHeight = 0;
-    dotContent = (
-      <span
-        style={{
-          fontSize: "9px",
-          fontWeight: "800",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: "var(--primary-foreground)",
-          pointerEvents: "none",
-        }}
-      >
-        Click
-      </span>
-    );
-  } else if (cursorType === "card") {
-    dotWidth = 60;
-    dotHeight = 22;
-    dotRadius = "12px";
-    dotBg = "rgba(13, 148, 136, 0.85)";
-    ringWidth = 68;
-    ringHeight = 30;
-    ringRadius = "16px";
-  } else if (cursorType === "text") {
-    dotWidth = 2;
-    dotHeight = 22;
-    dotRadius = "0px";
-    dotBg = "rgba(28, 26, 23, 1)";
-    ringWidth = 0;
-    ringHeight = 0;
-    ringBorder = "none";
-  }
-
   return (
-    <>
+    <div style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 9998 }}>
       {/* Ink particle splats */}
       <AnimatePresence>
         {splats.map((splat) => (
@@ -187,64 +84,6 @@ export default function InkCursor() {
           </div>
         ))}
       </AnimatePresence>
-
-      {/* Cursor Core Dot */}
-      <motion.div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          x: mouseX,
-          y: mouseY,
-          width: dotWidth,
-          height: dotHeight,
-          borderRadius: dotRadius,
-          backgroundColor: dotBg,
-          marginLeft: -dotWidth / 2,
-          marginTop: -dotHeight / 2,
-          pointerEvents: "none",
-          zIndex: 9999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        animate={{
-          width: dotWidth,
-          height: dotHeight,
-          borderRadius: dotRadius,
-          backgroundColor: dotBg,
-        }}
-        transition={springConfig}
-      >
-        {dotContent}
-      </motion.div>
-
-      {/* Cursor Lagging Ring */}
-      <motion.div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          x: ringX,
-          y: ringY,
-          width: ringWidth,
-          height: ringHeight,
-          borderRadius: ringRadius,
-          backgroundColor: ringBg,
-          border: ringBorder,
-          marginLeft: -ringWidth / 2,
-          marginTop: -ringHeight / 2,
-          pointerEvents: "none",
-          zIndex: 9999,
-        }}
-        animate={{
-          width: ringWidth,
-          height: ringHeight,
-          borderRadius: ringRadius,
-          border: ringBorder,
-        }}
-        transition={springConfig}
-      />
-    </>
+    </div>
   );
 }

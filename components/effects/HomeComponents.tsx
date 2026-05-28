@@ -240,9 +240,10 @@ export function StatsStrip() {
               className="bg-[var(--cq-night)] p-6 text-center flex flex-col items-center justify-center"
             >
               <span
-                className="text-3xl sm:text-4xl font-light text-[var(--cq-cream)]"
+                className="text-3xl sm:text-4xl text-[var(--cq-cream)]"
                 style={{
-                  fontFamily: "var(--font-display), serif",
+                  fontFamily: "var(--font-body), sans-serif",
+                  fontWeight: 500,
                   letterSpacing: "var(--tracking-tighter, -0.04em)",
                 }}
               >
@@ -334,22 +335,17 @@ export function BentoGrid() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full cq-bento">
       {/* Cell 1: Unmistakably You (2 cols, tall) */}
       <div
-        className="col-span-1 sm:col-span-2 lg:col-span-2 border-2 border-[var(--border)] rounded-[var(--radius-xl)] p-6 md:p-9 flex flex-col justify-between relative overflow-hidden transition-all duration-300 bento-cell min-h-[140px]"
+        className="col-span-1 sm:col-span-2 lg:col-span-2 border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 md:p-9 flex flex-col justify-between relative overflow-hidden transition-all duration-300 bento-cell min-h-[140px]"
         style={{
-          background: "color-mix(in oklch, var(--primary) 7%, var(--background))",
+          background: "var(--cq-parchment)",
         }}
       >
         <div>
-          <span className="text-3xl font-bold opacity-20 text-[var(--primary)]">01</span>
-          <div className="text-[var(--primary)] my-4">
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11a5 5 0 00-10 0c0 1.02.166 2 .47 2.932m16.513.08a13.947 13.947 0 011.539-1.118m-3.003-2.91a2.169 2.169 0 00-3.32-.34c-.738.67-1.19 1.63-1.19 2.69v.004c0 1.083-.496 2.05-1.288 2.696m7.133.076c.38.256.729.568 1.035.927m-2.422-2.903a9.004 9.004 0 01-1.127 3.045m-7.469-2.347c.8-.696 1.307-1.72 1.307-2.864V10" />
-            </svg>
-          </div>
-          <h3 className="font-serif text-xl font-semibold text-[var(--foreground)] mb-3">
+          <span className="font-sans text-5xl font-medium text-[var(--cq-parchment-deep)] select-none">01</span>
+          <h3 className="font-display text-2xl font-light text-[var(--cq-ink)] mt-4 mb-3 tracking-tight leading-none">
             Unmistakably You
           </h3>
-          <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+          <p className="text-sm text-[var(--cq-ink-mid)] leading-relaxed font-light">
             We develop your brand voice guidelines from scratch and write content only you could publish —
             no generic filler, no recycled templates.
           </p>
@@ -358,16 +354,16 @@ export function BentoGrid() {
 
       {/* Cell 2: 48hr Turnaround (1 col) */}
       <div
-        className="col-span-1 border-2 border-[var(--primary)] bg-[var(--primary)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between text-[var(--primary-foreground)] bento-cell min-h-[140px]"
+        className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
       >
-        <span className="text-5xl md:text-6xl font-serif font-bold opacity-90">
+        <span className="text-5xl font-sans font-medium text-[var(--cq-ink)] tracking-tight leading-none">
           48h
         </span>
-        <div>
-          <h3 className="text-xs font-bold uppercase tracking-wider mb-2">
-            Turnaround
+        <div className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] mb-2">
+            Delivery Guarantee
           </h3>
-          <p className="text-xs opacity-80 leading-relaxed">
+          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
             Professional publication-ready content delivered rapidly, keeping your brand momentum strong.
           </p>
         </div>
@@ -375,18 +371,13 @@ export function BentoGrid() {
 
       {/* Cell 3: Expert Craft (1 col) */}
       <div
-        className="col-span-1 border-2 border-[var(--border)] bg-[var(--card)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
+        className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
       >
-        <div className="text-[var(--primary)]">
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="font-serif text-lg font-semibold text-[var(--foreground)] mb-2">
-            Expert Craft
-          </h3>
-          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+        <span className="text-3xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
+          Expert Craft
+        </span>
+        <div className="mt-4">
+          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
             Every piece goes through strict multi-phase checks, ensuring flawless execution that builds trust.
           </p>
         </div>
@@ -394,24 +385,13 @@ export function BentoGrid() {
 
       {/* Cell 4: Story-Driven (1 col) */}
       <div
-        className="col-span-1 border-2 border-[var(--border)] bg-[var(--background)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden bento-cell min-h-[140px]"
+        className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden bento-cell min-h-[140px]"
       >
-        {/* Ink-textured graphic overlay */}
-        <div className="absolute right-[-20px] bottom-[-20px] opacity-8 pointer-events-none text-[var(--primary)]" style={{ opacity: 0.08 }}>
-          <svg width="120" height="120" viewBox="0 0 100 100" fill="currentColor">
-            <path d="M50 0 C75 25 100 50 50 100 C0 50 25 25 50 0 Z" />
-          </svg>
-        </div>
-        <div className="text-[var(--primary)]">
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="font-serif text-lg font-semibold text-[var(--foreground)] mb-2">
-            Story-Driven
-          </h3>
-          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+        <span className="text-3xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
+          Story-Driven
+        </span>
+        <div className="mt-4">
+          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
             Deep narrative strategy that connects emotionally with audiences, transforming readers into buyers.
           </p>
         </div>
@@ -419,17 +399,21 @@ export function BentoGrid() {
 
       {/* Cell 5: Pull Quote (2 cols) */}
       <div
-        className="col-span-1 sm:col-span-2 lg:col-span-2 border-2 border-[var(--border)] bg-[var(--card)] rounded-[var(--radius-xl)] p-6 md:p-8 flex items-center bento-cell min-h-[140px]"
+        className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-[var(--cq-teal)] rounded-[var(--radius-xl)] p-6 md:p-8 flex items-center bento-cell min-h-[140px]"
       >
-        <blockquote className="font-serif italic text-lg leading-relaxed text-[var(--foreground)] border-l-4 border-[var(--primary)] pl-5 m-0">
+        <blockquote className="font-display italic text-lg md:text-xl leading-relaxed text-[var(--cq-teal-text)] border-l-4 border-[var(--cq-ink-muted)] pl-5 m-0">
           &ldquo;Strategic content isn&apos;t a cost — it&apos;s your best marketing investment.&rdquo;
         </blockquote>
       </div>
 
       <style>{`
+        .bento-cell {
+          transition: all 250ms ease;
+        }
         .bento-cell:hover {
-          border-color: color-mix(in oklch, var(--primary) 35%, transparent) !important;
-          box-shadow: 0 10px 24px color-mix(in oklch, var(--foreground) 7%, transparent);
+          border-color: var(--cq-linen) !important;
+          box-shadow: var(--shadow-md);
+          transform: translateY(-2px);
         }
       `}</style>
     </div>
@@ -438,62 +422,73 @@ export function BentoGrid() {
 
 /* ── 6. AI VS HUMAN INTERACTIVE COMPARISON ── */
 export function AiVsHuman() {
-  const [showHuman, setShowHuman] = useState(true);
+  const [sliderPos, setSliderPos] = useState(50); // percentage (0 to 100)
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMove = (clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pos = Math.max(5, Math.min(95, (x / rect.width) * 100));
+    setSliderPos(pos);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    handleMove(e.clientX);
+    containerRef.current?.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    handleMove(e.clientX);
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    setIsDragging(false);
+    containerRef.current?.releasePointerCapture(e.pointerId);
+  };
+
+  // Helper buttons to click and show one side fully
+  const showAi = () => setSliderPos(95);
+  const showHuman = () => setSliderPos(5);
 
   return (
-    <div style={{ margin: "4rem 0" }}>
+    <div style={{ margin: "4rem 0" }} className="w-full">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            background: "color-mix(in oklch, var(--primary) 10%, transparent)",
-            color: "var(--primary)",
-            fontSize: "0.68rem",
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            padding: "0.35rem 0.85rem",
-            borderRadius: "999px",
-            marginBottom: "0.75rem",
-          }}
-        >
-          The Difference
-        </span>
-        <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.75rem", fontWeight: 600, color: "var(--foreground)" }}>
+        <span className="badge-label">The Difference</span>
+        <h3 className="font-display text-3xl md:text-4xl mt-3 text-balance font-normal text-[var(--cq-ink)]">
           Content That Feels Like You, Not Like Everyone Else
         </h3>
+        <p className="text-sm text-[var(--cq-ink-muted)] mt-2 max-w-[60ch] mx-auto font-light">
+          Drag the slider to see the difference between generic AI copy and human writing that actually sounds like your brand.
+        </p>
       </div>
 
-      {/* Toggle selector */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
-        <div style={{ background: "var(--secondary)", borderRadius: "var(--radius-md)", padding: "4px" }}>
+      {/* Selector Buttons (preserves test suite buttons!) */}
+      <div className="flex justify-center mb-6">
+        <div className="bg-[var(--cq-parchment-deep)] rounded-[var(--radius-md)] p-1 flex gap-1">
           <button
-            onClick={() => setShowHuman(false)}
+            onClick={showAi}
+            role="button"
+            className="px-5 py-2 rounded-[var(--radius-sm)] text-xs font-semibold transition-all duration-200"
             style={{
-              padding: "0.5rem 1.25rem",
-              borderRadius: "var(--radius-sm)",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              background: !showHuman ? "var(--primary)" : "transparent",
-              color: !showHuman ? "var(--primary-foreground)" : "var(--muted-foreground)",
+              background: sliderPos > 50 ? "var(--cq-forest)" : "transparent",
+              color: sliderPos > 50 ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
               border: "none",
-              cursor: "pointer",
             }}
           >
             AI Generated
           </button>
           <button
-            onClick={() => setShowHuman(true)}
+            onClick={showHuman}
+            role="button"
+            className="px-5 py-2 rounded-[var(--radius-sm)] text-xs font-semibold transition-all duration-200"
             style={{
-              padding: "0.5rem 1.25rem",
-              borderRadius: "var(--radius-sm)",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              background: showHuman ? "var(--primary)" : "transparent",
-              color: showHuman ? "var(--primary-foreground)" : "var(--muted-foreground)",
+              background: sliderPos <= 50 ? "var(--cq-forest)" : "transparent",
+              color: sliderPos <= 50 ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
               border: "none",
-              cursor: "pointer",
             }}
           >
             Human Written
@@ -501,92 +496,90 @@ export function AiVsHuman() {
         </div>
       </div>
 
-      <div
-        style={{ display: "grid", gap: "1.5rem", gridTemplateColumns: "1fr 1fr" }}
-        className="cq-split"
-        data-active={showHuman ? "human" : "ai"}
+      {/* Interactive Slider Container */}
+      <div 
+        ref={containerRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        className="relative mx-auto w-full max-w-[580px] h-[340px] select-none overflow-hidden touch-none"
+        style={{
+          borderRadius: "var(--radius-xl)",
+          border: "1px solid var(--cq-linen)",
+          cursor: "ew-resize"
+        }}
       >
-        {/* Left: AI Generated */}
-        <div
-          className="cq-ai-card"
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius-xl)",
-            padding: "2rem",
-            opacity: showHuman ? 0.45 : 1,
-            transition: "opacity 0.3s",
-          }}
+        {/* Left Side: AI Generated Content (at the back) */}
+        <div 
+          className="absolute inset-0 p-8 flex flex-col justify-between"
+          style={{ backgroundColor: "var(--cq-night)", color: "#FAF7F0" }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              AI Outline
-            </span>
-            <span style={{ fontSize: "0.68rem", background: "var(--secondary)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
-              Bland / Monospace
-            </span>
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <span className="px-2 py-0.5 rounded-[var(--radius-xs)] text-[10px] uppercase font-semibold tracking-wider bg-[#2A1A1A] text-[#E09090] border border-[#4A2525]">
+                AI Generated
+              </span>
+              <span className="text-[10px] text-[var(--cq-ink-faint)] font-mono">Bland & Monospace</span>
+            </div>
+            <p className="font-mono text-sm leading-relaxed text-[#8C867C]">
+              Our company provides <span className="line-through text-[#C97C7C]">high-quality solutions</span> to meet your business needs. 
+              We leverage <span className="line-through text-[#C97C7C]">cutting-edge technology</span> to deliver value-added services to our customers. 
+              Our team of experts is dedicated to delivering excellence and satisfaction.
+            </p>
           </div>
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", lineHeight: 1.75, color: "var(--muted-foreground)" }}>
-            Our company provides <span style={{ textDecoration: "line-through", color: "var(--destructive)" }}>high-quality solutions</span> to meet your business needs.
-            We leverage <span style={{ textDecoration: "line-through", color: "var(--destructive)" }}>cutting-edge technology</span> to deliver value to our customers.
-            Our team of experts is <span style={{ textDecoration: "line-through", color: "var(--destructive)" }}>dedicated to excellence</span> and customer satisfaction.
-          </p>
+          <div className="text-[11px] font-mono text-[#5A554D]">
+            Generated by GPT-4 in 2.4 seconds
+          </div>
         </div>
 
-        {/* Right: Creative Quill */}
-        <div
-          className="cq-human-card"
-          style={{
-            background: "var(--card)",
-            border: "2px solid var(--primary)",
-            borderRadius: "var(--radius-xl)",
-            padding: "2rem",
-            opacity: !showHuman ? 0.45 : 1,
-            transition: "opacity 0.3s",
-            boxShadow: showHuman ? "0 10px 30px color-mix(in oklch, var(--primary) 12%, transparent)" : "none",
+        {/* Right Side: Human Written Content (on top, clipped from left) */}
+        <div 
+          className="absolute inset-0 p-8 flex flex-col justify-between"
+          style={{ 
+            backgroundColor: "var(--cq-parchment)", 
+            color: "var(--cq-ink)",
+            clipPath: `inset(0 0 0 ${sliderPos}%)`
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Creative Quill
-            </span>
-            <span style={{ fontSize: "0.68rem", background: "var(--primary)", color: "var(--primary-foreground)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
-              Human Written ✓
-            </span>
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <span className="px-2 py-0.5 rounded-[var(--radius-xs)] text-[10px] uppercase font-semibold tracking-wider bg-[var(--cq-forest-light)] text-[var(--cq-forest)] border border-[var(--cq-linen)]">
+                Creative Quill ✓
+              </span>
+              <span className="text-[10px] text-[var(--cq-ink-muted)] font-body">Editorial Strategy</span>
+            </div>
+            <p className="font-display italic text-base md:text-lg leading-relaxed text-[var(--cq-ink)]">
+              Built by two people tired of watching <span className="underline decoration-[var(--cq-forest)] decoration-2 underline-offset-4 font-normal">great ideas get buried</span> in forgettable copy. We write the kind of content that makes readers stop scrolling and actually feel something.
+            </p>
           </div>
-          <p style={{ fontFamily: "var(--font-serif)", fontSize: "0.95rem", lineHeight: 1.75, color: "var(--foreground)" }}>
-            Built by two friends who got tired of watching <span style={{ textDecoration: "underline", textDecorationColor: "var(--primary)", textDecorationThickness: "2px" }}>brilliant ideas die in committee</span>.
-            We make things that work — and occasionally, things that <span style={{ textDecoration: "underline", textDecorationColor: "var(--primary)", textDecorationThickness: "2px" }}>surprise even us</span>.
-          </p>
+          <div className="text-[11px] font-body text-[var(--cq-ink-muted)]">
+            Crafted with research, intuition, and care
+          </div>
+        </div>
+
+        {/* Slider Handle Line */}
+        <div 
+          className="absolute top-0 bottom-0 w-[2px] bg-white z-20 pointer-events-none"
+          style={{ left: `${sliderPos}%` }}
+        />
+
+        {/* Slider Handle Knob */}
+        <div 
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white border border-[var(--cq-linen)] rounded-full shadow-lg z-20 flex items-center justify-center pointer-events-none"
+          style={{ left: `${sliderPos}%` }}
+        >
+          <span className="text-[11px] text-[var(--cq-ink-muted)] font-medium">✦</span>
         </div>
       </div>
 
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <p style={{ fontSize: "0.85rem", color: "var(--muted-foreground)", marginBottom: "1.25rem" }}>
+      <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+        <p style={{ fontSize: "0.85rem", color: "var(--cq-ink-muted)", marginBottom: "1.25rem" }} className="font-light">
           Every word we write sounds like YOU — not like a content factory.
         </p>
-        <Link href="/contact" className="btn-primary">
-          Begin Your Journey
+        <Link href="/contact" className="cq-nav-cta font-medium inline-flex items-center gap-1">
+          Begin Your Journey &rarr;
         </Link>
       </div>
-
-      <style>{`
-        @media (max-width: 640px) {
-          .cq-split { grid-template-columns: 1fr !important; }
-          .cq-split[data-active="human"] .cq-ai-card {
-            display: none !important;
-          }
-          .cq-split[data-active="ai"] .cq-human-card {
-            display: none !important;
-          }
-          .cq-split[data-active="human"] .cq-human-card {
-            opacity: 1 !important;
-          }
-          .cq-split[data-active="ai"] .cq-ai-card {
-            opacity: 1 !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
@@ -596,89 +589,117 @@ export function ContentAuditCard() {
   return (
     <div
       style={{
-        background: "#0d0d0d", // var(--cq-near-black)
-        borderRadius: "var(--radius-xl)",
-        padding: "2.5rem",
-        color: "#ffffff",
-        margin: "4rem 0",
-        border: "1px solid #222222",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+        background: "var(--cq-night)",
+        borderRadius: "var(--radius-2xl)",
+        border: "1px solid var(--cq-night-border)",
+        color: "var(--cq-parchment)",
+        overflow: "hidden",
+        margin: "4rem 0"
       }}
+      className="p-8 md:p-12"
     >
-      <div style={{ display: "grid", gap: "2.5rem", gridTemplateColumns: "2fr 1fr", alignItems: "center" }} className="cq-audit-split">
-        <div>
-          <span
-            style={{
-              background: "rgba(255, 255, 255, 0.15)",
-              color: "#ffffff",
-              fontSize: "0.62rem",
-              fontWeight: 700,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              padding: "0.25rem 0.75rem",
-              borderRadius: "999px",
-              display: "inline-block",
-              marginBottom: "1rem",
-            }}
-          >
-            Limited Offer
+      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
+        {/* Left Column: Content */}
+        <div className="flex flex-col items-start gap-4">
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-medium tracking-wider uppercase bg-[rgba(255,255,255,0.08)] text-[var(--cq-parchment)] border border-[rgba(255,255,255,0.15)]">
+            Free Content Audit • Price: <span className="font-bold">₹0</span>
           </span>
-          <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.85rem", fontWeight: 600, color: "#ffffff", marginBottom: "0.75rem", lineHeight: 1.2 }}>
-            Get a Free Content Audit — Worth ₹5,000
+          <h3 className="font-display text-3xl md:text-4xl text-balance leading-tight text-[var(--cq-parchment)] font-light">
+            Get a Free Audit — Start Writing Content That Converts
           </h3>
-          <p style={{ fontSize: "0.88rem", color: "#999999", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-            We&apos;ll analyze your current content, identify gaps, and give you a 10-point improvement plan. No strings attached.
+          <p className="text-sm text-[rgba(250,247,240,0.65)] font-light leading-relaxed max-w-[55ch]">
+            We&apos;ll analyze your current content, map competitor gaps, and give you a 10-point action blueprint. No strings attached.
           </p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.75rem" }}>
-            {["Full website layout review", "Competitor gap mapping", "10-point action blueprint"].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "#bbbbbb" }}>
-                <span style={{ color: "var(--primary)" }}>✓</span>
+          
+          <div className="flex flex-col gap-2.5 my-2">
+            {[
+              "Free strategy call included",
+              "First draft in 48 hours",
+              "100% satisfaction guarantee"
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-2 text-xs text-[rgba(250,247,240,0.7)] font-light">
+                <span className="text-[#4DB896] text-sm">✓</span>
                 <span>{item}</span>
               </div>
             ))}
           </div>
 
-          <Link href="/contact" className="btn-primary" style={{ background: "#ffffff", color: "#000000", border: "1px solid #ffffff" }}>
-            Claim Your Free Audit
-          </Link>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-          <div
-            style={{
-              width: "120px",
-              height: "120px",
-              borderRadius: "50%",
-              border: "3px solid var(--primary)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            <span style={{ fontSize: "3rem", fontFamily: "var(--font-serif)", fontWeight: 700, color: "#ffffff" }}>
-              ₹0
-            </span>
+          <div className="flex items-center gap-3 mt-2 flex-wrap text-xs text-[rgba(250,247,240,0.5)]">
+            <div className="flex -space-x-2">
+              <div className="w-6 h-6 rounded-full bg-[var(--cq-forest)] border border-[var(--cq-night)] flex items-center justify-center text-[8px] font-bold">PQ</div>
+              <div className="w-6 h-6 rounded-full bg-[var(--cq-teal)] border border-[var(--cq-night)] flex items-center justify-center text-[8px] font-bold">SE</div>
+              <div className="w-6 h-6 rounded-full bg-[var(--cq-ink-muted)] border border-[var(--cq-night)] flex items-center justify-center text-[8px] font-bold">KR</div>
+            </div>
+            <span>+47 clients this month</span>
+            <span className="text-[#4DB896]">★★★★★</span>
           </div>
-          <span style={{ fontSize: "0.72rem", color: "#999999", maxWidth: "160px", lineHeight: 1.4 }}>
-            Free for first 5 new clients this month
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto mt-4">
+            <Link 
+              href="/contact" 
+              className="px-6 py-3 rounded-[var(--radius-sm)] text-xs font-semibold uppercase tracking-wider text-[var(--cq-night)] bg-white hover:bg-[var(--cq-parchment-mid)] transition-colors text-center"
+            >
+              Claim Your Free Audit
+            </Link>
+            <Link 
+              href="/contact?type=consultation" 
+              className="px-6 py-3 rounded-[var(--radius-sm)] text-xs font-semibold uppercase tracking-wider text-[var(--cq-parchment)] border border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.05)] transition-colors text-center"
+            >
+              Book Free Consultation
+            </Link>
+          </div>
+          
+          <span className="text-[10px] text-[var(--cq-ink-faint)] opacity-60">
+            No commitment • Respond in under 2 hours • Free audit included
           </span>
         </div>
-      </div>
 
-      <style>{`
-        @media (max-width: 768px) {
-          .cq-audit-split { grid-template-columns: 1fr !important; text-align: center; }
-          .cq-audit-split div { justify-content: center; align-items: center; }
-        }
-      `}</style>
+        {/* Right Column: Visual Mockup Showcase (Hidden on Mobile) */}
+        <div className="hidden lg:flex flex-col items-center justify-center relative w-full h-[280px] bg-[#1A1714] rounded-[var(--radius-xl)] border border-[var(--cq-night-border)] overflow-hidden">
+          {/* Decorative quote mark watermark */}
+          <span className="absolute -top-10 -right-6 font-display text-[160px] text-[var(--cq-forest)] opacity-10 select-none pointer-events-none leading-none">&ldquo;</span>
+          
+          {/* Mockup card */}
+          <motion.div 
+            className="w-[200px] bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] p-4 shadow-xl z-10"
+            style={{ borderRadius: "var(--radius-lg)", rotate: "-4deg" }}
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="w-3 h-3 rounded-full bg-[var(--cq-forest)] mb-3" />
+            <div className="h-3 bg-[var(--cq-ink-muted)] opacity-30 rounded w-5/6 mb-2" />
+            <div className="h-2 bg-[var(--cq-linen)] rounded w-full mb-1.5" />
+            <div className="h-2 bg-[var(--cq-linen)] rounded w-4/5 mb-1.5" />
+            <div className="h-2 bg-[var(--cq-linen)] rounded w-2/3 mb-1.5" />
+          </motion.div>
+
+          {/* Floating Metric Chips */}
+          <motion.div 
+            className="absolute top-8 left-6 bg-[var(--cq-forest)] text-[var(--cq-parchment)] px-2.5 py-1 text-[9px] font-semibold tracking-wider rounded z-20 shadow-md"
+            style={{ rotate: "6deg" }}
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+          >
+            +230% Traffic
+          </motion.div>
+
+          <motion.div 
+            className="absolute bottom-8 right-6 bg-white text-[var(--cq-ink)] border border-[var(--cq-linen)] px-2.5 py-1 text-[9px] font-semibold tracking-wider rounded z-20 shadow-md"
+            style={{ rotate: "-6deg" }}
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+          >
+            ₹500K+ Earned
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
 
 /* ── 8. SOCIAL PROOF MARQUEE ── */
 export function SocialProofMarquee() {
+  const [isPaused, setIsPaused] = useState(false);
   const testimonials = [
     { quote: "Creative Quill took my rough outline and transformed it into a breathtaking romance novel. Their ability to capture my voice was remarkable.", author: "Sarah M.", role: "Author" },
     { quote: "The structured development process gave me so much peace of mind. They hit every deadline and character arcs were deep.", author: "David L.", role: "Novelist" },
@@ -692,7 +713,13 @@ export function SocialProofMarquee() {
         <span className="label-text">What Our Clients Say</span>
       </div>
 
-      <div className="cq-testimonial-marquee-container" style={{ display: "flex", overflow: "hidden", width: "100%", position: "relative" }}>
+      <div 
+        className="cq-testimonial-marquee-container" 
+        style={{ display: "flex", overflow: "hidden", width: "100%", position: "relative" }}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        onTouchCancel={() => setIsPaused(false)}
+      >
         {/* Left fade overlay */}
         <div style={{
           position: "absolute",
@@ -716,7 +743,10 @@ export function SocialProofMarquee() {
           pointerEvents: "none"
         }} />
 
-        <div className="cq-testimonial-marquee-inner" style={{ display: "flex", gap: "1.5rem" }}>
+        <div 
+          className="cq-testimonial-marquee-inner" 
+          style={{ display: "flex", gap: "1.5rem", animationPlayState: isPaused ? "paused" : "running" }}
+        >
           {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
             <div
               key={idx}
@@ -733,7 +763,7 @@ export function SocialProofMarquee() {
                     lineHeight: 0,
                     position: "absolute",
                     left: "-0.5rem",
-                    top: "-0.5rem",
+                    top: "0.25rem",
                     pointerEvents: "none"
                   }}>&ldquo;</span>
                   <p className="font-serif italic text-sm md:text-base font-light text-[var(--cq-ink-mid)] leading-relaxed pl-3" style={{ margin: 0, textIndent: "0.25rem" }}>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
-import { useTextScramble } from "@/hooks/useTextScramble";
+import HeroIllustration from "@/components/illustrations/HeroIllustration";
 import {
   StatsStrip,
   ClientMarquee,
@@ -13,6 +13,7 @@ import {
   AiVsHuman,
   ContentAuditCard,
   SocialProofMarquee,
+  OpenForWorkBadge,
 } from "@/components/effects/HomeComponents";
 
 const pageStyles = `
@@ -65,7 +66,7 @@ const pageStyles = `
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--cq-teal);
+    background: var(--cq-forest);
   }
   .hero-h1 {
     font-family: var(--font-display);
@@ -175,7 +176,6 @@ const pageStyles = `
     }
   }
 
-  /* Book visual column */
   .hero-visual {
     position: relative;
     display: flex;
@@ -189,69 +189,8 @@ const pageStyles = `
     }
   }
 
-  /* CSS-Only Book Component */
-  .book-container {
-    perspective: 600px;
-    width: 240px;
-    height: 320px;
-  }
-  .book {
-    width: 100%;
-    height: 100%;
-    background: #1B3A35; /* Forest green */
-    border-radius: var(--radius-sm) var(--radius-md) var(--radius-md) var(--radius-sm);
-    box-shadow: var(--shadow-xl);
-    transform: rotateY(-8deg) rotateX(3deg);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-8);
-    position: relative;
-    border-left: 3px solid rgba(255, 255, 255, 0.15);
-  }
-  .book-spine-line {
-    position: absolute;
-    left: 4px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-  .book-title {
-    font-family: var(--font-display);
-    color: var(--cq-cream);
-    font-size: 1.15rem;
-    font-weight: 500;
-    letter-spacing: var(--tracking-wider);
-    text-align: center;
-    margin-top: var(--space-12);
-  }
-  .book-author {
-    font-family: var(--font-body);
-    color: var(--cq-cream-dark);
-    font-size: 0.65rem;
-    letter-spacing: var(--tracking-wider);
-    text-transform: uppercase;
-    text-align: center;
-  }
-
-  /* Botanical Sway */
-  .botanical-svg {
-    position: absolute;
-    right: -20px;
-    top: 10%;
-    height: 45%;
-    transform-origin: bottom center;
-    animation: sway 4s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-  @keyframes sway {
-    0% { transform: rotate(-2deg); }
-    100% { transform: rotate(2deg); }
-  }
-
   /* Section Styles */
-  .why-section, .process-section, .about-section {
+  .why-section, .process-section {
     background: var(--color-bg-primary);
     padding-top: var(--section-py-md);
     padding-bottom: var(--section-py-md);
@@ -290,30 +229,74 @@ const pageStyles = `
     line-height: var(--leading-body);
     margin-top: auto;
   }
-  .process-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-10);
-    align-items: start;
+  /* ── PROCESS MARQUEE ────────────────────── */
+  .cq-process-marquee-container {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding: var(--space-4) 0;
   }
-  @media (max-width: 768px) {
-    .process-grid {
-      grid-template-columns: 1fr;
-    }
+  .cq-process-marquee-inner {
+    display: flex;
+    gap: 1.5rem;
+    animation: process-marquee-scroll 35s linear infinite;
   }
-  .process-h2 {
+  .cq-process-marquee-container:hover .cq-process-marquee-inner {
+    animation-play-state: paused;
+  }
+  
+  .cq-process-card {
+    background: var(--cq-cream);
+    border: 1px solid var(--cq-cream-dark);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    min-width: 280px;
+    max-width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    transition: all 250ms ease;
+  }
+  .cq-process-card:hover {
+    border-color: var(--cq-linen) !important;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  .cq-process-card-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 2.25rem;
+    color: var(--cq-linen);
+    line-height: 1;
+  }
+  .cq-process-card-title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    line-height: var(--leading-heading);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-4);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--cq-ink);
+    margin: 0;
   }
-  .process-desc {
+  .cq-process-card-desc {
     font-family: var(--font-body);
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-    line-height: var(--leading-body);
-    margin-bottom: var(--space-6);
+    font-size: 0.85rem;
+    color: var(--cq-ink-mid);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+  
+  @keyframes process-marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+  }
+  
+  @media (pointer: coarse) {
+    .cq-process-marquee-container:hover .cq-process-marquee-inner {
+      animation-play-state: running !important;
+    }
   }
   .process-cta-box {
     border: 1px solid var(--cq-cream-dark);
@@ -325,8 +308,8 @@ const pageStyles = `
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--cq-teal-subtle);
-    color: var(--cq-teal-hover);
+    background: var(--cq-forest-light);
+    color: var(--cq-forest);
     border-radius: var(--radius-full);
     padding: 0.25rem 0.75rem;
     font-size: 0.68rem;
@@ -356,200 +339,17 @@ const pageStyles = `
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--cq-teal);
-  }
-  .process-steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-  .process-step {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-4);
-  }
-  .process-step-num {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: var(--cq-cream-dark);
-    color: var(--color-text-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-  .process-step-card {
-    flex: 1;
-    border: 1px solid var(--border);
-    background: var(--color-bg-primary);
-    border-radius: var(--radius-md);
-    padding: var(--space-4) var(--space-5);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  }
-  .process-step-card:hover {
-    border-color: var(--cq-teal);
-    box-shadow: var(--shadow-sm);
-  }
-  .process-step-h3 {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-1);
-  }
-  .process-step-desc {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    line-height: var(--leading-tight);
+    background: var(--cq-forest);
   }
 
-  /* ── NEWSLETTER (overhauled) ──────────────── */
-  .nl-section {
-    background: var(--cq-cream-mid);
-    border: 1px solid var(--cq-cream-dark);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8) var(--space-6);
-    text-align: center;
-    max-width: var(--max-width-narrow);
-    margin: var(--space-16) auto;
-  }
-  .nl-badge-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: var(--space-2);
-  }
-  .nl-badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--cq-teal);
-  }
-  .nl-h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-2);
-  }
-  .nl-sub {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-4);
-  }
-  .nl-desc {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    line-height: var(--leading-body);
-    max-width: 42ch;
-    margin: 0 auto var(--space-6);
-  }
-  .nl-form {
-    display: flex;
-    max-width: 28rem;
-    margin: 0 auto;
-    border: 1px solid var(--cq-beige);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-  }
-  @media (max-width: 480px) {
-    .nl-form {
-      flex-direction: column;
-      border: none;
-      gap: var(--space-3);
-    }
-    .nl-input {
-      border: 1px solid var(--cq-beige);
-      border-radius: var(--radius-sm);
-    }
-    .nl-btn {
-      border-radius: var(--radius-sm);
-      padding: var(--space-4);
-    }
-  }
-  .nl-input {
-    flex: 1;
-    background: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    padding: 0.85rem 1rem;
-    font-size: 0.875rem;
-    border: none;
-    outline: none;
-  }
-  .nl-btn {
-    background: var(--cq-teal);
-    color: #ffffff;
-    padding: 0.85rem 1.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    border: none;
-    transition: opacity 0.2s;
-  }
-  .nl-btn:hover {
-    opacity: 0.88;
-  }
-
-  /* ── ABOUT SNIPPET ───────────────────────── */
-  .about-inner {
-    max-width: var(--max-width-narrow);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-6);
-  }
-  @media (min-width: 640px) {
-    .about-inner {
-      flex-direction: row;
-      text-align: left;
-      align-items: center;
-      gap: var(--space-8);
-    }
-  }
-  .about-img-wrap {
-    width: 200px;
-    flex-shrink: 0;
-  }
-  .about-img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-    filter: grayscale(100%);
-    transition: filter 600ms ease;
-    box-shadow: var(--shadow-md);
-  }
-  .about-img:hover {
-    filter: grayscale(0%);
-  }
-  .about-text-h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 2.75rem);
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-4);
-  }
-  .about-text-p {
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-    line-height: var(--leading-body);
-    margin-bottom: var(--space-6);
-  }
 
   /* ── BUTTONS ────────────────────────────── */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--cq-teal);
-    color: #ffffff;
+    background: var(--cq-forest);
+    color: var(--cq-parchment);
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: var(--tracking-wide);
@@ -557,11 +357,11 @@ const pageStyles = `
     padding: 0.85rem 1.75rem;
     border-radius: var(--radius-sm);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: background 0.2s;
     border: none;
   }
   .btn-primary:hover {
-    opacity: 0.88;
+    background: var(--cq-forest-hover);
   }
   .btn-outline {
     display: inline-flex;
@@ -584,43 +384,6 @@ const pageStyles = `
   }
 `;
 
-function ScrambleText({ text }: { text: string }) {
-  const chars = useTextScramble(text);
-  return (
-    <>
-      {chars.map((charObj, idx) => {
-        let color = "var(--color-text-primary)";
-        if (charObj.status === "resolving") color = "var(--cq-teal)";
-        if (charObj.status === "scrambled") color = "var(--cq-ink-muted)";
-
-        const isStoriesWord = text.includes("Stories") && idx >= 5 && idx <= 11;
-        const isImpactWord = text.includes("Impact") && idx >= 11 && idx <= 16;
-
-        if (isStoriesWord || isImpactWord) {
-          return (
-            <span
-              key={idx}
-              style={{
-                color: charObj.status === "resolved" ? "var(--cq-teal)" : color,
-                display: "inline-block",
-                fontStyle: charObj.status === "resolved" ? "italic" : "normal",
-              }}
-            >
-              {charObj.char}
-            </span>
-          );
-        }
-
-        return (
-          <span key={idx} style={{ color, display: "inline-block" }}>
-            {charObj.char}
-          </span>
-        );
-      })}
-    </>
-  );
-}
-
 const processSteps = [
   { num: "1", title: "Voice Audit", desc: "Before we write anything, we study your existing content, competitors, and audience tone. So our first draft already sounds like you, not like us." },
   { num: "2", title: "Connect", desc: "Discover your story through our contact form, email, or phone for an initial discovery call. We'll explore your brand narrative, business objectives, and audience challenges." },
@@ -630,11 +393,402 @@ const processSteps = [
   { num: "6", title: "Refine", desc: "Your satisfaction drives our process. We offer multiple revision rounds to fine-tune content until it perfectly captures your vision and exceeds your expectations." },
 ];
 
+// ── NEW TOP 3 SERVICES ──
+function FeaturedServices() {
+  const services = [
+    {
+      num: "01",
+      name: "Blog Writing",
+      tagline: "Engage readers and build search visibility with rich content.",
+      price: "From ₹1.5 / word",
+      timeline: "Standard 48hr delivery",
+      features: [
+        "SEO Optimization & research",
+        "Tuned to your voice guide",
+        "2 rounds of refinements"
+      ],
+      slug: "blog-writing"
+    },
+    {
+      num: "02",
+      name: "Brand Storytelling",
+      tagline: "Differentiate with authentic brand narrative assets.",
+      price: "From ₹12,000 / project",
+      timeline: "Delivered in 5-7 days",
+      features: [
+        "Founder archetypes mapping",
+        "Core origin stories",
+        "Tonal consistency audit"
+      ],
+      slug: "brand-storytelling"
+    },
+    {
+      num: "03",
+      name: "SEO Content",
+      tagline: "Drive high-intent traffic with optimized pages.",
+      price: "From ₹2.5 / word",
+      timeline: "Delivered in 3-4 days",
+      features: [
+        "Keyword cluster mapping",
+        "Rich meta details",
+        "Internal linking layout"
+      ],
+      slug: "seo-content"
+    }
+  ];
+
+  return (
+    <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment)]">
+      <div className="container-content">
+        <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
+          <span className="badge-label self-center md:self-start">FEATURED SERVICES</span>
+          <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
+            Content That Moves Businesses Forward
+          </h2>
+          <p className="text-sm text-[var(--cq-ink-muted)] max-w-[65ch] font-light">
+            From brand storytelling to SEO — we cover what matters most.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {services.map((s) => (
+            <div 
+              key={s.num} 
+              className="bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-7 flex flex-col justify-between relative transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+            >
+              <div>
+                <span className="font-sans font-semibold text-6xl text-[var(--cq-parchment-deep)] select-none absolute top-4 right-6 opacity-80">
+                  {s.num}
+                </span>
+                
+                <h3 className="font-display text-2xl text-[var(--cq-ink)] mt-2 font-normal">
+                  {s.name}
+                </h3>
+                <p className="text-xs text-[var(--cq-ink-muted)] font-light mt-1 mb-4">
+                  {s.tagline}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="badge-tag">{s.price}</span>
+                  <span className="text-[10px] text-[var(--cq-ink-faint)] flex items-center">{s.timeline}</span>
+                </div>
+
+                <div className="w-full h-px bg-[var(--cq-parchment-deep)] my-4" />
+
+                <ul className="flex flex-col gap-2.5 mb-6">
+                  {s.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-xs text-[var(--cq-ink-mid)] font-light">
+                      <span className="text-[var(--cq-forest)] font-bold">✓</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <Link 
+                  href={`/services#${s.slug}`}
+                  className="text-xs font-semibold text-[var(--cq-forest)] hover:text-[var(--cq-forest-hover)] transition-colors inline-flex items-center gap-1 group"
+                >
+                  Learn More <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link 
+            href="/services" 
+            className="px-6 py-3 border border-[var(--cq-linen)] rounded-[var(--radius-sm)] text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink)] hover:border-[var(--cq-ink)] transition-colors inline-flex items-center gap-1"
+          >
+            See All Services &rarr;
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── NEW COST ESTIMATOR ──
+function CostCalculator() {
+  const [service, setService] = useState("blog");
+  const [words, setWords] = useState(1000);
+
+  const calculatePrice = () => {
+    let price = 0;
+    let isProject = false;
+    switch (service) {
+      case "blog":
+        price = words * 1.5;
+        break;
+      case "article":
+        price = words * 2.0;
+        break;
+      case "seo":
+        price = words * 2.5;
+        break;
+      case "story":
+        price = 12000;
+        isProject = true;
+        break;
+      case "web":
+        price = 20000;
+        isProject = true;
+        break;
+      default:
+        price = 0;
+    }
+    return { price, isProject };
+  };
+
+  const { price, isProject } = calculatePrice();
+
+  return (
+    <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)]">
+      <div className="container-content">
+        <div className="flex flex-col gap-2 mb-10 text-center">
+          <span className="badge-label self-center">PRICING ESTIMATOR</span>
+          <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
+            Get an Instant Cost Estimate
+          </h2>
+          <p className="text-sm text-[var(--cq-ink-muted)] max-w-[65ch] mx-auto font-light">
+            No surprises. Know your budget before you reach out.
+          </p>
+        </div>
+
+        <div className="max-w-[640px] mx-auto bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-8 md:p-10 shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="estimator-service" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Service Type</label>
+              <select
+                id="estimator-service"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+              >
+                <option value="blog">Blog Writing (₹1.5/word)</option>
+                <option value="article">Article Writing (₹2.0/word)</option>
+                <option value="seo">SEO Content (₹2.5/word)</option>
+                <option value="story">Brand Storytelling (Flat)</option>
+                <option value="web">Website Copy (Flat)</option>
+                <option value="custom">Custom Content (Contact Us)</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {service !== "custom" && !isProject ? (
+                <>
+                  <label htmlFor="estimator-words" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Word Count</label>
+                  <input
+                    id="estimator-words"
+                    type="number"
+                    min="100"
+                    step="100"
+                    value={words}
+                    onChange={(e) => setWords(parseInt(e.target.value) || 0)}
+                    className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+                    placeholder="e.g. 1000 words"
+                  />
+                </>
+              ) : (
+                <>
+                  <label className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Billing Type</label>
+                  <div className="w-full bg-[var(--cq-parchment-deep)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink-muted)]">
+                    {service === "custom" ? "Project Consultation" : "Flat Project Rate"}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="border-t border-[rgba(22,18,14,0.08)] pt-8 text-center flex flex-col items-center">
+            {service === "custom" ? (
+              <div className="font-display text-4xl text-[var(--cq-ink)] mb-1">
+                Custom Pricing
+              </div>
+            ) : (
+              <div className="font-sans font-medium text-5xl text-[var(--cq-ink)] mb-1">
+                ₹{price.toLocaleString()}
+              </div>
+            )}
+            <span className="text-xs text-[var(--cq-ink-muted)] uppercase tracking-wider mb-6">
+              {service === "custom" ? "Based on project scope" : "Estimated Cost"}
+            </span>
+
+            <div className="flex flex-wrap gap-2 justify-center mb-6">
+              <span className="badge-tag">Plagiarism-Free</span>
+              <span className="badge-tag">Revisions Included</span>
+              <span className="badge-tag">SEO Optimized</span>
+            </div>
+
+            <Link
+              href={`/contact?service=${service}&words=${words}`}
+              className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3.5"
+            >
+              Get Exact Quote &rarr;
+            </Link>
+            
+            <p className="text-[10px] text-[var(--cq-ink-faint)] mt-4">
+              *Exact pricing is confirmed during our free consultation. Rush delivery (+30%) available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── NEW FAQ SECTION ──
+function FaqSection() {
+  const faqs = [
+    { q: "How does the process work?", a: "We start with a voice audit, align on requirements, deliver the first draft in 48 hours, and refine based on your feedback." },
+    { q: "What are your prices?", a: "Pricing is transparent. We start from ₹1.5/word for blogs, and have flat-rate project pricing for custom brand storytelling." },
+    { q: "Is your content plagiarism-free?", a: "Yes, 100%. Everything we write is crafted from scratch by our human team and verified through multiple checkers." },
+    { q: "How long does standard delivery take?", a: "Our standard turnaround is 48 hours for articles and blog posts. Larger strategy or website projects take 3-5 days." },
+    { q: "Do you offer revisions?", a: "Absolutely. We include 2 rounds of revisions with every project to ensure the final piece aligns with your expectations." },
+    { q: "What industries do you work with?", a: "We write for startups, e-commerce, D2C brands, professional agencies, authors, and SaaS companies across India." }
+  ];
+
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  return (
+    <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment)]">
+      <div className="container-content">
+        <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
+          <span className="badge-label self-center md:self-start">FAQ</span>
+          <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
+            Quick Answers to Common Questions
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Left Column: Even indices */}
+          <div className="flex flex-col gap-3">
+            {faqs.filter((_, i) => i % 2 === 0).map((faq, idx) => {
+              const realIdx = idx * 2;
+              const isOpen = openIdx === realIdx;
+              return (
+                <div 
+                  key={realIdx} 
+                  className="bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] overflow-hidden transition-all duration-300"
+                >
+                  <button
+                    onClick={() => setOpenIdx(isOpen ? null : realIdx)}
+                    className="w-full px-5 py-4 flex items-center justify-between text-left font-body font-medium text-sm text-[var(--cq-ink)]"
+                  >
+                    <span>{faq.q}</span>
+                    <span className="text-xs text-[var(--cq-ink-muted)] ml-2 transition-transform duration-200" style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
+                      ▼
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="px-5 pb-4 text-xs font-light text-[var(--cq-ink-mid)] leading-relaxed border-t border-[rgba(22,18,14,0.05)] pt-3">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Odd indices */}
+          <div className="flex flex-col gap-3">
+            {faqs.filter((_, i) => i % 2 !== 0).map((faq, idx) => {
+              const realIdx = idx * 2 + 1;
+              const isOpen = openIdx === realIdx;
+              return (
+                <div 
+                  key={realIdx} 
+                  className="bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] overflow-hidden transition-all duration-300"
+                >
+                  <button
+                    onClick={() => setOpenIdx(isOpen ? null : realIdx)}
+                    className="w-full px-5 py-4 flex items-center justify-between text-left font-body font-medium text-sm text-[var(--cq-ink)]"
+                  >
+                    <span>{faq.q}</span>
+                    <span className="text-xs text-[var(--cq-ink-muted)] ml-2 transition-transform duration-200" style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
+                      ▼
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="px-5 pb-4 text-xs font-light text-[var(--cq-ink-mid)] leading-relaxed border-t border-[rgba(22,18,14,0.05)] pt-3">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="text-center mt-8">
+          <p className="text-xs text-[var(--cq-ink-muted)]">
+            More questions? <Link href="/contact" className="text-[var(--cq-forest)] font-medium underline">Reach out to us &rarr;</Link>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
-  const [nlEmail, setNlEmail] = useState("");
-  const [nlSent, setNlSent] = useState(false);
   const [hoverCTA, setHoverCTA] = useState(false);
-  const [openStepIdx, setOpenStepIdx] = useState<number | null>(0);
+  const [isProcessPaused, setIsProcessPaused] = useState(false);
+
+  // Staggered entrance variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
+  const illustrationVariants = {
+    hidden: { opacity: 0, scale: 0.96 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const,
+        delay: 0.15,
+      },
+    },
+  };
 
   return (
     <>
@@ -644,28 +798,33 @@ export default function HomePage() {
       <main>
         {/* ── HERO ─────────────────────────────── */}
         <section className="hero-section">
-          <div className="hero-inner">
+          <motion.div 
+            className="hero-inner"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Left Content Column */}
             <div className="hero-text">
-              <div className="hero-badge-container">
+              <motion.div className="hero-badge-container" variants={itemVariants}>
                 <span className="hero-badge-dot" />
                 <span className="label-text">A CREATIVE CONTENT WRITING AGENCY</span>
-              </div>
-              <h1 className="hero-h1">
-                <ScrambleText text="Human Strategy." /><br />
-                <ScrambleText text="Real Stories." /><br />
-                <ScrambleText text="Measurable Impact." />
-              </h1>
-              <p className="hero-sub" data-cursor="text">
+              </motion.div>
+              <motion.h1 className="hero-h1 font-normal" variants={itemVariants}>
+                Human Strategy.<br />
+                Real Stories.<br />
+                Measurable Impact.
+              </motion.h1>
+              <motion.p className="hero-sub" data-cursor="text" variants={itemVariants}>
                 WORDS THAT SATISFY. CONTENT THAT CONVERTS.
-              </p>
-              <p className="hero-desc" data-cursor="text">
+              </motion.p>
+              <motion.p className="hero-desc" data-cursor="text" variants={itemVariants}>
                 We craft powerful content that builds trust, drives engagement,
                 and delivers real business results.
-              </p>
+              </motion.p>
 
               {/* Feature icons row */}
-              <div className="hero-features-row">
+              <motion.div className="hero-features-row" variants={itemVariants}>
                 <div className="hero-feature-item">
                   <span>Fast &amp; Reliable</span>
                 </div>
@@ -677,10 +836,10 @@ export default function HomePage() {
                 <div className="hero-feature-item">
                   <span>Expert Writers</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Action buttons */}
-              <div className="hero-actions">
+              <motion.div className="hero-actions" variants={itemVariants}>
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <Link
                     href="/services"
@@ -704,55 +863,19 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <Link href="/works" className="btn-outline" data-cursor="button">EXPLORE OUR WORK &rarr;</Link>
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Visual Column */}
-            <div className="hero-visual">
-              {/* CSS-only Book Cover */}
-              <div className="book-container">
-                <div className="book">
-                  <div className="book-spine-line" />
-                  <p className="hero-book-label" style={{ color: "var(--cq-cream-dark)", opacity: 0.8, fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase" }}>Creative Quill</p>
-                  <div>
-                    <h2 className="book-title">THE MANUSCRIPT</h2>
-                    {/* Gold feather SVG */}
-                    <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem", color: "#C4A882" }}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
-                        <line x1="16" y1="8" x2="2" y2="22" />
-                        <line x1="17.5" y1="15" x2="9" y2="15" />
-                      </svg>
-                    </div>
-                  </div>
-                  <p className="book-author">Est. 2024</p>
-                </div>
-              </div>
-
-              {/* Dried botanical branch SVG illustration */}
-              <svg
-                className="botanical-svg"
-                width="80"
-                height="180"
-                viewBox="0 0 100 220"
-                fill="none"
-                stroke="#C4A882"
-                strokeWidth={1.5}
-                strokeLinecap="round"
-              >
-                {/* Stem */}
-                <path d="M 50,210 Q 48,110 52,10" />
-                {/* Leaves */}
-                <path d="M 50,180 Q 25,160 15,165 Q 32,150 50,158" />
-                <path d="M 50,158 Q 75,138 85,143 Q 68,128 50,136" />
-                <path d="M 50,136 Q 28,116 18,121 Q 33,106 50,114" />
-                <path d="M 50,114 Q 72,94 82,99 Q 65,84 50,92" />
-                <path d="M 50,92 Q 30,72 20,77 Q 35,62 50,70" />
-                <path d="M 50,70 Q 70,50 80,55 Q 63,40 50,48" />
-                <path d="M 50,48 Q 32,28 24,33 Q 38,18 50,26" />
-              </svg>
-            </div>
-          </div>
+            <motion.div 
+              className="hero-visual"
+              variants={illustrationVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <HeroIllustration />
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* Stats strip & logo ticker */}
@@ -764,21 +887,22 @@ export default function HomePage() {
         {/* ── WHY US (BENTO GRID) ──────────────── */}
         <section className="why-section">
           <div className="section-inner">
-            <div className="section-label">
-              <span className="section-label-line" />
-              <span className="section-label-text">What Sets Us Apart</span>
-            </div>
-            <div className="why-header">
-              <h2 className="why-h2" data-cursor="text">Strategic Content.<br />Measurable Growth.</h2>
-              <p className="why-h2-desc" data-cursor="text">
-                Discover how Creative Quill transforms common content struggles into
-                revenue-generating stories that captivate audiences and convert prospects.
+            <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
+              <span className="badge-label self-center md:self-start">What Sets Us Apart</span>
+              <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
+                Strategic Content. Measurable Growth.
+              </h2>
+              <p className="text-sm text-[var(--cq-ink-muted)] max-w-[65ch] font-light">
+                Discover how Creative Quill transforms common content struggles into revenue-generating stories that captivate audiences.
               </p>
             </div>
 
             <BentoGrid />
           </div>
         </section>
+
+        {/* ── TOP 3 SERVICES ──────────────────── */}
+        <FeaturedServices />
 
         {/* ── AI VS HUMAN COMPARISON ──────────── */}
         <section style={{ background: "var(--color-bg-primary)", padding: "2rem 1.5rem" }}>
@@ -787,194 +911,102 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── PROCESS ─────────────────────────── */}
-        <section className="process-section">
-          <div className="section-inner">
-            <div className="section-label">
-              <span className="section-label-line" />
-              <span className="section-label-text">Our Process</span>
+         {/* ── PROCESS ─────────────────────────── */}
+        <section className="process-section" style={{ background: "var(--cq-parchment-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", overflow: "hidden", padding: "4rem 0" }}>
+          <div className="section-inner" style={{ maxWidth: "100%", paddingLeft: 0, paddingRight: 0 }}>
+            <div className="flex flex-col gap-2 mb-10 text-center container-content">
+              <span className="badge-label self-center">Our Process</span>
+              <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
+                Your Story. Our Craft. Results That Matter.
+              </h2>
+              <p className="text-sm text-[var(--cq-ink-muted)] max-w-[65ch] font-light mx-auto">
+                From discovery to delivery, our story-driven approach transforms your brand message into compelling narratives that resonate.
+              </p>
             </div>
-            <div className="process-grid">
-              {/* Left */}
-              <div>
-                <h2 className="process-h2" data-cursor="text">Your Story. Our Craft.<br />Results That Matter.</h2>
-                <p className="process-desc" data-cursor="text">
-                  From discovery to delivery, our story-driven approach transforms your brand
-                  message into compelling narratives that resonate with audiences and drive
-                  measurable business outcomes. Every step is designed for clarity,
-                  collaboration, and content that truly connects.
-                </p>
-                <div className="process-cta-box">
-                  <div className="process-cta-badge">✓ Ready to Transform Your Brand?</div>
-                  <h3 className="process-cta-h3">Let&apos;s Craft Content That Converts</h3>
-                  <div className="process-checks">
-                    {["48-Hour Delivery", "Multiple Revisions", "Premium Quality"].map((c) => (
-                      <span key={c} className="process-check" data-cursor="text">
-                        <span className="process-check-dot" /> {c}
-                      </span>
-                    ))}
-                  </div>
-                  <Link href="/contact" className="btn-primary" style={{ display: "block", textAlign: "center" }} data-cursor="button">
-                    Begin Your Journey Now
-                  </Link>
-                </div>
-              </div>
+            
+            {/* Horizontal Marquee Scroller for Process Steps */}
+            <div 
+              className="cq-process-marquee-container"
+              onTouchStart={() => setIsProcessPaused(true)}
+              onTouchEnd={() => setIsProcessPaused(false)}
+              onTouchCancel={() => setIsProcessPaused(false)}
+            >
+              {/* Left fade overlay */}
+              <div style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: "80px",
+                background: "linear-gradient(to right, var(--cq-parchment-mid), transparent)",
+                zIndex: 10,
+                pointerEvents: "none"
+              }} />
+              {/* Right fade overlay */}
+              <div style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: "80px",
+                background: "linear-gradient(to left, var(--cq-parchment-mid), transparent)",
+                zIndex: 10,
+                pointerEvents: "none"
+              }} />
 
-              {/* Steps */}
-              <div className="w-full">
-                {/* Desktop Version */}
-                <div className="hidden md:flex flex-col gap-4">
-                  {processSteps.map((step) => (
-                    <div key={step.num} className="process-step">
-                      <div className="process-step-num">{step.num}</div>
-                      <div className="process-step-card" data-cursor="card">
-                        <h3 className="process-step-h3">{step.title}</h3>
-                        <p className="process-step-desc">{step.desc}</p>
-                      </div>
-                    </div>
+              <div 
+                className="cq-process-marquee-inner"
+                style={{ animationPlayState: isProcessPaused ? "paused" : "running" }}
+              >
+                {processSteps.concat(processSteps).concat(processSteps).map((step, idx) => (
+                  <div key={idx} className="cq-process-card" data-cursor="card">
+                    <span className="cq-process-card-num">0{step.num}</span>
+                    <h3 className="cq-process-card-title">{step.title}</h3>
+                    <p className="cq-process-card-desc">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Box centered at the bottom */}
+            <div className="flex justify-center mt-12 px-6">
+              <div className="process-cta-box max-w-[500px] w-full text-center flex flex-col items-center">
+                <div className="process-cta-badge mx-auto">✓ Ready to Transform Your Brand?</div>
+                <h3 className="process-cta-h3 text-center">Let&apos;s Craft Content That Converts</h3>
+                <div className="process-checks justify-center">
+                  {["48-Hour Delivery", "Multiple Revisions", "Premium Quality"].map((c) => (
+                    <span key={c} className="process-check" data-cursor="text">
+                      <span className="process-check-dot" /> {c}
+                    </span>
                   ))}
                 </div>
-
-                {/* Mobile Version (Accordion) */}
-                <div className="block md:hidden">
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    {processSteps.map((step, i) => {
-                      const isStepOpen = openStepIdx === i;
-                      return (
-                        <div
-                          key={step.num}
-                          style={{
-                            border: "1px solid var(--border)",
-                            borderRadius: "var(--radius-md)",
-                            background: "var(--color-bg-primary)",
-                            overflow: "hidden",
-                          }}
-                        >
-                          <button
-                            onClick={() => setOpenStepIdx(isStepOpen ? null : i)}
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              padding: "1rem 1.25rem",
-                              border: "none",
-                              background: isStepOpen ? "var(--cq-cream-mid)" : "transparent",
-                              textAlign: "left",
-                              cursor: "pointer",
-                              transition: "background 0.2s",
-                              borderLeft: isStepOpen ? "4px solid var(--cq-teal)" : "none",
-                            }}
-                          >
-                            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                              <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cq-teal)" }}>
-                                0{step.num}
-                              </span>
-                              <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-text-primary)" }}>
-                                {step.title}
-                              </span>
-                            </div>
-                            <span style={{ fontSize: "0.75rem", transition: "transform 0.2s", transform: isStepOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
-                              ▼
-                            </span>
-                          </button>
-                          
-                          <AnimatePresence initial={false}>
-                            {isStepOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2, ease: "easeOut" }}
-                                style={{ overflow: "hidden" }}
-                              >
-                                <div style={{ padding: "1.25rem", borderTop: "1px solid var(--border)", fontSize: "0.85rem", color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
-                                  {step.desc}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                <Link href="/contact" className="btn-primary w-full justify-center" data-cursor="button">
+                  Begin Your Journey Now
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── FREE AUDIT CARD ─────────────────── */}
+        {/* ── COST CALCULATOR ─────────────────── */}
+        <CostCalculator />
+
+        {/* ── TESTIMONIALS (Marquee Only) ──────── */}
+        <SocialProofMarquee />
+
+        {/* ── FAQ SECTION ─────────────────────── */}
+        <FaqSection />
+
+        {/* ── FREE AUDIT CARD (CTA Banner) ────── */}
         <section style={{ background: "var(--color-bg-primary)", padding: "1rem 1.5rem" }}>
           <div className="section-inner">
             <ContentAuditCard />
           </div>
         </section>
-
-        {/* ── TESTIMONIALS (Marquee Only) ──────── */}
-        <SocialProofMarquee />
-
-        {/* ── NEWSLETTER ──────────────────────── */}
-        <section className="nl-section">
-          <div className="nl-badge-container">
-            <span className="nl-badge-dot" />
-            <span className="label-text">Newsletter</span>
-          </div>
-          <h2 className="nl-h2" data-cursor="text">Join Our Network!</h2>
-          <p className="nl-sub" data-cursor="text">And Gain Exclusive Access to Writing Tips &amp; Updates!</p>
-          <p className="nl-desc" data-cursor="text">
-            Subscribe to receive expert advice on manuscript development, story arcs,
-            and the publishing journey directly from our top ghostwriters.
-          </p>
-          {nlSent ? (
-            <p style={{ color: "var(--cq-teal)", fontSize: "0.95rem", fontWeight: 600 }}>
-              ✓ You&apos;re subscribed — welcome aboard!
-            </p>
-          ) : (
-            <form className="nl-form" onSubmit={(e) => { e.preventDefault(); if (nlEmail) setNlSent(true); }}>
-              <input
-                id="newsletter-email"
-                name="email"
-                type="email" className="nl-input" placeholder="Email Address" required
-                value={nlEmail} onChange={(e) => setNlEmail(e.target.value)}
-                aria-label="Email address"
-              />
-              <button type="submit" className="nl-btn" data-cursor="button">Join</button>
-            </form>
-          )}
-        </section>
-
-        {/* ── ABOUT SNIPPET ───────────────────── */}
-        <section className="about-section">
-          <div className="section-inner">
-            <div className="about-inner">
-              <div className="about-img-wrap">
-                <img
-                  src="https://images.unsplash.com/photo-1455390582262-044cdead2708?q=80&w=600&auto=format&fit=crop"
-                  alt="Creative Quill Desk"
-                  className="about-img"
-                />
-              </div>
-              <div style={{ flex: "1 1 280px" }}>
-                <h2 className="about-text-h2" data-cursor="text">
-                  About <em>Creative Quill</em>
-                </h2>
-                <p className="about-text-p" data-cursor="text">
-                  It all begins with an idea. Maybe you want to publish your first novel.
-                  Maybe you&apos;re ready to share your memoir, or perhaps you have a story
-                  that&apos;s waiting to be told. Whatever it is, the way you present your
-                  narrative can make all the difference in reaching your readers.
-                  We adapt to various tones, ranging from lighthearted fun to deep,
-                  emotionally heavy stories, ensuring your vision remains uncompromised.
-                </p>
-                <Link href="/about" className="btn-primary" data-cursor="button">Learn More</Link>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <CQFooter />
+      <OpenForWorkBadge />
     </>
   );
 }

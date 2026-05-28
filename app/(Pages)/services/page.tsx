@@ -3,11 +3,14 @@ import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import type { Metadata } from "next";
 import { ServiceCard, PricingCalculator } from "./ServiceCardClient";
+import PageHero from "@/components/sections/PageHero";
+import { ContentAuditCard } from "@/components/effects/HomeComponents";
 
 export const metadata: Metadata = {
   title: "Content Writing Services | Creative Quill",
   description: "Professional content writing services including blog writing, SEO content, brand storytelling, website copy, and more. Human-written, strategy-driven content that converts.",
 };
+
 
 export const services = [
   {
@@ -17,7 +20,7 @@ export const services = [
     tags: ["Topic Research", "SEO Optimized", "2 Revisions"],
     price: "₹1.5/word",
     time: "3–5 days",
-    href: "/contact",
+    href: "/services/blog-writing",
   },
   {
     icon: "article",
@@ -26,7 +29,7 @@ export const services = [
     tags: ["Deep Research", "Expert Sources", "Fact-Checked"],
     price: "₹3,000/1K words",
     time: "7–10 days",
-    href: "/contact",
+    href: "/services/article-writing",
   },
   {
     icon: "brand",
@@ -35,7 +38,7 @@ export const services = [
     tags: ["Brand Voice", "Origin Story", "Mission & Values"],
     price: "₹12,000/project",
     time: "7–10 days",
-    href: "/contact",
+    href: "/services/brand-storytelling",
   },
   {
     icon: "website",
@@ -44,7 +47,7 @@ export const services = [
     tags: ["5 Pages", "Brand Voice", "SEO Optimized"],
     price: "₹7,000/site",
     time: "10–14 days",
-    href: "/contact",
+    href: "/services/website-copy",
   },
   {
     icon: "seo",
@@ -53,7 +56,7 @@ export const services = [
     tags: ["Keyword Research", "Meta Tags", "Internal Linking"],
     price: "₹15/word",
     time: "5–7 days",
-    href: "/contact",
+    href: "/services/seo-content",
   },
   {
     icon: "custom",
@@ -62,30 +65,9 @@ export const services = [
     tags: ["Custom Scope", "Volume Discounts", "Retainers"],
     price: "Custom",
     time: "Varies",
-    href: "/contact",
+    href: "/services/custom-content",
   },
 ];
-
-// Helper SVGs
-export function StarIcon() {
-  return (
-    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20" style={{ display: "inline-block", verticalAlign: "middle" }}>
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-    </svg>
-  );
-}
-
-
-
-export function CheckIcon() {
-  return (
-    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} style={{ display: "inline-block", verticalAlign: "middle" }}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
-
 
 export default function ServicesPage() {
   return (
@@ -93,36 +75,7 @@ export default function ServicesPage() {
       <style>{`
         body { background: var(--cq-cream); }
 
-        .sp-hero {
-          background: var(--cq-cream);
-          padding: var(--space-16) var(--space-6) var(--space-10);
-          border-bottom: 1px solid var(--cq-cream-dark);
-        }
-        .sp-hero-inner { max-width: var(--max-width-narrow); margin: 0 auto; text-align: center; }
-        .sp-hero-badge {
-          display: inline-flex; align-items: center; gap: 0.5rem;
-          background: var(--cq-cream-mid);
-          color: var(--cq-teal); border-radius: var(--radius-full);
-          padding: 0.35rem 0.85rem;
-          font-family: var(--font-body);
-          font-size: 0.6875rem; font-weight: 500;
-          letter-spacing: var(--tracking-wider); text-transform: uppercase;
-          margin-bottom: 1rem;
-          border: 1px solid var(--cq-cream-dark);
-        }
-        .sp-hero-h1 {
-          font-family: var(--font-display);
-          font-size: clamp(2.5rem, 6vw, 4rem);
-          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-display);
-          letter-spacing: var(--tracking-tighter);
-        }
-        .sp-hero-desc {
-          font-family: var(--font-body);
-          font-size: 1.0625rem; font-weight: 300; color: var(--cq-ink-mid);
-          max-width: 38rem; margin: 0 auto; line-height: var(--leading-body);
-        }
-
-        .sp-grid-section { background: var(--cq-cream); padding: var(--space-12) var(--space-6); }
+        .sp-grid-section { background: var(--cq-cream); padding: var(--section-py-md) var(--space-6); }
         .sp-grid {
           max-width: var(--max-width-content); margin: 0 auto;
           display: grid; gap: var(--space-4);
@@ -140,9 +93,9 @@ export default function ServicesPage() {
         }
         .sp-card {
           display: flex; flex-direction: column;
-          border: 1px solid var(--cq-cream-dark);
-          background: var(--cq-cream-mid);
-          border-radius: var(--radius-lg);
+          border: 1px solid var(--cq-linen);
+          background: var(--cq-parchment);
+          border-radius: var(--radius-xl);
           padding: var(--space-4);
           transition: border-color var(--transition-base), box-shadow var(--transition-base);
           text-decoration: none; color: inherit;
@@ -153,22 +106,21 @@ export default function ServicesPage() {
           }
         }
         .sp-card:hover {
-          border-color: var(--cq-beige);
+          border-color: var(--cq-linen);
           box-shadow: var(--shadow-md);
         }
         .sp-card-icon {
           width: 2.5rem; height: 2.5rem;
-          background: var(--cq-cream-dark);
+          background: var(--cq-parchment-deep);
           border-radius: var(--radius-md);
           display: flex; align-items: center; justify-content: center;
-          color: var(--cq-teal); margin-bottom: 1rem; flex-shrink: 0;
+          color: var(--cq-forest); margin-bottom: 1rem; flex-shrink: 0;
         }
         .sp-card-name {
           font-family: var(--font-display);
-          font-size: 1.5rem; font-weight: 500; color: var(--cq-teal);
+          font-size: 1.5rem; font-weight: 400; color: var(--cq-ink);
           margin: 0 0 0.5rem;
           letter-spacing: var(--tracking-tight);
-          transition: color var(--transition-fast);
         }
         .sp-card-desc {
           font-family: var(--font-body);
@@ -176,26 +128,13 @@ export default function ServicesPage() {
           line-height: var(--leading-tight); flex: 1; margin: 0 0 1.25rem;
         }
         .sp-card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
-        .sp-tag {
-          font-family: var(--font-body);
-          font-size: 0.6875rem; font-weight: 500; color: var(--cq-teal);
-          letter-spacing: var(--tracking-wide); text-transform: uppercase;
-          display: flex; align-items: center; gap: 0.35rem;
-        }
-        .sp-tag::before {
-          content: '';
-          display: inline-block;
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          background-color: var(--cq-teal);
-        }
+        
         .sp-card-bottom {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           gap: 0.4rem;
-          border-top: 1px solid var(--cq-cream-dark);
+          border-top: 1px solid var(--cq-parchment-deep);
           padding-top: 0.85rem;
           margin-bottom: 0.5rem;
         }
@@ -220,7 +159,7 @@ export default function ServicesPage() {
         .sp-card-cta {
           display: inline-flex; align-items: center; gap: 0.35rem;
           background: transparent !important;
-          color: var(--cq-teal);
+          color: var(--cq-forest);
           font-family: var(--font-body);
           font-size: 0.8125rem; font-weight: 500;
           letter-spacing: var(--tracking-wide);
@@ -234,13 +173,13 @@ export default function ServicesPage() {
           transition: transform var(--transition-fast);
         }
         .sp-card:hover .sp-card-cta {
-          color: var(--cq-teal-hover);
+          color: var(--cq-forest-hover);
         }
         .sp-card:hover .sp-card-cta span {
           transform: translateX(3px);
         }
 
-        .sp-cta-section { background: var(--cq-cream); padding: var(--space-12) var(--space-6); }
+        .sp-cta-section { background: var(--cq-cream); padding: var(--section-py-md) var(--space-6); }
         .sp-cta-box {
           max-width: var(--max-width-narrow); margin: 0 auto;
           background: var(--cq-night);
@@ -264,6 +203,7 @@ export default function ServicesPage() {
           font-size: 0.95rem; font-weight: 300;
           color: var(--cq-ink-faint);
           line-height: var(--leading-body); margin: 0 auto 1.5rem; max-width: 32rem;
+          text-align: center;
         }
         .sp-cta-actions {
           display: flex;
@@ -309,29 +249,18 @@ export default function ServicesPage() {
           border: 1px solid var(--cq-night-border);
         }
         .sp-cta-check svg {
-          color: var(--cq-teal);
+          color: var(--cq-forest-hover);
         }
-        
-        .btn-primary {
-          display: inline-block;
-          background: var(--cq-teal);
-          color: white;
-          font-size: 0.75rem; font-weight: 500;
-          letter-spacing: var(--tracking-wide); text-transform: uppercase;
-          padding: 0.75rem 1.5rem; border-radius: var(--radius-sm);
-          text-decoration: none; transition: background var(--transition-fast);
-        }
-        .btn-primary:hover { background: var(--cq-teal-hover); }
         
         .btn-light {
           display: inline-block;
-          background: var(--cq-teal); color: white;
+          background: var(--cq-forest); color: var(--cq-parchment);
           font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
           text-transform: uppercase; padding: 0.75rem 1.5rem;
           border-radius: var(--radius-sm); text-decoration: none;
           transition: background var(--transition-fast);
         }
-        .btn-light:hover { background: var(--cq-teal-hover); }
+        .btn-light:hover { background: var(--cq-forest-hover); }
         
         .btn-ghost {
           display: inline-block;
@@ -357,22 +286,16 @@ export default function ServicesPage() {
 
       <CQHeader />
       <main>
-        {/* Hero */}
-        <section className="sp-hero">
-          <div className="sp-hero-inner">
-            <div className="sp-hero-badge">
-              <StarIcon />
-              <span>Our Services</span>
-            </div>
-            <h1 className="sp-hero-h1">Content That Converts</h1>
-            <p className="sp-hero-desc">
-              Professional content writing services that help your business grow.
-              Every piece is human-written, strategy-driven, and designed to deliver results.
-            </p>
-          </div>
-        </section>
+        {/* Reusable PageHero component */}
+        <PageHero
+          label="OUR SERVICES"
+          title={<>Content That <em>Converts</em></>}
+          subtitle="Professional content writing services — human-written, strategy-driven, and designed to deliver measurable results."
+          breadcrumb={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]}
+          illustration="services"
+        />
 
-        {/* Service Cards */}
+        {/* Service Cards & Calculator */}
         <section className="sp-grid-section">
           <div className="sp-grid">
             {services.map((svc, index) => (
@@ -390,29 +313,9 @@ export default function ServicesPage() {
         </section>
 
         {/* CTA */}
-        <section className="sp-cta-section">
-          <div className="sp-cta-box">
-            <div className="sp-hero-badge" style={{ marginBottom: "1rem" }}>
-              <CheckIcon />
-              <span>Ready to Transform Your Content?</span>
-            </div>
-            <h2 className="sp-cta-h2">Let&apos;s Craft Content That Converts</h2>
-            <p className="sp-cta-desc">
-              Join businesses across India who trust Creative Quill for content that
-              builds genuine connections and drives real results.
-            </p>
-            <div className="sp-cta-checks">
-              {["Human-Written Content", "48-Hour Delivery", "Multiple Revisions"].map((c) => (
-                <span key={c} className="sp-cta-check" data-cursor="text">
-                  <CheckIcon />
-                  <span>{c}</span>
-                </span>
-              ))}
-            </div>
-            <div className="sp-cta-actions">
-              <Link href="/contact" className="btn-light" data-cursor="button">Start Your Project</Link>
-              <Link href="/works" className="btn-ghost" data-cursor="button">See Our Work</Link>
-            </div>
+        <section className="section-sm" style={{ background: "var(--color-bg-primary)", padding: "1rem 1.5rem" }}>
+          <div className="container-content">
+            <ContentAuditCard />
           </div>
         </section>
       </main>

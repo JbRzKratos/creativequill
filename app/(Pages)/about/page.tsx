@@ -1,44 +1,14 @@
-import Link from "next/link";
 import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import type { Metadata } from "next";
-import { PullQuote, TeamSection, ProcessTimeline } from "./aboutClient";
+import { PullQuote, ProcessTimeline } from "./aboutClient";
+import PageHero from "@/components/sections/PageHero";
+import { ContentAuditCard } from "@/components/effects/HomeComponents";
 
 export const metadata: Metadata = {
   title: "About Us | Creative Quill — The Story Behind the Words",
-  description: "Learn about Creative Quill's founding story, our team of writers and strategists, and the values that drive every piece of content we create.",
+  description: "Learn about Creative Quill's founding story, our philosophy, and the values that drive every piece of content we create.",
 };
-
-const team = [
-  {
-    name: "Sania",
-    role: "Founder & Lead Strategist Writer",
-    bio: "The visionary behind Creative Quill. Sania built this studio after watching brilliant businesses get ignored online because their content had no real voice. She obsesses over brand strategy and narrative architecture.",
-    img: "/Sania.png",
-    fallback: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Prasath",
-    role: "Full Stack Developer",
-    bio: "Prasath keeps Creative Quill's digital presence sharp, fast, and reliable. He bridges the gap between beautiful writing and beautiful technology.",
-    img: "/Prasath.png",
-    fallback: "https://images.unsplash.com/photo-1548142813-c348350df52b?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Saiyyada",
-    role: "Lead Content Editor",
-    bio: "Saiyyada is the final eye on everything we publish. With a sharp editorial instinct, she ensures every piece is polished, precise, and unmistakably on-brand.",
-    img: "/Saiyyada.jpeg",
-    fallback: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?q=80&w=400&auto=format&fit=crop",
-  },
-  {
-    name: "Huma",
-    role: "Lead SEO Strategist",
-    bio: "Huma makes sure great content gets found. She builds the keyword strategy and technical SEO foundation that puts Creative Quill's work in front of the right audiences.",
-    img: "/Huma.jpeg",
-    fallback: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=400&auto=format&fit=crop",
-  },
-];
 
 const values = [
   {
@@ -67,96 +37,41 @@ const steps = [
   { num: "6", title: "Refine", desc: "Your satisfaction drives our process. We offer multiple revision rounds to fine-tune content until it perfectly captures your vision and exceeds your expectations." },
 ];
 
+const philosophyPillars = [
+  {
+    num: "01",
+    title: "Strategy First",
+    body: "We never write a single word without understanding where it fits in your customer journey and what business outcome it is designed to drive."
+  },
+  {
+    num: "02",
+    title: "Human, Always",
+    body: "AI content is forgettable. We write with humor, empathy, and deep industry knowledge that algorithm-based models simply cannot replicate."
+  },
+  {
+    num: "03",
+    title: "Results, Not Just Words",
+    body: "We measure success by engagement rates, rankings, and conversions — not by page counts or arbitrary word quotas."
+  }
+];
+
+const dontDoItems = [
+  "AI-generated content passed off as human",
+  "Template writing with swapped keywords",
+  "Volume discounts that compromise quality",
+  "Content writing without a strategy behind it"
+];
+
 export default function AboutPage() {
   return (
     <>
       <style>{`
         body { background: var(--cq-cream); }
 
-        /* HERO */
-        .ab-hero {
-          background: var(--cq-cream-mid);
-          padding: var(--space-16) var(--space-6);
-          border-bottom: 1px solid var(--cq-cream-dark);
-          text-align: center;
-        }
-        .ab-hero-eyebrow {
-          display: inline-block;
-          font-family: var(--font-body);
-          font-size: 0.6875rem; font-weight: 500;
-          letter-spacing: var(--tracking-wider); text-transform: uppercase;
-          color: var(--cq-ink-muted);
-          margin-bottom: 1rem;
-        }
-        .ab-hero-h1 {
-          font-family: var(--font-display);
-          font-size: clamp(2.5rem, 6vw, 4rem);
-          color: var(--cq-ink);
-          margin: 0 0 1rem; line-height: var(--leading-display);
-          letter-spacing: var(--tracking-tighter);
-        }
-        .ab-hero-desc {
-          font-family: var(--font-body);
-          font-size: 1.0625rem; font-weight: 300; line-height: var(--leading-body);
-          color: var(--cq-ink-mid);
-          max-width: 36rem; margin: 0 auto 2rem;
-        }
-        .ab-hero-actions {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
-          width: 100%;
-        }
-        @media (min-width: 640px) {
-          .ab-hero-actions {
-            flex-direction: row;
-            justify-content: center;
-            gap: 1rem;
-            width: auto;
-          }
-        }
-        .ab-hero-actions .btn-light,
-        .ab-hero-actions .btn-ghost {
-          width: 100%;
-          text-align: center;
-          height: 44px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
-        @media (min-width: 640px) {
-          .ab-hero-actions .btn-light,
-          .ab-hero-actions .btn-ghost {
-            width: auto;
-          }
-        }
-        .btn-light {
-          display: inline-block;
-          background: var(--cq-teal); color: white;
-          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
-          text-transform: uppercase; padding: 0.75rem 1.5rem;
-          border-radius: var(--radius-sm); text-decoration: none;
-          transition: background var(--transition-fast);
-        }
-        .btn-light:hover { background: var(--cq-teal-hover); }
-        .btn-ghost {
-          display: inline-block;
-          background: transparent; color: var(--cq-ink);
-          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
-          text-transform: uppercase; padding: 0.75rem 1.5rem;
-          border-radius: var(--radius-sm); text-decoration: none;
-          border: 1px solid var(--cq-beige);
-          transition: border-color var(--transition-fast), background var(--transition-fast);
-        }
-        .btn-ghost:hover {
-          border-color: var(--cq-ink);
-        }
-
         /* STORY */
         .ab-story {
           background: var(--cq-cream);
-          padding: var(--space-16) var(--space-6);
+          padding: var(--section-py-md) var(--space-6);
         }
         .ab-story-inner {
           max-width: var(--max-width-content); margin: 0 auto;
@@ -169,14 +84,14 @@ export default function AboutPage() {
           position: relative;
         }
         .ab-story-img img {
-          width: 100%; border-radius: var(--radius-lg);
+          width: 100%; border-radius: var(--radius-xl);
           filter: grayscale(1) contrast(1.1);
           box-shadow: var(--shadow-lg);
           display: block;
         }
         .ab-story-badge {
           position: absolute; bottom: -0.5rem; right: 0.5rem;
-          background: var(--cq-teal); color: white;
+          background: var(--cq-forest); color: var(--cq-parchment);
           padding: 0.75rem 1rem; border-radius: var(--radius-md);
           text-align: center; box-shadow: var(--shadow-md);
         }
@@ -196,15 +111,6 @@ export default function AboutPage() {
           font-size: 0.62rem; font-weight: 500;
           letter-spacing: var(--tracking-wider); text-transform: uppercase; opacity: 0.9;
         }
-        .section-label {
-          display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
-        }
-        .section-label-line { width: 2rem; height: 1px; background: var(--cq-cream-dark); }
-        .section-label-text {
-          font-family: var(--font-body);
-          font-size: 0.6875rem; font-weight: 500; letter-spacing: var(--tracking-wider);
-          text-transform: uppercase; color: var(--cq-ink-muted);
-        }
         .ab-story-h2 {
           font-family: var(--font-display);
           font-size: clamp(2rem, 5vw, 3rem);
@@ -217,10 +123,72 @@ export default function AboutPage() {
           line-height: var(--leading-body); margin: 0 0 1rem;
         }
 
+        /* MANIFESTO */
+        .ab-manifesto {
+          background: var(--cq-night);
+          padding: var(--section-py-md) var(--space-6);
+          position: relative;
+          overflow: hidden;
+        }
+        .ab-manifesto-inner {
+          max-width: 800px;
+          margin: 0 auto;
+          text-align: center;
+          position: relative;
+          z-index: 2;
+        }
+        .ab-manifesto-quote {
+          font-family: var(--font-display);
+          font-style: italic;
+          font-size: clamp(1.5rem, 4vw, 2.5rem);
+          line-height: 1.35;
+          color: var(--cq-parchment);
+          text-wrap: balance;
+        }
+
+        /* IMPACT NUMBERS */
+        .ab-impact {
+          background: var(--cq-parchment-mid);
+          padding: var(--section-py-md) var(--space-6);
+          border-bottom: 1px solid var(--cq-linen);
+        }
+        .ab-impact-grid {
+          max-width: var(--max-width-content);
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-6);
+        }
+        @media (min-width: 768px) {
+          .ab-impact-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        .ab-impact-card {
+          text-align: center;
+          padding: var(--space-4);
+        }
+        .ab-impact-num {
+          font-family: var(--font-body);
+          font-weight: 500;
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          line-height: 1;
+          color: var(--cq-ink);
+          margin-bottom: 0.5rem;
+        }
+        .ab-impact-label {
+          font-family: var(--font-body);
+          font-size: 0.6875rem;
+          font-weight: 500;
+          letter-spacing: var(--tracking-wider);
+          text-transform: uppercase;
+          color: var(--cq-ink-muted);
+        }
+
         /* VALUES */
         .ab-values {
           background: var(--cq-cream-mid);
-          padding: var(--space-16) var(--space-6);
+          padding: var(--section-py-md) var(--space-6);
           border-top: 1px solid var(--cq-cream-dark);
           border-bottom: 1px solid var(--cq-cream-dark);
         }
@@ -258,7 +226,7 @@ export default function AboutPage() {
         }
         .ab-value-icon {
           font-size: 1.5rem; margin-bottom: 1rem;
-          color: var(--cq-teal);
+          color: var(--cq-forest);
         }
         .ab-value-title {
           font-family: var(--font-body);
@@ -271,30 +239,37 @@ export default function AboutPage() {
           line-height: var(--leading-tight); margin: 0;
         }
 
-        /* TEAM */
-        .ab-team {
-          background: var(--cq-cream);
-          padding: var(--space-16) var(--space-6);
-          border-top: 1px solid var(--cq-cream-dark);
+        /* DON'T DO */
+        .ab-dont {
+          background: var(--cq-parchment-mid);
+          padding: var(--section-py-md) var(--space-6);
+          border-top: 1px solid var(--cq-linen);
+          border-bottom: 1px solid var(--cq-linen);
         }
-        .ab-team-inner { max-width: var(--max-width-content); margin: 0 auto; }
-        .ab-team-header { text-align: center; margin-bottom: 3rem; }
-        .ab-team-h2 {
-          font-family: var(--font-display);
-          font-size: clamp(2rem, 5vw, 3rem);
-          color: var(--cq-ink); margin: 0 0 1rem; line-height: var(--leading-heading);
-          letter-spacing: var(--tracking-tight);
+        .ab-dont-inner {
+          max-width: var(--max-width-narrow);
+          margin: 0 auto;
         }
-        .ab-team-desc {
-          font-family: var(--font-body);
-          font-size: 0.95rem; font-weight: 300; color: var(--cq-ink-mid);
-          max-width: 32rem; margin: 0 auto; line-height: var(--leading-body);
+        .ab-dont-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          border-bottom: 1px solid var(--cq-linen);
+          padding: 16px 0;
+        }
+        .ab-dont-row:last-child {
+          border-bottom: none;
+        }
+        .ab-dont-cross {
+          color: #B91C1C;
+          font-weight: bold;
+          font-size: 1.1rem;
         }
 
         /* CTA */
         .ab-cta {
           background: var(--cq-night);
-          padding: var(--space-16) var(--space-6); text-align: center;
+          padding: var(--section-py-md) var(--space-6); text-align: center;
           border-top: 1px solid var(--cq-night-border);
         }
         .ab-cta-h2 {
@@ -348,26 +323,44 @@ export default function AboutPage() {
           border-color: var(--cq-cream);
           background: rgba(255, 255, 255, 0.05);
         }
+        .btn-light {
+          display: inline-block;
+          background: var(--cq-forest); color: var(--cq-parchment);
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
+          border-radius: var(--radius-sm); text-decoration: none;
+          transition: background var(--transition-fast);
+        }
+        .btn-light:hover { background: var(--cq-forest-hover); }
+        .btn-ghost {
+          display: inline-block;
+          background: transparent; color: var(--cq-ink);
+          font-size: 0.75rem; font-weight: 500; letter-spacing: var(--tracking-wide);
+          text-transform: uppercase; padding: 0.75rem 1.5rem;
+          border-radius: var(--radius-sm); text-decoration: none;
+          border: 1px solid var(--cq-beige);
+          transition: border-color var(--transition-fast), background var(--transition-fast);
+        }
+        .btn-ghost:hover {
+          border-color: var(--cq-ink);
+        }
       `}</style>
 
       <CQHeader />
       <main>
-        {/* Hero */}
-        <section className="ab-hero">
-          <span className="ab-hero-eyebrow">Our Story</span>
-          <h1 className="ab-hero-h1" data-cursor="text">
-            We&apos;re Not a Content Mill.<br />
-            <em>We&apos;re Your Creative Partners.</em>
-          </h1>
-          <p className="ab-hero-desc" data-cursor="text">
-            Founded in 2024, Creative Quill was built on a simple belief: brilliant
-            businesses deserve content that actually sounds like them — not like everyone else.
-          </p>
-          <div className="ab-hero-actions">
-            <Link href="/services" className="btn-light" data-cursor="button">See Our Services</Link>
-            <Link href="/contact" className="btn-ghost" data-cursor="button">Work With Us</Link>
-          </div>
-        </section>
+        {/* Reusable PageHero component */}
+        <PageHero
+          label="OUR STORY"
+          title={
+            <>
+              We&apos;re Not a Content Mill.<br />
+              <em>We&apos;re Your Creative Partners.</em>
+            </>
+          }
+          subtitle="Founded in 2024, Creative Quill was built on a simple belief: brilliant businesses deserve content that actually sounds like them — not like everyone else."
+          breadcrumb={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]}
+          illustration="about"
+        />
 
         {/* Origin Story */}
         <section className="ab-story">
@@ -383,9 +376,8 @@ export default function AboutPage() {
               </div>
             </div>
             <div>
-              <div className="section-label">
-                <span className="section-label-line" />
-                <span className="section-label-text">How It Started</span>
+              <div className="flex flex-col gap-2 mb-6">
+                <span className="badge-label">How It Started</span>
               </div>
               <h2 className="ab-story-h2" data-cursor="text">
                 Watching brilliant businesses fail with bland content — that&apos;s what started all this.
@@ -411,7 +403,95 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Viewport Pull Quote */}
+        {/* NEW SECTION A: Brand Manifesto */}
+        <section className="ab-manifesto">
+          <div className="ab-manifesto-inner flex flex-col items-center gap-6">
+            <span className="font-display text-8xl text-[var(--cq-forest)] opacity-20 select-none leading-none">&ldquo;</span>
+            <p className="ab-manifesto-quote">
+              We didn&apos;t start Creative Quill to add more noise to the internet. We started it because brilliant brands deserve writing that sounds like them — not like everyone else.
+            </p>
+          </div>
+        </section>
+
+        {/* NEW SECTION B: Impact Numbers */}
+        <section className="ab-impact">
+          <div className="ab-impact-grid">
+            <div className="ab-impact-card">
+              <div className="ab-impact-num">500K+</div>
+              <div className="ab-impact-label">Words Written</div>
+            </div>
+            <div className="ab-impact-card">
+              <div className="ab-impact-num">50+</div>
+              <div className="ab-impact-label">Projects Completed</div>
+            </div>
+            <div className="ab-impact-card">
+              <div className="ab-impact-num">4.9★</div>
+              <div className="ab-impact-label">Average Rating</div>
+            </div>
+            <div className="ab-impact-card">
+              <div className="ab-impact-num">2024</div>
+              <div className="ab-impact-label">Year Founded</div>
+            </div>
+          </div>
+        </section>
+
+        {/* NEW SECTION C: Content Philosophy Principles */}
+        <section className="section-md bg-[var(--cq-parchment)]">
+          <div className="container-content">
+            <div className="flex flex-col gap-2 mb-10 text-center">
+              <span className="badge-label self-center">PHILOSOPHY</span>
+              <h2 className="font-display text-4xl text-[var(--cq-ink)] font-normal">
+                Our Content Principles
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {philosophyPillars.map((pillar) => (
+                <div 
+                  key={pillar.num} 
+                  className="bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:shadow-md"
+                >
+                  <span className="font-sans font-semibold text-6xl text-[var(--cq-parchment-deep)] select-none opacity-80 mb-4 block leading-none">
+                    {pillar.num}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-2xl text-[var(--cq-ink)] font-normal mb-3 leading-none">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-sm text-[var(--cq-ink-mid)] font-light leading-relaxed">
+                      {pillar.body}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* NEW SECTION D: What We DON'T Do */}
+        <section className="ab-dont">
+          <div className="ab-dont-inner">
+            <div className="flex flex-col gap-2 mb-8 text-center">
+              <span className="badge-label self-center" style={{ color: "#B91C1C", borderColor: "rgba(185,28,28,0.2)" }}>OUR CODE</span>
+              <h2 className="font-display text-3xl text-[var(--cq-ink)] font-normal">
+                We Proudly Don&apos;t Do These Things
+              </h2>
+            </div>
+
+            <div className="bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 sm:p-8 flex flex-col">
+              {dontDoItems.map((item, idx) => (
+                <div key={idx} className="ab-dont-row">
+                  <span className="ab-dont-cross">✗</span>
+                  <span className="text-sm text-[var(--cq-ink-mid)] font-body font-light">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Viewport Pull Quote (kept for context) */}
         <div style={{ background: "var(--background)", padding: "1rem 0" }}>
           <PullQuote />
         </div>
@@ -420,10 +500,8 @@ export default function AboutPage() {
         <section className="ab-values">
           <div className="ab-values-inner">
             <div className="ab-values-header">
-              <div className="section-label" style={{ justifyContent: "center" }}>
-                <span className="section-label-line" />
-                <span className="section-label-text">What We Stand For</span>
-                <span className="section-label-line" />
+              <div className="flex flex-col gap-2 mb-4 text-center">
+                <span className="badge-label self-center">What We Stand For</span>
               </div>
               <h2 className="ab-values-h2" data-cursor="text">Our Core Values</h2>
               <p className="ab-values-desc" data-cursor="text">
@@ -447,10 +525,8 @@ export default function AboutPage() {
         <section style={{ background: "var(--background)", padding: "5rem 1.5rem", borderTop: "1px solid var(--border)" }}>
           <div className="ab-team-inner" style={{ maxWidth: "72rem", margin: "0 auto" }}>
             <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
-              <div className="section-label" style={{ justifyContent: "center" }}>
-                <span className="section-label-line" />
-                <span className="section-label-text">Our Process</span>
-                <span className="section-label-line" />
+              <div className="flex flex-col gap-2 mb-4 text-center">
+                <span className="badge-label self-center">Our Process</span>
               </div>
               <h2 className="ab-team-h2" data-cursor="text">How We Work</h2>
               <p className="ab-team-desc" data-cursor="text">
@@ -461,35 +537,10 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Asymmetric monochrome cards */}
-        <section className="ab-team">
-          <div className="ab-team-inner">
-            <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
-              <div className="section-label" style={{ justifyContent: "center" }}>
-                <span className="section-label-line" />
-                <span className="section-label-text">Meet the Team</span>
-                <span className="section-label-line" />
-              </div>
-              <h2 className="ab-team-h2" data-cursor="text">The People Behind the Words</h2>
-              <p className="ab-team-desc" data-cursor="text">
-                A tight-knit team of writers, editors, and strategists who care deeply
-                about the work — and the businesses we do it for.
-              </p>
-            </div>
-            <TeamSection team={team} />
-          </div>
-        </section>
-
         {/* CTA */}
-        <section className="ab-cta">
-          <h2 className="ab-cta-h2" data-cursor="text">Ready to Work With Us?</h2>
-          <p className="ab-cta-desc" data-cursor="text">
-            Let&apos;s talk about your brand, your audience, and what kind of content
-            would actually make a difference.
-          </p>
-          <div className="ab-cta-actions">
-            <Link href="/contact" className="btn-light" data-cursor="button">Start a Conversation</Link>
-            <Link href="/works" className="btn-ghost" data-cursor="button">See Our Work</Link>
+        <section className="section-sm" style={{ background: "var(--color-bg-primary)", padding: "1rem 1.5rem" }}>
+          <div className="container-content">
+            <ContentAuditCard />
           </div>
         </section>
       </main>

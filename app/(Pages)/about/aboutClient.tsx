@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export interface TeamMember {
   name: string;
@@ -243,32 +243,16 @@ export function TeamSection({ team }: { team: TeamMember[] }) {
 
 /* ── 3. PROCESS TIMELINE ── */
 export function ProcessTimeline({ steps }: { steps: Step[] }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const pathLength = useTransform(scrollYProgress, [0.15, 0.85], [0, 1]);
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
     <div>
       {/* Desktop Horizontal */}
-      <div className="hidden md:block" ref={containerRef} style={{ position: "relative", padding: "3rem 0" }}>
-        {/* Animated Connector Line */}
+      <div className="hidden md:block" style={{ position: "relative", padding: "3rem 0" }}>
+        {/* Connector Line */}
         <div style={{ position: "absolute", top: "78px", left: "60px", right: "60px", height: "4px", zIndex: 0 }}>
           <svg width="100%" height="4" viewBox="0 0 800 4" fill="none" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
             <line x1="0" y1="2" x2="800" y2="2" stroke="var(--border)" strokeWidth="2" strokeDasharray="5,5" />
-            <motion.line
-              x1="0"
-              y1="2"
-              x2="800"
-              y2="2"
-              stroke="var(--primary)"
-              strokeWidth="2.5"
-              style={{ pathLength }}
-            />
           </svg>
         </div>
 

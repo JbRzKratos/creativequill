@@ -30,7 +30,7 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
         overflow: "hidden",
       }}
     >
-      {/* Glare shine effect — controlled directly via DOM ref, no re-renders */}
+      {/* Glare shine effect */}
       {!isMobile && (
         <div
           ref={glareRef}
@@ -85,11 +85,11 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
         <div className="sp-card-icon">
           <ServiceIcon type={svc.icon} />
         </div>
-        <h2 className="sp-card-name">{svc.name}</h2>
+        <h2 className="sp-card-name" style={{ color: "var(--cq-ink)" }}>{svc.name}</h2>
         <p className="sp-card-desc">{svc.desc}</p>
         <div className="sp-card-tags">
           {svc.tags.map((tag: string) => (
-            <span key={tag} className="sp-tag">{tag}</span>
+            <span key={tag} className="badge-tag">{tag}</span>
           ))}
         </div>
         <div className="sp-card-bottom" style={{ marginTop: "auto" }}>
@@ -99,7 +99,7 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
             <span>{svc.time}</span>
           </span>
         </div>
-        <div className="sp-card-cta">
+        <div className="sp-card-cta" style={{ color: "var(--cq-forest)" }}>
           Learn More <span>&rarr;</span>
         </div>
       </div>
@@ -113,79 +113,107 @@ export function PricingCalculator() {
   const [turnaround, setTurnaround] = useState("standard");
   const [revisions, setRevisions] = useState("standard");
 
-  const calculateEstimate = () => {
-    let base = 0;
+  const getServiceDetails = () => {
+    let rate = 0;
+    let isPerWord = false;
+    let flatRate = 0;
+    let serviceLabel = "";
 
-    if (service === "blog") {
-      base = wordCount * 1.5;
-    } else if (service === "article") {
-      base = wordCount * 3.0;
-    } else if (service === "brand") {
-      base = 12000;
-    } else if (service === "website") {
-      base = 7000;
-    } else if (service === "seo") {
-      base = wordCount * 15;
-    } else if (service === "custom") {
-      return "Custom Scope — Let's Talk";
+    switch (service) {
+      case "blog":
+        rate = 1.5;
+        isPerWord = true;
+        serviceLabel = "Blog Writing";
+        break;
+      case "article":
+        rate = 3.0;
+        isPerWord = true;
+        serviceLabel = "Article Writing";
+        break;
+      case "seo":
+        rate = 15;
+        isPerWord = true;
+        serviceLabel = "SEO Content";
+        break;
+      case "brand":
+        flatRate = 12000;
+        serviceLabel = "Brand Storytelling";
+        break;
+      case "website":
+        flatRate = 7000;
+        serviceLabel = "Website Copy";
+        break;
+      case "custom":
+      default:
+        serviceLabel = "Custom Content";
+        break;
     }
-
-    if (turnaround === "rush") {
-      base *= 1.3;
-    }
-
-    if (revisions === "extra") {
-      base += 500;
-    }
-
-    const min = Math.round(base * 0.9);
-    const max = Math.round(base * 1.1);
-
-    return `₹${min.toLocaleString()} – ₹${max.toLocaleString()}`;
+    return { rate, isPerWord, flatRate, serviceLabel };
   };
 
-  const isPerWord = service === "blog" || service === "article" || service === "seo";
+  const { rate, isPerWord, flatRate, serviceLabel } = getServiceDetails();
+
+  const calculateBreakdown = () => {
+    if (service === "custom") {
+      return null;
+    }
+
+    const baseCost = isPerWord ? wordCount * rate : flatRate;
+    
+    // Volume discount: 10% off for word counts > 5000
+    const hasVolumeDiscount = isPerWord && wordCount > 5000;
+    const discountAmount = hasVolumeDiscount ? baseCost * 0.1 : 0;
+    const afterDiscount = baseCost - discountAmount;
+
+    // Rush delivery adjustment: +30%
+    const rushAdjustment = turnaround === "rush" ? afterDiscount * 0.3 : 0;
+
+    // Extra revisions adjustment: +500
+    const revisionsAdjustment = revisions === "extra" ? 500 : 0;
+
+    const totalCost = afterDiscount + rushAdjustment + revisionsAdjustment;
+    const minEstimated = Math.round(totalCost * 0.95);
+    const maxEstimated = Math.round(totalCost * 1.05);
+
+    return {
+      baseCost,
+      hasVolumeDiscount,
+      discountAmount,
+      afterDiscount,
+      rushAdjustment,
+      revisionsAdjustment,
+      totalCost,
+      minEstimated,
+      maxEstimated,
+    };
+  };
+
+  const breakdown = calculateBreakdown();
 
   return (
     <div
-      className="p-5 sm:p-8 md:p-10 mx-auto"
+      className="p-6 sm:p-8 md:p-10 mx-auto w-full"
       style={{
-        background: "var(--card)",
-        border: "1px solid var(--border)",
+        background: "var(--cq-parchment-mid)",
+        border: "1px solid var(--cq-linen)",
         borderRadius: "var(--radius-xl)",
-        maxWidth: "42rem",
+        maxWidth: "46rem",
         marginTop: "4rem",
       }}
     >
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            background: "color-mix(in oklch, var(--primary) 10%, transparent)",
-            color: "var(--primary)",
-            fontSize: "0.68rem",
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            padding: "0.35rem 0.85rem",
-            borderRadius: "999px",
-            marginBottom: "0.5rem",
-          }}
-        >
-          Pricing Calculator
-        </span>
-        <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.75rem", fontWeight: 600, color: "var(--foreground)" }}>
+        <span className="badge-label self-center">Pricing Estimator</span>
+        <h2 className="font-display text-3xl font-normal text-[var(--cq-ink)] mt-3">
           Estimate Your Project Cost
         </h2>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      <div className="flex flex-col gap-6">
         {/* Row 1: Service Type */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <div className="flex flex-col gap-2">
           <label
             htmlFor="service-calc-type"
-            style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}
+            className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]"
           >
             Service Type
           </label>
@@ -194,18 +222,10 @@ export function PricingCalculator() {
             name="service-type"
             value={service}
             onChange={(e) => setService(e.target.value)}
-            style={{
-              padding: "0.75rem 1rem",
-              borderRadius: "var(--radius-sm)",
-              border: "1px solid var(--border)",
-              background: "var(--background)",
-              color: "var(--foreground)",
-              outline: "none",
-              fontSize: "1rem", /* text-base to prevent Safari iOS zoom */
-            }}
+            className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
           >
             <option value="blog">Blog Writing (₹1.5/word)</option>
-            <option value="article">Article Writing (₹3/word)</option>
+            <option value="article">Article Writing (₹3.0/word)</option>
             <option value="brand">Brand Storytelling (₹12,000 flat)</option>
             <option value="website">Website Copy (₹7,000 flat)</option>
             <option value="seo">SEO Content (₹15/word)</option>
@@ -215,138 +235,166 @@ export function PricingCalculator() {
 
         {/* Row 2: Word Count */}
         {isPerWord && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label
-              htmlFor="service-calc-words"
-              style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}
-            >
-              Word Count
-            </label>
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <label
+                htmlFor="service-calc-words"
+                className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]"
+              >
+                Word Count
+              </label>
+              {wordCount > 5000 && (
+                <span className="px-2 py-0.5 rounded-[var(--radius-xs)] text-[9px] bg-[var(--cq-forest-light)] text-[var(--cq-forest)] font-medium uppercase tracking-wider border border-[var(--cq-linen)]">
+                  10% Volume Discount Applied ✓
+                </span>
+              )}
+            </div>
             <input
               id="service-calc-words"
               name="word-count"
               type="number"
+              min="100"
+              step="100"
               value={wordCount}
               onChange={(e) => setWordCount(Math.max(100, parseInt(e.target.value) || 0))}
-              style={{
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "1px solid var(--border)",
-                background: "var(--background)",
-                color: "var(--foreground)",
-                outline: "none",
-                fontSize: "1rem", /* text-base to prevent Safari iOS zoom */
-              }}
+              className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
             />
           </div>
         )}
 
-        {/* Row 3: Turnaround */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
-            Turnaround
-          </label>
-          <div className="grid grid-cols-2" style={{ gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
-            <button
-              onClick={() => setTurnaround("standard")}
-              style={{
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "none",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                background: turnaround === "standard" ? "var(--primary)" : "transparent",
-                color: turnaround === "standard" ? "var(--primary-foreground)" : "var(--muted-foreground)",
-              }}
-            >
-              Standard
-            </button>
-            <button
-              onClick={() => setTurnaround("rush")}
-              style={{
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "none",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                background: turnaround === "rush" ? "var(--primary)" : "transparent",
-                color: turnaround === "rush" ? "var(--primary-foreground)" : "var(--muted-foreground)",
-              }}
-            >
-              Rush (+30%)
-            </button>
+        {/* Row 3: Turnaround & Revisions Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
+              Turnaround Timeline
+            </label>
+            <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
+              <button
+                onClick={() => setTurnaround("standard")}
+                type="button"
+                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
+                style={{
+                  background: turnaround === "standard" ? "var(--cq-forest)" : "transparent",
+                  color: turnaround === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                  border: "none",
+                }}
+              >
+                Standard
+              </button>
+              <button
+                onClick={() => setTurnaround("rush")}
+                type="button"
+                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
+                style={{
+                  background: turnaround === "rush" ? "var(--cq-forest)" : "transparent",
+                  color: turnaround === "rush" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                  border: "none",
+                }}
+              >
+                Rush (+30%)
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
+              Revisions Rounds
+            </label>
+            <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
+              <button
+                onClick={() => setRevisions("standard")}
+                type="button"
+                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
+                style={{
+                  background: revisions === "standard" ? "var(--cq-forest)" : "transparent",
+                  color: revisions === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                  border: "none",
+                }}
+              >
+                2 Included
+              </button>
+              <button
+                onClick={() => setRevisions("extra")}
+                type="button"
+                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
+                style={{
+                  background: revisions === "extra" ? "var(--cq-forest)" : "transparent",
+                  color: revisions === "extra" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                  border: "none",
+                }}
+              >
+                Extra (+₹500)
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Row 4: Revisions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          <label style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
-            Revisions
-          </label>
-          <div className="grid grid-cols-2" style={{ gap: "0.5rem", background: "var(--secondary)", padding: "4px", borderRadius: "var(--radius-sm)" }}>
-            <button
-              onClick={() => setRevisions("standard")}
-              style={{
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "none",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                background: revisions === "standard" ? "var(--primary)" : "transparent",
-                color: revisions === "standard" ? "var(--primary-foreground)" : "var(--muted-foreground)",
-              }}
-            >
-              2 Included
-            </button>
-            <button
-              onClick={() => setRevisions("extra")}
-              style={{
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--radius-sm)",
-                border: "none",
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                background: revisions === "extra" ? "var(--primary)" : "transparent",
-                color: revisions === "extra" ? "var(--primary-foreground)" : "var(--muted-foreground)",
-              }}
-            >
-              Extra Round (+₹500)
-            </button>
-          </div>
-        </div>
+        {/* Results & Breakdown */}
+        <div className="border-t border-[rgba(22,18,14,0.08)] pt-6 mt-2 flex flex-col items-center">
+          {service === "custom" ? (
+            <div className="w-full text-center">
+              <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider">Estimated Cost</span>
+              <div className="font-display text-3xl font-light text-[var(--cq-ink)] my-3">
+                Custom Quote Required
+              </div>
+              <p className="text-xs text-[var(--cq-ink-muted)] mb-6 font-light max-w-[40ch] mx-auto">
+                Please contact us directly to define your custom scope, retainers, or volume discounts.
+              </p>
+            </div>
+          ) : (
+            breakdown && (
+              <div className="w-full">
+                {/* Visual Estimated Range */}
+                <div className="text-center mb-6">
+                  <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider">Estimated Price Range</span>
+                  <div className="font-sans font-medium text-4xl text-[var(--cq-ink)] my-2">
+                    ₹{breakdown.minEstimated.toLocaleString()} – ₹{breakdown.maxEstimated.toLocaleString()}
+                  </div>
+                </div>
 
-        {/* Results */}
-        <div
-          style={{
-            borderTop: "1px solid var(--border)",
-            paddingTop: "1.5rem",
-            marginTop: "0.5rem",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ fontSize: "0.75rem", color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Estimated Pricing
-          </span>
-          <span
-            className="text-2xl sm:text-3xl"
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontWeight: 700,
-              color: "var(--primary)",
-              margin: "0.5rem 0 1rem",
-            }}
+                {/* Price Breakdown Table */}
+                <div className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] p-4 sm:p-5 mb-6 text-xs text-[var(--cq-ink-mid)] font-light">
+                  <h4 className="font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] mb-3 text-[10px]">Price Breakdown</h4>
+                  <table className="w-full">
+                    <tbody>
+                      <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
+                        <td className="w-2/3">Base rate for {serviceLabel}</td>
+                        <td className="w-1/3 text-right">₹{breakdown.baseCost.toLocaleString()}</td>
+                      </tr>
+                      {breakdown.hasVolumeDiscount && (
+                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block text-[var(--cq-forest)] font-medium">
+                          <td className="w-2/3">Volume discount (10% off)</td>
+                          <td className="w-1/3 text-right">-₹{breakdown.discountAmount.toLocaleString()}</td>
+                        </tr>
+                      )}
+                      {turnaround === "rush" && (
+                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
+                          <td className="w-2/3">Rush delivery surcharge (+30%)</td>
+                          <td className="w-1/3 text-right">+₹{breakdown.rushAdjustment.toLocaleString()}</td>
+                        </tr>
+                      )}
+                      {revisions === "extra" && (
+                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
+                          <td className="w-2/3">Extra revision round</td>
+                          <td className="w-1/3 text-right">+₹500</td>
+                        </tr>
+                      )}
+                      <tr className="py-2 block font-semibold text-[var(--cq-ink)] text-sm">
+                        <td className="w-2/3">Total Calculated Estimate</td>
+                        <td className="w-1/3 text-right">₹{Math.round(breakdown.totalCost).toLocaleString()}*</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )
+          )}
+
+          <Link
+            href={`/contact?service=${service}&words=${isPerWord ? wordCount : 0}&rush=${turnaround === "rush" ? "yes" : "no"}`}
+            className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3.5 w-full justify-center"
           >
-            {calculateEstimate()}
-          </span>
-
-          <Link href={`/contact?service=${service}`} className="btn-primary" style={{ width: "100%", textAlign: "center" }} data-cursor="button">
-            Get Exact Quote
+            Get Exact Quote &rarr;
           </Link>
         </div>
       </div>
