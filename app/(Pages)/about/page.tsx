@@ -377,7 +377,15 @@ export default function AboutPage() {
             </div>
             <div>
               <div className="flex flex-col gap-2 mb-6">
-                <span className="badge-label">How It Started</span>
+                <span className="badge-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  How It Started
+                </span>
               </div>
               <h2 className="ab-story-h2" data-cursor="text">
                 Watching brilliant businesses fail with bland content — that&apos;s what started all this.
@@ -439,7 +447,14 @@ export default function AboutPage() {
         <section className="section-md bg-[var(--cq-parchment)]">
           <div className="container-content">
             <div className="flex flex-col gap-2 mb-10 text-center">
-              <span className="badge-label self-center">PHILOSOPHY</span>
+              <span className="badge-label self-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .3 2.5 1 3.5l.5 1" />
+                  <path d="M9 18h6" />
+                  <path d="M10 22h4" />
+                </svg>
+                PHILOSOPHY
+              </span>
               <h2 className="font-display text-4xl text-[var(--cq-ink)] font-normal">
                 Our Content Principles
               </h2>
@@ -472,7 +487,12 @@ export default function AboutPage() {
         <section className="ab-dont">
           <div className="ab-dont-inner">
             <div className="flex flex-col gap-2 mb-8 text-center">
-              <span className="badge-label self-center" style={{ color: "#B91C1C", borderColor: "rgba(185,28,28,0.2)" }}>OUR CODE</span>
+              <span className="badge-label self-center" style={{ color: "#B91C1C", borderColor: "rgba(185,28,28,0.2)" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#B91C1C" }}>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                OUR CODE
+              </span>
               <h2 className="font-display text-3xl text-[var(--cq-ink)] font-normal">
                 We Proudly Don&apos;t Do These Things
               </h2>
@@ -501,7 +521,12 @@ export default function AboutPage() {
           <div className="ab-values-inner">
             <div className="ab-values-header">
               <div className="flex flex-col gap-2 mb-4 text-center">
-                <span className="badge-label self-center">What We Stand For</span>
+                <span className="badge-label self-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                  </svg>
+                  What We Stand For
+                </span>
               </div>
               <h2 className="ab-values-h2" data-cursor="text">Our Core Values</h2>
               <p className="ab-values-desc" data-cursor="text">
@@ -526,7 +551,13 @@ export default function AboutPage() {
           <div className="ab-team-inner" style={{ maxWidth: "72rem", margin: "0 auto" }}>
             <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
               <div className="flex flex-col gap-2 mb-4 text-center">
-                <span className="badge-label self-center">Our Process</span>
+                <span className="badge-label self-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                  </svg>
+                  Our Process
+                </span>
               </div>
               <h2 className="ab-team-h2" data-cursor="text">How We Work</h2>
               <p className="ab-team-desc" data-cursor="text">

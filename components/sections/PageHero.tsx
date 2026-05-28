@@ -10,6 +10,47 @@ interface PageHeroProps {
   illustration?: "services" | "about" | "works" | "contact" | "service-detail";
 }
 
+function getHeroBadgeIcon(label: string) {
+  const norm = label.toLowerCase();
+  if (norm.includes("about") || norm.includes("philosophy") || norm.includes("code") || norm.includes("stand for")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4"/>
+        <path d="M12 8h.01"/>
+      </svg>
+    );
+  }
+  if (norm.includes("contact")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="14" x="2" y="5" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+    );
+  }
+  if (norm.includes("portfolio") || norm.includes("work")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"/>
+      </svg>
+    );
+  }
+  if (norm.includes("service") || norm.includes("solution") || norm.includes("pricing") || norm.includes("concept") || norm.includes("approach")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        <rect width="20" height="14" x="2" y="6" rx="2"/>
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
+    </svg>
+  );
+}
+
 export default function PageHero({
   label,
   title,
@@ -46,7 +87,10 @@ export default function PageHero({
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">
           {/* Left Column: Text */}
           <div className="flex flex-col items-start">
-            <span className="badge-label">{label}</span>
+            <span className="badge-label">
+              {getHeroBadgeIcon(label)}
+              {label}
+            </span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mt-4 text-balance leading-tight text-[var(--cq-ink)] font-normal">
               {title}
             </h1>

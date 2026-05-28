@@ -459,7 +459,12 @@ export function AiVsHuman() {
   return (
     <div style={{ margin: "4rem 0" }} className="w-full">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <span className="badge-label">The Difference</span>
+        <span className="badge-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
+          </svg>
+          The Difference
+        </span>
         <h3 className="font-display text-3xl md:text-4xl mt-3 text-balance font-normal text-[var(--cq-ink)]">
           Content That Feels Like You, Not Like Everyone Else
         </h3>

@@ -374,13 +374,11 @@
     color: var(--cq-ink-muted);
     line-height: 1.2;
   }
-  .badge-label::before {
-    content: "";
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: var(--cq-forest);
+  .badge-label svg {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    color: var(--cq-forest);
   }
 
   /* Variant B: Feature/tag badge (feedback #4) */

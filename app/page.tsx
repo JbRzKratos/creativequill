@@ -441,7 +441,14 @@ function FeaturedServices() {
     <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment)]">
       <div className="container-content">
         <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
-          <span className="badge-label self-center md:self-start">FEATURED SERVICES</span>
+          <span className="badge-label self-center md:self-start">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+            FEATURED SERVICES
+          </span>
           <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
             Content That Moves Businesses Forward
           </h2>
@@ -548,7 +555,13 @@ function CostCalculator() {
     <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)]">
       <div className="container-content">
         <div className="flex flex-col gap-2 mb-10 text-center">
-          <span className="badge-label self-center">PRICING ESTIMATOR</span>
+          <span className="badge-label self-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            PRICING ESTIMATOR
+          </span>
           <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
             Get an Instant Cost Estimate
           </h2>
@@ -656,7 +669,14 @@ function FaqSection() {
     <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment)]">
       <div className="container-content">
         <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
-          <span className="badge-label self-center md:self-start">FAQ</span>
+          <span className="badge-label self-center md:self-start">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            FAQ
+          </span>
           <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
             Quick Answers to Common Questions
           </h2>
@@ -813,7 +833,9 @@ export default function HomePage() {
             {/* Left Content Column */}
             <div className="hero-text">
               <motion.div className="hero-badge-container" variants={itemVariants}>
-                <span className="hero-badge-dot" />
+                <svg className="w-3.5 h-3.5 text-[var(--cq-forest)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
+                </svg>
                 <span className="label-text">A CREATIVE CONTENT WRITING AGENCY</span>
               </motion.div>
               <motion.h1 className="hero-h1 font-normal" variants={itemVariants}>
@@ -894,7 +916,13 @@ export default function HomePage() {
         <section className="why-section">
           <div className="section-inner">
             <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
-              <span className="badge-label self-center md:self-start">What Sets Us Apart</span>
+              <span className="badge-label self-center md:self-start">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+                What Sets Us Apart
+              </span>
               <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
                 Strategic Content. Measurable Growth.
               </h2>
@@ -921,7 +949,13 @@ export default function HomePage() {
         <section className="process-section" style={{ background: "var(--cq-parchment-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", overflow: "hidden", padding: "4rem 0" }}>
           <div className="section-inner" style={{ maxWidth: "100%", paddingLeft: 0, paddingRight: 0 }}>
             <div className="flex flex-col gap-2 mb-10 text-center container-content">
-              <span className="badge-label self-center">Our Process</span>
+              <span className="badge-label self-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                </svg>
+                Our Process
+              </span>
               <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
                 Your Story. Our Craft. Results That Matter.
               </h2>
