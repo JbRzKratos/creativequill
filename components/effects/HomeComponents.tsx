@@ -271,6 +271,12 @@ export function StatsStrip() {
 /* ── 4. CLIENT LOGO MARQUEE ── */
 export function ClientMarquee() {
   const logos = ["TIGER SAFARI", "BEEONLINE", "TECHPULSE", "CREATIVEFLOW", "ECOTRAVEL", "CLOUDCORE"];
+  // Repeat the logos list 8 times (48 items total) to make a super long track.
+  // Translating by -50% will scroll exactly half of it (24 items), which is ~4400px wide and covers any screen width.
+  const repeatedLogos = [
+    ...logos, ...logos, ...logos, ...logos,
+    ...logos, ...logos, ...logos, ...logos
+  ];
 
   return (
     <div style={{ padding: "1.5rem 0", background: "var(--background)", overflow: "hidden", position: "relative" }}>
@@ -289,9 +295,9 @@ export function ClientMarquee() {
       </p>
 
       <div className="cq-marquee-container" style={{ display: "flex", overflow: "hidden", width: "100%" }}>
-        <div className="cq-marquee-inner" style={{ display: "flex", gap: "4rem", whiteSpace: "nowrap" }}>
-          {/* List 1 */}
-          {logos.concat(logos).map((logo, idx) => (
+        {/* Single track scrolling seamlessly */}
+        <div className="cq-marquee-inner" style={{ display: "flex", gap: "4rem", whiteSpace: "nowrap", flexShrink: 0 }}>
+          {repeatedLogos.map((logo, idx) => (
             <span
               key={`logo-${idx}`}
               style={{
@@ -317,7 +323,7 @@ export function ClientMarquee() {
           mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
         }
         .cq-marquee-inner {
-          animation: marquee-scroll 55s linear infinite;
+          animation: marquee-scroll 160s linear infinite;
         }
         .cq-marquee-container:hover .cq-marquee-inner {
           animation-play-state: paused;
@@ -358,14 +364,14 @@ export function BentoGrid() {
       <div
         className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
       >
-        <span className="text-5xl font-sans font-medium text-[var(--cq-ink)] tracking-tight leading-none">
-          48h
-        </span>
-        <div className="mt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] mb-2">
+        <div>
+          <span className="font-sans text-5xl font-medium text-[var(--cq-ink)] select-none">
+            48h
+          </span>
+          <h3 className="font-display text-2xl font-light text-[var(--cq-ink)] mt-4 mb-3 tracking-tight leading-none">
             Delivery Guarantee
           </h3>
-          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
+          <p className="text-sm text-[var(--cq-ink-mid)] leading-relaxed font-light">
             Professional publication-ready content delivered rapidly, keeping your brand momentum strong.
           </p>
         </div>
