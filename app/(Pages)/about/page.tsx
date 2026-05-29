@@ -136,6 +136,20 @@ export default function AboutPage() {
           text-align: center;
           position: relative;
           z-index: 2;
+          padding: 4.5rem 0;
+        }
+        .ab-manifesto-quote-mark {
+          position: absolute;
+          top: 0.5rem;
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: var(--font-display);
+          font-size: 8rem;
+          line-height: 1;
+          color: var(--cq-forest);
+          opacity: 0.15;
+          pointer-events: none;
+          user-select: none;
         }
         .ab-manifesto-quote {
           font-family: var(--font-display);
@@ -378,7 +392,7 @@ export default function AboutPage() {
             </div>
             <div>
               <div className="flex flex-col gap-2 mb-6">
-                <span className="badge-label">
+                <span className="badge-label self-start">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
                     <line x1="16" y1="2" x2="16" y2="6" />
@@ -414,8 +428,8 @@ export default function AboutPage() {
 
         {/* NEW SECTION A: Brand Manifesto */}
         <section className="ab-manifesto">
-          <div className="ab-manifesto-inner flex flex-col items-center gap-6">
-            <span className="font-display text-8xl text-[var(--cq-forest)] opacity-20 select-none leading-none">&ldquo;</span>
+          <div className="ab-manifesto-inner">
+            <span className="ab-manifesto-quote-mark">&ldquo;</span>
             <p className="ab-manifesto-quote">
               We didn&apos;t start Creative Quill to add more noise to the internet. We started it because brilliant brands deserve writing that sounds like them — not like everyone else.
             </p>
