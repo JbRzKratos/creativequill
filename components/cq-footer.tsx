@@ -66,10 +66,10 @@ export default function CQFooter() {
         .cq-footer-grid {
           max-width: 72rem;
           margin: 0 auto;
-          padding: 3.5rem 1.5rem 2rem;
+          padding: 2rem 1.25rem 1rem;
           display: grid;
           grid-template-columns: 1fr;
-          gap: 2rem;
+          gap: 1.25rem;
         }
         @media (min-width: 640px) {
           .cq-footer-grid {
@@ -80,6 +80,7 @@ export default function CQFooter() {
           .cq-footer-grid {
             grid-template-columns: 2fr 1fr 1fr 2fr;
             gap: 2.5rem;
+            padding: 3.5rem 1.5rem 2rem;
           }
         }
         
@@ -119,7 +120,7 @@ export default function CQFooter() {
           color: var(--foreground);
           margin: 0 0 1rem;
         }
-        .cq-footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+        .cq-footer-links { display: flex; flex-direction: column; gap: 0.45rem; }
         .cq-footer-link {
           font-size: 0.8rem;
           color: var(--muted-foreground);
@@ -135,7 +136,7 @@ export default function CQFooter() {
           .cq-footer-links-wrapper {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.5rem;
+            gap: 1rem;
             grid-column: 1 / -1;
           }
         }
@@ -220,12 +221,12 @@ export default function CQFooter() {
         .cq-footer-bottom {
           max-width: 72rem;
           margin: 0 auto;
-          padding: 1.25rem 1.5rem;
+          padding: 1rem 1.25rem;
           border-top: 1px solid var(--border);
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.5rem;
           font-size: 0.68rem;
           letter-spacing: 0.12em;
           text-transform: uppercase;
@@ -237,6 +238,8 @@ export default function CQFooter() {
             flex-direction: row;
             justify-content: space-between;
             text-align: left;
+            padding: 1.25rem 1.5rem;
+            gap: 0.75rem;
           }
         }
         .cq-footer-bottom-links { display: flex; gap: 1.5rem; }
@@ -246,7 +249,12 @@ export default function CQFooter() {
           transition: color 0.2s;
           display: inline-flex;
           align-items: center;
-          min-height: 44px;
+          min-height: auto;
+        }
+        @media (min-width: 768px) {
+          .cq-footer-bottom-link {
+            min-height: 44px;
+          }
         }
         .cq-footer-bottom-link:hover { color: var(--foreground); }
         .cq-nl-success {
@@ -271,7 +279,15 @@ export default function CQFooter() {
         <div className="cq-footer-grid">
           {/* Brand */}
           <div className="cq-footer-brand-col">
-            <p className="cq-footer-brand-name">Creative Quill</p>
+            <Link href="/" className="inline-block mb-3" aria-label="Creative Quill">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src="https://creativequill.co.in/CQ_Logo_Black.svg" 
+                alt="Creative Quill" 
+                className="h-8 w-auto object-contain dark:invert"
+              />
+              <span className="sr-only">Creative Quill</span>
+            </Link>
             <p className="cq-footer-brand-tag">Content That Connects</p>
             <p className="cq-footer-desc">
               Strategic content that converts browsers into buyers and transforms

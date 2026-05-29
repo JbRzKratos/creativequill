@@ -14,10 +14,27 @@ const NAV_LINKS = [
   { num: "05", label: "Contact",  path: "/contact" },
 ];
 
+const getPageName = (path: string) => {
+  if (path === "/") return "";
+  if (path === "/about") return "About";
+  if (path === "/services") return "Services";
+  if (path === "/works") return "Works";
+  if (path === "/contact") return "Contact";
+  if (path.startsWith("/services/")) {
+    const slug = path.split("/").pop() || "";
+    return slug
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+  return "";
+};
+
 export default function CQHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const pageName = getPageName(pathname);
   const [prevPath, setPrevPath] = useState(pathname);
   if (pathname !== prevPath) {
     setPrevPath(pathname);
@@ -77,6 +94,8 @@ export default function CQHeader() {
           display: flex;
           align-items: center;
           width: 100%;
+          position: relative;
+          z-index: 50;
         }
 
         .cq-nav-inner {
@@ -332,14 +351,50 @@ export default function CQHeader() {
           }}
         >
           <div className="cq-nav-inner">
-            {/* Logo */}
-            <Link href="/" className="cq-logo-link" aria-label="Creative Quill">
-              <span className="cq-logo-symbol">✦</span>
-              <div className="cq-logo-stack">
-                <span className="cq-logo-top">Creative</span>
-                <span className="cq-logo-bottom">Quill</span>
-              </div>
-            </Link>
+            {/* Logo & Page Name */}
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <Link href="/" className="cq-logo-link" aria-label="Creative Quill">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src="https://creativequill.co.in/CQ_Logo_Black.svg" 
+                  alt="Creative Quill" 
+                  className="h-7 w-auto object-contain invert"
+                />
+                <span 
+                  style={{
+                    fontFamily: "var(--font-display), serif",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    color: "var(--cq-cream)",
+                    letterSpacing: "0.02em",
+                    marginLeft: "4px",
+                    display: "flex",
+                    gap: "4px",
+                  }}
+                  className="sm:text-base"
+                >
+                  <span>Creative</span>
+                  <span>Quill</span>
+                </span>
+              </Link>
+              {pageName && (
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ color: "rgba(255, 255, 255, 0.2)", fontSize: "14px", fontWeight: 200, userSelect: "none" }}>/</span>
+                  <span 
+                    style={{ 
+                      fontSize: "10px", 
+                      letterSpacing: "0.15em", 
+                      textTransform: "uppercase", 
+                      color: "var(--cq-cream)",
+                      fontFamily: "var(--font-body), sans-serif",
+                      fontWeight: 500
+                    }}
+                  >
+                    {pageName}
+                  </span>
+                </div>
+              )}
+            </div>
 
             {/* Desktop Navigation */}
             <nav className="cq-desktop-nav">
@@ -352,7 +407,6 @@ export default function CQHeader() {
                     className={`cq-nav-item${isActive ? " active" : ""}`}
                     aria-label={link.label}
                   >
-                    <span className="nav-number">{link.num}</span>
                     <span className="nav-label">{link.label}</span>
                     <div className="nav-dot" />
                   </Link>
@@ -449,9 +503,6 @@ export default function CQHeader() {
                           padding: "14px 0",
                         }}
                       >
-                        <span style={{ fontSize: "10px", color: "#6E6962", minWidth: "20px", fontFamily: "var(--font-body), sans-serif" }}>
-                          {link.num}
-                        </span>
                         <span className="cq-overlay-link-span">
                           {link.label}
                         </span>

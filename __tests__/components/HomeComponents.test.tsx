@@ -152,14 +152,14 @@ describe("AiVsHuman", () => {
 // ── ContentAuditCard ──────────────────────────────────────────────────────────
 
 describe("ContentAuditCard", () => {
-  it("renders the free audit heading", () => {
+  it("renders the clients count badge", () => {
     render(<ContentAuditCard />);
-    expect(screen.getByText(/free content audit/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+47 clients this month/i)).toBeInTheDocument();
   });
 
-  it("renders the ₹0 price element", () => {
+  it("renders the stars rating element", () => {
     render(<ContentAuditCard />);
-    expect(screen.getByText("₹0")).toBeInTheDocument();
+    expect(screen.getByText("★★★★★")).toBeInTheDocument();
   });
 
   it("renders the Claim CTA linking to /contact", () => {

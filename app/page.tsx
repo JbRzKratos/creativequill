@@ -13,7 +13,6 @@ import {
   AiVsHuman,
   ContentAuditCard,
   SocialProofMarquee,
-  OpenForWorkBadge,
 } from "@/components/effects/HomeComponents";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 
@@ -563,81 +562,87 @@ function CostCalculator() {
           </p>
         </div>
 
-        <div className="max-w-[640px] mx-auto bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-8 md:p-10 shadow-sm">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="estimator-service" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Service Type</label>
-              <select
-                id="estimator-service"
-                value={service}
-                onChange={(e) => setService(e.target.value)}
-                className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-              >
-                <option value="blog">Blog Writing (₹1.5/word)</option>
-                <option value="article">Article Writing (₹2.0/word)</option>
-                <option value="seo">SEO Content (₹2.5/word)</option>
-                <option value="story">Brand Storytelling (Flat)</option>
-                <option value="web">Website Copy (Flat)</option>
-                <option value="custom">Custom Content (Contact Us)</option>
-              </select>
+        <div className="max-w-[840px] mx-auto bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 sm:p-8 md:p-10 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            {/* Left Column: Inputs */}
+            <div className="flex flex-col gap-6 justify-center">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="estimator-service" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Service Type</label>
+                <select
+                  id="estimator-service"
+                  value={service}
+                  onChange={(e) => setService(e.target.value)}
+                  className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+                >
+                  <option value="blog">Blog Writing (₹1.5/word)</option>
+                  <option value="article">Article Writing (₹2.0/word)</option>
+                  <option value="seo">SEO Content (₹2.5/word)</option>
+                  <option value="story">Brand Storytelling (Flat)</option>
+                  <option value="web">Website Copy (Flat)</option>
+                  <option value="custom">Custom Content (Contact Us)</option>
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                {service !== "custom" && !isProject ? (
+                  <>
+                    <label htmlFor="estimator-words" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Word Count</label>
+                    <input
+                      id="estimator-words"
+                      type="number"
+                      min="100"
+                      step="100"
+                      value={words}
+                      onChange={(e) => setWords(parseInt(e.target.value) || 0)}
+                      className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+                      placeholder="e.g. 1000 words"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <label className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Billing Type</label>
+                    <div className="w-full bg-[var(--cq-parchment-deep)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink-muted)]">
+                      {service === "custom" ? "Project Consultation" : "Flat Project Rate"}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              {service !== "custom" && !isProject ? (
-                <>
-                  <label htmlFor="estimator-words" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Word Count</label>
-                  <input
-                    id="estimator-words"
-                    type="number"
-                    min="100"
-                    step="100"
-                    value={words}
-                    onChange={(e) => setWords(parseInt(e.target.value) || 0)}
-                    className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-                    placeholder="e.g. 1000 words"
-                  />
-                </>
-              ) : (
-                <>
-                  <label className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Billing Type</label>
-                  <div className="w-full bg-[var(--cq-parchment-deep)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--cq-ink-muted)]">
-                    {service === "custom" ? "Project Consultation" : "Flat Project Rate"}
+            {/* Right Column: Output */}
+            <div className="flex flex-col justify-between bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] p-6 text-center">
+              <div className="flex-1 flex flex-col justify-center items-center py-2">
+                {service === "custom" ? (
+                  <div className="font-display text-3xl text-[var(--cq-ink)] mb-1">
+                    Custom Pricing
                   </div>
-                </>
-              )}
-            </div>
-          </div>
+                ) : (
+                  <div className="font-sans font-medium text-4xl sm:text-5xl text-[var(--cq-ink)] mb-1">
+                    ₹{price.toLocaleString()}
+                  </div>
+                )}
+                <span className="text-xs text-[var(--cq-ink-muted)] uppercase tracking-wider mb-5">
+                  {service === "custom" ? "Based on project scope" : "Estimated Cost"}
+                </span>
 
-          <div className="border-t border-[rgba(22,18,14,0.08)] pt-8 text-center flex flex-col items-center">
-            {service === "custom" ? (
-              <div className="font-display text-4xl text-[var(--cq-ink)] mb-1">
-                Custom Pricing
+                <div className="flex flex-wrap gap-1.5 justify-center mb-5">
+                  <span className="badge-tag">Plagiarism-Free</span>
+                  <span className="badge-tag">Revisions Included</span>
+                  <span className="badge-tag">SEO Optimized</span>
+                </div>
               </div>
-            ) : (
-              <div className="font-sans font-medium text-5xl text-[var(--cq-ink)] mb-1">
-                ₹{price.toLocaleString()}
-              </div>
-            )}
-            <span className="text-xs text-[var(--cq-ink-muted)] uppercase tracking-wider mb-6">
-              {service === "custom" ? "Based on project scope" : "Estimated Cost"}
-            </span>
 
-            <div className="flex flex-wrap gap-2 justify-center mb-6">
-              <span className="badge-tag">Plagiarism-Free</span>
-              <span className="badge-tag">Revisions Included</span>
-              <span className="badge-tag">SEO Optimized</span>
+              <Link
+                href={`/contact?service=${service}&words=${words}`}
+                className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3 w-full justify-center text-center"
+              >
+                Get Exact Quote &rarr;
+              </Link>
+              
+              <p className="text-[9px] text-[var(--cq-ink-faint)] mt-3 leading-normal">
+                *Exact pricing is confirmed during our free consultation. Rush delivery (+30%) available.
+              </p>
             </div>
-
-            <Link
-              href={`/contact?service=${service}&words=${words}`}
-              className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3.5"
-            >
-              Get Exact Quote &rarr;
-            </Link>
-            
-            <p className="text-[10px] text-[var(--cq-ink-faint)] mt-4">
-              *Exact pricing is confirmed during our free consultation. Rush delivery (+30%) available.
-            </p>
           </div>
         </div>
       </div>
@@ -957,7 +962,6 @@ export default function HomePage() {
       </main>
 
       <CQFooter />
-      <OpenForWorkBadge />
     </>
   );
 }

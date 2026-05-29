@@ -4,7 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import InkCursor from "@/components/effects/InkCursor";
-import { BackToTop } from "@/components/effects/HomeComponents";
+import { BackToTop, FloatingWhatsApp } from "@/components/effects/HomeComponents";
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -37,6 +37,7 @@ export default function RootLayout({
         <ThemeProvider>
 
           <BackToTop />
+          <FloatingWhatsApp />
           {children}
           <InkCursor />
         </ThemeProvider>

@@ -197,11 +197,11 @@ export function PricingCalculator() {
         background: "var(--cq-parchment-mid)",
         border: "1px solid var(--cq-linen)",
         borderRadius: "var(--radius-xl)",
-        maxWidth: "46rem",
+        maxWidth: "56rem",
         marginTop: "4rem",
       }}
     >
-      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+      <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
         <span className="badge-label self-center">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="1" x2="12" y2="23" />
@@ -214,191 +214,197 @@ export function PricingCalculator() {
         </h2>
       </div>
 
-      <div className="flex flex-col gap-6">
-        {/* Row 1: Service Type */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="service-calc-type"
-            className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]"
-          >
-            Service Type
-          </label>
-          <select
-            id="service-calc-type"
-            name="service-type"
-            value={service}
-            onChange={(e) => setService(e.target.value)}
-            className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-          >
-            <option value="blog">Blog Writing (₹1.5/word)</option>
-            <option value="article">Article Writing (₹3.0/word)</option>
-            <option value="brand">Brand Storytelling (₹12,000 flat)</option>
-            <option value="website">Website Copy (₹7,000 flat)</option>
-            <option value="seo">SEO Content (₹15/word)</option>
-            <option value="custom">Custom / Other Content</option>
-          </select>
-        </div>
-
-        {/* Row 2: Word Count */}
-        {isPerWord && (
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        {/* Left Column: Inputs */}
+        <div className="flex flex-col gap-6 justify-between">
+          <div className="flex flex-col gap-5">
+            {/* Service Type */}
+            <div className="flex flex-col gap-2">
               <label
-                htmlFor="service-calc-words"
+                htmlFor="service-calc-type"
                 className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]"
               >
-                Word Count
+                Service Type
               </label>
-              {wordCount > 5000 && (
-                <span className="px-2 py-0.5 rounded-[var(--radius-xs)] text-[9px] bg-[var(--cq-forest-light)] text-[var(--cq-forest)] font-medium uppercase tracking-wider border border-[var(--cq-linen)]">
-                  10% Volume Discount Applied ✓
-                </span>
-              )}
+              <select
+                id="service-calc-type"
+                name="service-type"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+              >
+                <option value="blog">Blog Writing (₹1.5/word)</option>
+                <option value="article">Article Writing (₹3.0/word)</option>
+                <option value="brand">Brand Storytelling (₹12,000 flat)</option>
+                <option value="website">Website Copy (₹7,000 flat)</option>
+                <option value="seo">SEO Content (₹15/word)</option>
+                <option value="custom">Custom / Other Content</option>
+              </select>
             </div>
-            <input
-              id="service-calc-words"
-              name="word-count"
-              type="number"
-              min="100"
-              step="100"
-              value={wordCount}
-              onChange={(e) => setWordCount(Math.max(100, parseInt(e.target.value) || 0))}
-              className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-            />
-          </div>
-        )}
 
-        {/* Row 3: Turnaround & Revisions Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
-              Turnaround Timeline
-            </label>
-            <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
-              <button
-                onClick={() => setTurnaround("standard")}
-                type="button"
-                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
-                style={{
-                  background: turnaround === "standard" ? "var(--cq-forest)" : "transparent",
-                  color: turnaround === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
-                  border: "none",
-                }}
-              >
-                Standard
-              </button>
-              <button
-                onClick={() => setTurnaround("rush")}
-                type="button"
-                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
-                style={{
-                  background: turnaround === "rush" ? "var(--cq-forest)" : "transparent",
-                  color: turnaround === "rush" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
-                  border: "none",
-                }}
-              >
-                Rush (+30%)
-              </button>
+            {/* Word Count */}
+            {isPerWord && (
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <label
+                    htmlFor="service-calc-words"
+                    className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]"
+                  >
+                    Word Count
+                  </label>
+                  {wordCount > 5000 && (
+                    <span className="px-2 py-0.5 rounded-[var(--radius-xs)] text-[9px] bg-[var(--cq-forest-light)] text-[var(--cq-forest)] font-medium uppercase tracking-wider border border-[var(--cq-linen)]">
+                      10% Volume Discount Applied ✓
+                    </span>
+                  )}
+                </div>
+                <input
+                  id="service-calc-words"
+                  name="word-count"
+                  type="number"
+                  min="100"
+                  step="100"
+                  value={wordCount}
+                  onChange={(e) => setWordCount(Math.max(100, parseInt(e.target.value) || 0))}
+                  className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-4 py-3 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
+                />
+              </div>
+            )}
+
+            {/* Turnaround Timeline */}
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
+                Turnaround Timeline
+              </label>
+              <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
+                <button
+                  onClick={() => setTurnaround("standard")}
+                  type="button"
+                  className="py-2 rounded-md text-[11px] font-semibold transition-all duration-200"
+                  style={{
+                    background: turnaround === "standard" ? "var(--cq-forest)" : "transparent",
+                    color: turnaround === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                    border: "none",
+                  }}
+                >
+                  Standard
+                </button>
+                <button
+                  onClick={() => setTurnaround("rush")}
+                  type="button"
+                  className="py-2 rounded-md text-[11px] font-semibold transition-all duration-200"
+                  style={{
+                    background: turnaround === "rush" ? "var(--cq-forest)" : "transparent",
+                    color: turnaround === "rush" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                    border: "none",
+                  }}
+                >
+                  Rush (+30%)
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
-              Revisions Rounds
-            </label>
-            <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
-              <button
-                onClick={() => setRevisions("standard")}
-                type="button"
-                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
-                style={{
-                  background: revisions === "standard" ? "var(--cq-forest)" : "transparent",
-                  color: revisions === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
-                  border: "none",
-                }}
-              >
-                2 Included
-              </button>
-              <button
-                onClick={() => setRevisions("extra")}
-                type="button"
-                className="py-2 rounded.md text-[11px] font-semibold transition-all duration-200"
-                style={{
-                  background: revisions === "extra" ? "var(--cq-forest)" : "transparent",
-                  color: revisions === "extra" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
-                  border: "none",
-                }}
-              >
-                Extra (+₹500)
-              </button>
+            {/* Revisions Rounds */}
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)]">
+                Revisions Rounds
+              </label>
+              <div className="grid grid-cols-2 gap-1 bg-[var(--cq-parchment-deep)] p-1 rounded-[var(--radius-md)] border border-[var(--cq-linen)]">
+                <button
+                  onClick={() => setRevisions("standard")}
+                  type="button"
+                  className="py-2 rounded-md text-[11px] font-semibold transition-all duration-200"
+                  style={{
+                    background: revisions === "standard" ? "var(--cq-forest)" : "transparent",
+                    color: revisions === "standard" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                    border: "none",
+                  }}
+                >
+                  2 Included
+                </button>
+                <button
+                  onClick={() => setRevisions("extra")}
+                  type="button"
+                  className="py-2 rounded-md text-[11px] font-semibold transition-all duration-200"
+                  style={{
+                    background: revisions === "extra" ? "var(--cq-forest)" : "transparent",
+                    color: revisions === "extra" ? "var(--cq-parchment)" : "var(--cq-ink-muted)",
+                    border: "none",
+                  }}
+                >
+                  Extra (+₹500)
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Results & Breakdown */}
-        <div className="border-t border-[rgba(22,18,14,0.08)] pt-6 mt-2 flex flex-col items-center">
-          {service === "custom" ? (
-            <div className="w-full text-center">
-              <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider">Estimated Cost</span>
-              <div className="font-display text-3xl font-light text-[var(--cq-ink)] my-3">
-                Custom Quote Required
+        {/* Right Column: Output */}
+        <div className="flex flex-col justify-between bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] p-5 sm:p-6">
+          <div className="flex-1 flex flex-col justify-center">
+            {service === "custom" ? (
+              <div className="w-full text-center py-4">
+                <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider block mb-1">Estimated Cost</span>
+                <div className="font-display text-2xl font-light text-[var(--cq-ink)] my-3 leading-tight">
+                  Custom Quote Required
+                </div>
+                <p className="text-xs text-[var(--cq-ink-muted)] mb-6 font-light max-w-[32ch] mx-auto leading-relaxed">
+                  Please contact us directly to define your custom scope, retainers, or volume discounts.
+                </p>
               </div>
-              <p className="text-xs text-[var(--cq-ink-muted)] mb-6 font-light max-w-[40ch] mx-auto">
-                Please contact us directly to define your custom scope, retainers, or volume discounts.
-              </p>
-            </div>
-          ) : (
-            breakdown && (
-              <div className="w-full">
-                {/* Visual Estimated Range */}
-                <div className="text-center mb-6">
-                  <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider">Estimated Price Range</span>
-                  <div className="font-sans font-medium text-4xl text-[var(--cq-ink)] my-2">
-                    ₹{breakdown.minEstimated.toLocaleString()} – ₹{breakdown.maxEstimated.toLocaleString()}
+            ) : (
+              breakdown && (
+                <div className="w-full flex flex-col h-full justify-between">
+                  {/* Visual Estimated Range */}
+                  <div className="text-center mb-5">
+                    <span className="text-[10px] text-[var(--cq-ink-muted)] uppercase tracking-wider">Estimated Price Range</span>
+                    <div className="font-sans font-medium text-3xl sm:text-4xl text-[var(--cq-ink)] my-2">
+                      ₹{breakdown.minEstimated.toLocaleString()} – ₹{breakdown.maxEstimated.toLocaleString()}
+                    </div>
+                  </div>
+
+                  {/* Price Breakdown Table */}
+                  <div className="w-full text-xs text-[var(--cq-ink-mid)] font-light mb-6 flex-1 flex flex-col justify-center">
+                    <h4 className="font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] mb-2.5 text-[10px]">Price Breakdown</h4>
+                    <table className="w-full">
+                      <tbody>
+                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2.5 block">
+                          <td className="w-2/3">Base rate for {serviceLabel}</td>
+                          <td className="w-1/3 text-right">₹{breakdown.baseCost.toLocaleString()}</td>
+                        </tr>
+                        {breakdown.hasVolumeDiscount && (
+                          <tr className="border-b border-[rgba(22,18,14,0.04)] py-2.5 block text-[var(--cq-forest)] font-medium">
+                            <td className="w-2/3">Volume discount (10% off)</td>
+                            <td className="w-1/3 text-right">-₹{breakdown.discountAmount.toLocaleString()}</td>
+                          </tr>
+                        )}
+                        {turnaround === "rush" && (
+                          <tr className="border-b border-[rgba(22,18,14,0.04)] py-2.5 block">
+                            <td className="w-2/3">Rush delivery surcharge (+30%)</td>
+                            <td className="w-1/3 text-right">+₹{breakdown.rushAdjustment.toLocaleString()}</td>
+                          </tr>
+                        )}
+                        {revisions === "extra" && (
+                          <tr className="border-b border-[rgba(22,18,14,0.04)] py-2.5 block">
+                            <td className="w-2/3">Extra revision round</td>
+                            <td className="w-1/3 text-right">+₹500</td>
+                          </tr>
+                        )}
+                        <tr className="py-3 block font-semibold text-[var(--cq-ink)] text-sm">
+                          <td className="w-2/3">Total Calculated Estimate</td>
+                          <td className="w-1/3 text-right">₹{Math.round(breakdown.totalCost).toLocaleString()}*</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-
-                {/* Price Breakdown Table */}
-                <div className="w-full bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] p-4 sm:p-5 mb-6 text-xs text-[var(--cq-ink-mid)] font-light">
-                  <h4 className="font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] mb-3 text-[10px]">Price Breakdown</h4>
-                  <table className="w-full">
-                    <tbody>
-                      <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
-                        <td className="w-2/3">Base rate for {serviceLabel}</td>
-                        <td className="w-1/3 text-right">₹{breakdown.baseCost.toLocaleString()}</td>
-                      </tr>
-                      {breakdown.hasVolumeDiscount && (
-                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block text-[var(--cq-forest)] font-medium">
-                          <td className="w-2/3">Volume discount (10% off)</td>
-                          <td className="w-1/3 text-right">-₹{breakdown.discountAmount.toLocaleString()}</td>
-                        </tr>
-                      )}
-                      {turnaround === "rush" && (
-                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
-                          <td className="w-2/3">Rush delivery surcharge (+30%)</td>
-                          <td className="w-1/3 text-right">+₹{breakdown.rushAdjustment.toLocaleString()}</td>
-                        </tr>
-                      )}
-                      {revisions === "extra" && (
-                        <tr className="border-b border-[rgba(22,18,14,0.04)] py-2 block">
-                          <td className="w-2/3">Extra revision round</td>
-                          <td className="w-1/3 text-right">+₹500</td>
-                        </tr>
-                      )}
-                      <tr className="py-2 block font-semibold text-[var(--cq-ink)] text-sm">
-                        <td className="w-2/3">Total Calculated Estimate</td>
-                        <td className="w-1/3 text-right">₹{Math.round(breakdown.totalCost).toLocaleString()}*</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )
-          )}
+              )
+            )}
+          </div>
 
           <Link
             href={`/contact?service=${service}&words=${isPerWord ? wordCount : 0}&rush=${turnaround === "rush" ? "yes" : "no"}`}
-            className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3.5 w-full justify-center"
+            className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3.5 w-full justify-center text-center mt-auto"
           >
             Get Exact Quote &rarr;
           </Link>
