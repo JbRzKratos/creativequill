@@ -9,6 +9,34 @@ import { ContentAuditCard } from "@/components/effects/HomeComponents";
 export const metadata: Metadata = {
   title: "Content Writing Services | Creative Quill",
   description: "Professional content writing services including blog writing, SEO content, brand storytelling, website copy, and more. Human-written, strategy-driven content that converts.",
+  alternates: { canonical: "https://creativequill.co.in/services" },
+  openGraph: {
+    title: "Content Writing Services | Creative Quill",
+    description: "Human-written blog posts, SEO content, brand storytelling, website copy, and article writing. Strategy first, always.",
+    url: "https://creativequill.co.in/services",
+    images: [{ url: "/og-services.png", width: 1200, height: 630, alt: "Creative Quill Services" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Content Writing Services | Creative Quill",
+    images: ["/og-services.png"],
+  },
+};
+
+const servicesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Creative Quill Content Writing Services",
+  "url": "https://creativequill.co.in/services",
+  "description": "Professional human-written content writing services for growing businesses.",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Blog Writing", "url": "https://creativequill.co.in/services/blog-writing" },
+    { "@type": "ListItem", "position": 2, "name": "Article Writing", "url": "https://creativequill.co.in/services/article-writing" },
+    { "@type": "ListItem", "position": 3, "name": "Brand Storytelling", "url": "https://creativequill.co.in/services/brand-storytelling" },
+    { "@type": "ListItem", "position": 4, "name": "Website Copy", "url": "https://creativequill.co.in/services/website-copy" },
+    { "@type": "ListItem", "position": 5, "name": "SEO Content", "url": "https://creativequill.co.in/services/seo-content" },
+    { "@type": "ListItem", "position": 6, "name": "Custom Content", "url": "https://creativequill.co.in/services/custom-content" }
+  ]
 };
 
 
@@ -72,8 +100,13 @@ export const services = [
 export default function ServicesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+      />
       <style>{`
         body { background: var(--cq-cream); }
+
 
         .sp-grid-section { background: var(--cq-cream); padding: var(--section-py-md) var(--space-6); }
         .sp-grid {

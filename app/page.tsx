@@ -15,6 +15,7 @@ import {
   SocialProofMarquee,
 } from "@/components/effects/HomeComponents";
 import { ProcessSection } from "@/components/sections/ProcessSection";
+import { PricingCalculator } from "@/app/(Pages)/services/ServiceCardClient";
 
 const pageStyles = `
   body { background: var(--color-bg-primary); }
@@ -509,40 +510,8 @@ function FeaturedServices() {
   );
 }
 
-// ── NEW COST ESTIMATOR ──
-function CostCalculator() {
-  const [service, setService] = useState("blog");
-  const [words, setWords] = useState(1000);
-
-  const calculatePrice = () => {
-    let price = 0;
-    let isProject = false;
-    switch (service) {
-      case "blog":
-        price = words * 1.5;
-        break;
-      case "article":
-        price = words * 2.0;
-        break;
-      case "seo":
-        price = words * 2.5;
-        break;
-      case "story":
-        price = 12000;
-        isProject = true;
-        break;
-      case "web":
-        price = 20000;
-        isProject = true;
-        break;
-      default:
-        price = 0;
-    }
-    return { price, isProject };
-  };
-
-  const { price, isProject } = calculatePrice();
-
+// ── COST ESTIMATOR SECTION WRAPPER ──
+function CostEstimatorSection() {
   return (
     <section className="section-md border-t border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)]">
       <div className="container-content">
@@ -561,90 +530,7 @@ function CostCalculator() {
             No surprises. Know your budget before you reach out.
           </p>
         </div>
-
-        <div className="max-w-[840px] mx-auto bg-[var(--cq-parchment)] border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 sm:p-8 md:p-10 shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-            {/* Left Column: Inputs */}
-            <div className="flex flex-col gap-6 justify-center">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="estimator-service" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Service Type</label>
-                <select
-                  id="estimator-service"
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-                >
-                  <option value="blog">Blog Writing (₹1.5/word)</option>
-                  <option value="article">Article Writing (₹2.0/word)</option>
-                  <option value="seo">SEO Content (₹2.5/word)</option>
-                  <option value="story">Brand Storytelling (Flat)</option>
-                  <option value="web">Website Copy (Flat)</option>
-                  <option value="custom">Custom Content (Contact Us)</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                {service !== "custom" && !isProject ? (
-                  <>
-                    <label htmlFor="estimator-words" className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Word Count</label>
-                    <input
-                      id="estimator-words"
-                      type="number"
-                      min="100"
-                      step="100"
-                      value={words}
-                      onChange={(e) => setWords(parseInt(e.target.value) || 0)}
-                      className="w-full bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--cq-forest)]"
-                      placeholder="e.g. 1000 words"
-                    />
-                  </>
-                ) : (
-                  <>
-                    <label className="text-xs font-semibold text-[var(--cq-ink-muted)] uppercase tracking-wider">Billing Type</label>
-                    <div className="w-full bg-[var(--cq-parchment-deep)] border border-[var(--cq-linen)] rounded-[var(--radius-md)] px-3 py-2.5 text-sm text-[var(--cq-ink-muted)]">
-                      {service === "custom" ? "Project Consultation" : "Flat Project Rate"}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Right Column: Output */}
-            <div className="flex flex-col justify-between bg-[var(--cq-parchment-mid)] border border-[var(--cq-linen)] rounded-[var(--radius-lg)] p-6 text-center">
-              <div className="flex-1 flex flex-col justify-center items-center py-2">
-                {service === "custom" ? (
-                  <div className="font-display text-3xl text-[var(--cq-ink)] mb-1">
-                    Custom Pricing
-                  </div>
-                ) : (
-                  <div className="font-sans font-medium text-4xl sm:text-5xl text-[var(--cq-ink)] mb-1">
-                    ₹{price.toLocaleString()}
-                  </div>
-                )}
-                <span className="text-xs text-[var(--cq-ink-muted)] uppercase tracking-wider mb-5">
-                  {service === "custom" ? "Based on project scope" : "Estimated Cost"}
-                </span>
-
-                <div className="flex flex-wrap gap-1.5 justify-center mb-5">
-                  <span className="badge-tag">Plagiarism-Free</span>
-                  <span className="badge-tag">Revisions Included</span>
-                  <span className="badge-tag">SEO Optimized</span>
-                </div>
-              </div>
-
-              <Link
-                href={`/contact?service=${service}&words=${words}`}
-                className="btn-primary inline-flex items-center gap-1.5 font-medium px-8 py-3 w-full justify-center text-center"
-              >
-                Get Exact Quote &rarr;
-              </Link>
-              
-              <p className="text-[9px] text-[var(--cq-ink-faint)] mt-3 leading-normal">
-                *Exact pricing is confirmed during our free consultation. Rush delivery (+30%) available.
-              </p>
-            </div>
-          </div>
-        </div>
+        <PricingCalculator className="" />
       </div>
     </section>
   );
@@ -815,8 +701,47 @@ export default function HomePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Creative Quill",
+            "url": "https://creativequill.co.in",
+            "logo": "https://creativequill.co.in/CQ_Logo_Black.svg",
+            "description": "Human-written, strategy-driven content writing services for growing businesses. Blog posts, articles, brand storytelling, website copy, and SEO content.",
+            "foundingDate": "2024",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-88071-90545",
+              "contactType": "Customer Service",
+              "availableLanguage": "English"
+            },
+            "sameAs": []
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Creative Quill",
+            "url": "https://creativequill.co.in",
+            "description": "Human-written, strategy-driven content writing services.",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://creativequill.co.in/services?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          }),
+        }}
+      />
       <style>{pageStyles}</style>
       <CQHeader />
+
 
       <main>
         {/* ── HERO ─────────────────────────────── */}
@@ -945,7 +870,7 @@ export default function HomePage() {
         <ProcessSection />
 
         {/* ── COST CALCULATOR ─────────────────── */}
-        <CostCalculator />
+        <CostEstimatorSection />
 
         {/* ── TESTIMONIALS (Marquee Only) ──────── */}
         <SocialProofMarquee />

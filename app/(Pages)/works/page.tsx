@@ -3,6 +3,37 @@ import CQHeader from "@/components/cq-header";
 import CQFooter from "@/components/cq-footer";
 import PageHero from "@/components/sections/PageHero";
 import { ContentAuditCard } from "@/components/effects/HomeComponents";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Work | Creative Quill",
+  description: "See how Creative Quill has helped brands like Tiger Safari Tours India and BeeOnline Communications establish authority through strategy-driven content.",
+  alternates: { canonical: "https://creativequill.co.in/works" },
+  openGraph: {
+    title: "Our Work — Case Studies | Creative Quill",
+    description: "Real content strategies, real results. See how we've helped brands build authority and reach their audience.",
+    url: "https://creativequill.co.in/works",
+    images: [{ url: "/og-works.png", width: 1200, height: 630, alt: "Creative Quill Works" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Our Work — Case Studies | Creative Quill",
+    images: ["/og-works.png"],
+  },
+};
+
+const worksJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Our Work — Creative Quill Case Studies",
+  "url": "https://creativequill.co.in/works",
+  "description": "Case studies and portfolio showcasing Creative Quill's content writing projects.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Creative Quill",
+    "url": "https://creativequill.co.in"
+  }
+};
 
 const projects = [
   {
@@ -32,8 +63,13 @@ const projects = [
 export default function WorksPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(worksJsonLd) }}
+      />
       <style>{`
         body { background: var(--cq-cream); }
+
 
         .wk-metrics-strip {
           background: var(--cq-parchment-mid);

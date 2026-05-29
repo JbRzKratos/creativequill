@@ -107,7 +107,7 @@ export function ServiceCard({ svc, index }: { svc: ServiceItem; index: number })
   );
 }
 
-export function PricingCalculator() {
+export function PricingCalculator({ className }: { className?: string } = {}) {
   const [service, setService] = useState("blog");
   const [wordCount, setWordCount] = useState(1000);
   const [turnaround, setTurnaround] = useState("standard");
@@ -192,13 +192,13 @@ export function PricingCalculator() {
 
   return (
     <div
-      className="p-6 sm:p-8 md:p-10 mx-auto w-full"
+      className={`p-6 sm:p-8 md:p-10 mx-auto w-full ${className ?? ""}`}
       style={{
         background: "var(--cq-parchment-mid)",
         border: "1px solid var(--cq-linen)",
         borderRadius: "var(--radius-xl)",
         maxWidth: "56rem",
-        marginTop: "4rem",
+        marginTop: className !== undefined ? 0 : "4rem",
       }}
     >
       <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>

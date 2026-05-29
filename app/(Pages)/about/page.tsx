@@ -7,7 +7,40 @@ import { ContentAuditCard } from "@/components/effects/HomeComponents";
 
 export const metadata: Metadata = {
   title: "About Us | Creative Quill — The Story Behind the Words",
-  description: "Learn about Creative Quill's founding story, our philosophy, and the values that drive every piece of content we create.",
+  description: "Learn about Creative Quill's founding story, our philosophy, and the values that drive every piece of content we create. Founded in 2024, we're your creative content partners.",
+  alternates: { canonical: "https://creativequill.co.in/about" },
+  openGraph: {
+    title: "About Creative Quill — The Story Behind the Words",
+    description: "Founded in 2024, Creative Quill was built for brilliant businesses that deserve content that actually sounds like them.",
+    url: "https://creativequill.co.in/about",
+    images: [{ url: "/og-about.png", width: 1200, height: 630, alt: "About Creative Quill" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Creative Quill — The Story Behind the Words",
+    images: ["/og-about.png"],
+  },
+};
+
+const aboutJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Creative Quill",
+  "url": "https://creativequill.co.in/about",
+  "description": "Creative Quill is a human-first content writing agency founded in 2024. We write strategy-driven blog posts, articles, brand storytelling, website copy and SEO content.",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Creative Quill",
+    "url": "https://creativequill.co.in",
+    "foundingDate": "2024",
+    "description": "Human-written, strategy-driven content writing services for growing businesses.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-88071-90545",
+      "contactType": "Customer Service",
+      "availableLanguage": "English"
+    }
+  }
 };
 
 const values = [
@@ -65,8 +98,13 @@ const dontDoItems = [
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }}
+      />
       <style>{`
         body { background: var(--cq-cream); }
+
 
         /* STORY */
         .ab-story {

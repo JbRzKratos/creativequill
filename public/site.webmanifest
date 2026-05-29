@@ -1,0 +1,18 @@
+{
+  "name": "Creative Quill",
+  "short_name": "Creative Quill",
+  "description": "Human-written, strategy-driven content writing services. Blog posts, articles, brand storytelling, website copy, and SEO content that actually sounds like you.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F0E8",
+  "theme_color": "#1A1915",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "en"
+}

@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# AI crawlers — allowed for training
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://creativequill.co.in/sitemap.xml

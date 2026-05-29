@@ -82,6 +82,8 @@ export default function CQHeader() {
         .cq-header-root {
           position: sticky;
           top: 0;
+          left: 0;
+          right: 0;
           z-index: 50;
           width: 100%;
           background: var(--cq-night);
@@ -479,6 +481,41 @@ export default function CQHeader() {
                 overflowY: "auto",
               }}
             >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Close menu"
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  right: "20px",
+                  background: "none",
+                  border: "1px solid var(--cq-night-border)",
+                  borderRadius: "50%",
+                  width: "40px",
+                  height: "40px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "var(--cq-cream)",
+                  fontSize: "20px",
+                  lineHeight: 1,
+                  zIndex: 60,
+                  transition: "background 200ms ease, border-color 200ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.08)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--cq-teal)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "none";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--cq-night-border)";
+                }}
+              >
+                ×
+              </button>
+
               <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 0, flex: 1, padding: "20px 0" }}>
                 {NAV_LINKS.map((link, index) => {
                   const isActive = pathname === link.path;
