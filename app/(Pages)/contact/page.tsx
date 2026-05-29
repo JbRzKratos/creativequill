@@ -435,23 +435,71 @@ export default function ContactPage() {
 
           {/* Navigation Footer */}
           {!submitted && (
-            <div className="flex items-center justify-between border-t border-[var(--cq-parchment-deep)] pt-6">
-              {step > 1 ? (
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] hover:text-[var(--cq-ink)] transition-colors"
-                  onClick={handleBack}
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            step === 5 ? (
+              /* ── Step 5: Review — Back | Edit on left, Confirm & Send on right ── */
+              <div className="flex items-center justify-between border-t border-[var(--cq-parchment-deep)] pt-6">
+                {/* Left: Back + Edit */}
+                <div className="inline-flex items-center gap-2.5 text-[var(--cq-ink-muted)]">
+                  <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
-                  <span>Back</span>
-                </button>
-              ) : (
-                <div />
-              )}
+                  <button
+                    type="button"
+                    className="font-body text-xs font-semibold uppercase tracking-wider hover:text-[var(--cq-ink)] transition-colors"
+                    onClick={handleBack}
+                  >
+                    Back
+                  </button>
+                  <span className="opacity-30 select-none">|</span>
+                  <button
+                    type="button"
+                    className="font-body text-xs font-semibold uppercase tracking-wider hover:text-[var(--cq-ink)] transition-colors"
+                    onClick={() => setStep(1)}
+                  >
+                    Edit
+                  </button>
+                </div>
 
-              {step < 5 ? (
+                {/* Right: Confirm & Send */}
+                <button
+                  type="button"
+                  className="px-6 py-2.5 bg-[var(--cq-forest)] hover:bg-[var(--cq-forest-hover)] disabled:opacity-50 text-white rounded-[var(--radius-sm)] transition-colors font-body text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2"
+                  disabled={loading}
+                  onClick={handleSubmit}
+                >
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Confirm &amp; Send</span>
+                      <span>&rarr;</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            ) : (
+              /* ── Steps 1–4: Back on left, Continue on right ── */
+              <div className="flex items-center justify-between border-t border-[var(--cq-parchment-deep)] pt-6">
+                {step > 1 ? (
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-wider text-[var(--cq-ink-muted)] hover:text-[var(--cq-ink)] transition-colors"
+                    onClick={handleBack}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span>Back</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
                 <button
                   type="button"
                   className="px-6 py-2.5 bg-[var(--cq-forest)] hover:bg-[var(--cq-forest-hover)] disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-[var(--radius-sm)] transition-colors font-body text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2"
@@ -461,39 +509,8 @@ export default function ContactPage() {
                   <span>Continue</span>
                   <span>&rarr;</span>
                 </button>
-              ) : (
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    className="px-4 py-2.5 border border-[var(--cq-linen)] hover:bg-[var(--cq-parchment-mid)] text-[var(--cq-ink-mid)] rounded-[var(--radius-sm)] transition-colors font-body text-xs font-semibold uppercase tracking-wider"
-                    onClick={() => setStep(1)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="px-6 py-2.5 bg-[var(--cq-forest)] hover:bg-[var(--cq-forest-hover)] disabled:opacity-50 text-white rounded-[var(--radius-sm)] transition-colors font-body text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2"
-                    disabled={loading}
-                    onClick={handleSubmit}
-                  >
-                    {loading ? (
-                      <>
-                        <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                        </svg>
-                        <span>Sending...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Confirm &amp; Send</span>
-                        <span>&rarr;</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
+              </div>
+            )
           )}
         </div>
       </main>

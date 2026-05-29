@@ -36,13 +36,14 @@ export default function CQFooter() {
           padding: 10px 0;
         }
         .cq-footer-ticker-inner {
-          display: inline-flex;
+          display: flex;
           white-space: nowrap;
-          animation: footerTickerScroll 25s linear infinite;
+          flex-shrink: 0;
+          animation: footerTickerScroll 60s linear infinite;
         }
         @keyframes footerTickerScroll {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         .cq-footer-ticker-inner span {
           font-family: var(--font-body), sans-serif;
@@ -51,10 +52,11 @@ export default function CQFooter() {
           letter-spacing: 0.15em;
           color: #8A857A;
           text-transform: uppercase;
+          flex-shrink: 0;
         }
         @media (max-width: 768px) {
           .cq-footer-ticker-inner {
-            animation: footerTickerScroll 35s linear infinite;
+            animation: footerTickerScroll 90s linear infinite;
           }
           .cq-footer-ticker-inner span {
             font-size: 10px;
@@ -258,6 +260,8 @@ export default function CQFooter() {
       {/* Services Ticker Strip */}
       <div className="cq-footer-ticker">
         <div className="cq-footer-ticker-inner">
+          <span>{footerTickerText}</span>
+          <span>{footerTickerText}</span>
           <span>{footerTickerText}</span>
           <span>{footerTickerText}</span>
         </div>

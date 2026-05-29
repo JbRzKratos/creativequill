@@ -241,7 +241,7 @@ const pageStyles = `
   .cq-process-marquee-inner {
     display: flex;
     gap: 1.5rem;
-    animation: process-marquee-scroll 35s linear infinite;
+    animation: process-marquee-scroll 70s linear infinite;
   }
   .cq-process-marquee-container:hover .cq-process-marquee-inner {
     animation-play-state: paused;
@@ -291,7 +291,7 @@ const pageStyles = `
   
   @keyframes process-marquee-scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-33.33%); }
+    100% { transform: translateX(-50%); }
   }
   
   @media (pointer: coarse) {

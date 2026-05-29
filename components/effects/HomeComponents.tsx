@@ -790,7 +790,7 @@ export function SocialProofMarquee() {
             className="cq-testimonial-marquee-inner" 
             style={{ display: "flex", gap: "1.5rem", animationPlayState: isPaused ? "paused" : "running" }}
           >
-            {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
+            {testimonials.concat(testimonials).map((t, idx) => (
               <div
                 key={`testimonial-${idx}`}
                 className="cq-testimonial-card"
@@ -846,14 +846,14 @@ export function SocialProofMarquee() {
             }
           }
           .cq-testimonial-marquee-inner {
-            animation: marquee-scroll-reverse 45s linear infinite;
+            animation: marquee-scroll-reverse 90s linear infinite;
           }
           .cq-testimonial-marquee-container:hover .cq-testimonial-marquee-inner {
             animation-play-state: paused;
           }
           @keyframes marquee-scroll-reverse {
-            0% { transform: translateX(-33.33%); }
-            100% { transform: translateX(0); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
           }
         `}</style>
       </section>
