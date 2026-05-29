@@ -198,9 +198,9 @@
   --space-20:  5rem;
   --space-24:  6rem;
 
-  --section-py-sm:   var(--space-12);
-  --section-py-md:   var(--space-16);
-  --section-py-lg:   var(--space-20);
+  --section-py-sm:   1.5rem;
+  --section-py-md:   2.5rem;
+  --section-py-lg:   3.5rem;
 
   --max-width-content: 68rem;
   --max-width-narrow:  52rem;
@@ -214,7 +214,17 @@
   --transition-fast: 150ms ease;
   --transition-base: 220ms ease;
   --transition-slow: 380ms ease;
-}@layer base {
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-py-sm: 2rem;
+    --section-py-md: 3.5rem;
+    --section-py-lg: 4.5rem;
+  }
+}
+
+@layer base {
   * {
     box-sizing: border-box;
     /* FIX: cursor:pointer on ALL interactive elements */

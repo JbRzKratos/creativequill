@@ -15,6 +15,7 @@ import {
   SocialProofMarquee,
   OpenForWorkBadge,
 } from "@/components/effects/HomeComponents";
+import { ProcessSection } from "@/components/sections/ProcessSection";
 
 const pageStyles = `
   body { background: var(--color-bg-primary); }
@@ -384,14 +385,6 @@ const pageStyles = `
   }
 `;
 
-const processSteps = [
-  { num: "1", title: "Voice Audit", desc: "Before we write anything, we study your existing content, competitors, and audience tone. So our first draft already sounds like you, not like us." },
-  { num: "2", title: "Connect", desc: "Discover your story through our contact form, email, or phone for an initial discovery call. We'll explore your brand narrative, business objectives, and audience challenges." },
-  { num: "3", title: "Understand", desc: "We immerse ourselves in your brand world — analyzing target audiences, competitive positioning, voice guidelines, and content goals. Deep discovery ensures every word aligns with your strategic vision." },
-  { num: "4", title: "Strategize", desc: "Our strategists develop a tailored content roadmap with narrative frameworks, topic clusters, and tonal architecture designed to captivate your audience and amplify your message." },
-  { num: "5", title: "Deliver", desc: "Receive publication-ready content within 48 hours, professionally written, thoroughly researched, and polished to perfection. Every piece is optimized for engagement and ready to publish." },
-  { num: "6", title: "Refine", desc: "Your satisfaction drives our process. We offer multiple revision rounds to fine-tune content until it perfectly captures your vision and exceeds your expectations." },
-];
 
 // ── NEW TOP 3 SERVICES ──
 function FeaturedServices() {
@@ -778,7 +771,6 @@ function FaqSection() {
 
 export default function HomePage() {
   const [hoverCTA, setHoverCTA] = useState(false);
-  const [isProcessPaused, setIsProcessPaused] = useState(false);
 
   // Staggered entrance variants
   const containerVariants = {
@@ -918,10 +910,9 @@ export default function HomePage() {
             <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
               <span className="badge-label self-center md:self-start">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="8" r="7" />
-                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                  <path d="M12 3l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/>
                 </svg>
-                What Sets Us Apart
+                WHAT SETS US APART
               </span>
               <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
                 Strategic Content. Measurable Growth.
@@ -939,94 +930,14 @@ export default function HomePage() {
         <FeaturedServices />
 
         {/* ── AI VS HUMAN COMPARISON ──────────── */}
-        <section style={{ background: "var(--color-bg-primary)", padding: "2rem 1.5rem" }}>
+        <section className="section-sm" style={{ background: "var(--color-bg-primary)", paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
           <div className="section-inner">
             <AiVsHuman />
           </div>
         </section>
 
          {/* ── PROCESS ─────────────────────────── */}
-        <section className="process-section" style={{ background: "var(--cq-parchment-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", overflow: "hidden", padding: "4rem 0" }}>
-          <div className="section-inner" style={{ maxWidth: "100%", paddingLeft: 0, paddingRight: 0 }}>
-            <div className="flex flex-col gap-2 mb-10 text-center container-content">
-              <span className="badge-label self-center">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-                </svg>
-                Our Process
-              </span>
-              <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] text-balance font-normal">
-                Your Story. Our Craft. Results That Matter.
-              </h2>
-              <p className="text-sm text-[var(--cq-ink-muted)] max-w-[65ch] font-light mx-auto">
-                From discovery to delivery, our story-driven approach transforms your brand message into compelling narratives that resonate.
-              </p>
-            </div>
-            
-            {/* Horizontal Marquee Scroller for Process Steps */}
-            <div 
-              className="cq-process-marquee-container"
-              onTouchStart={() => setIsProcessPaused(true)}
-              onTouchEnd={() => setIsProcessPaused(false)}
-              onTouchCancel={() => setIsProcessPaused(false)}
-            >
-              {/* Left fade overlay */}
-              <div style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: "80px",
-                background: "linear-gradient(to right, var(--cq-parchment-mid), transparent)",
-                zIndex: 10,
-                pointerEvents: "none"
-              }} />
-              {/* Right fade overlay */}
-              <div style={{
-                position: "absolute",
-                right: 0,
-                top: 0,
-                bottom: 0,
-                width: "80px",
-                background: "linear-gradient(to left, var(--cq-parchment-mid), transparent)",
-                zIndex: 10,
-                pointerEvents: "none"
-              }} />
-
-              <div 
-                className="cq-process-marquee-inner"
-                style={{ animationPlayState: isProcessPaused ? "paused" : "running" }}
-              >
-                {processSteps.concat(processSteps).concat(processSteps).map((step, idx) => (
-                  <div key={`process-${idx}`} className="cq-process-card" data-cursor="card">
-                    <span className="cq-process-card-num">0{step.num}</span>
-                    <h3 className="cq-process-card-title">{step.title}</h3>
-                    <p className="cq-process-card-desc">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA Box centered at the bottom */}
-            <div className="flex justify-center mt-12 px-6">
-              <div className="process-cta-box max-w-[500px] w-full text-center flex flex-col items-center">
-                <div className="process-cta-badge mx-auto">✓ Ready to Transform Your Brand?</div>
-                <h3 className="process-cta-h3 text-center">Let&apos;s Craft Content That Converts</h3>
-                <div className="process-checks justify-center">
-                  {["48-Hour Delivery", "Multiple Revisions", "Premium Quality"].map((c) => (
-                    <span key={c} className="process-check" data-cursor="text">
-                      <span className="process-check-dot" /> {c}
-                    </span>
-                  ))}
-                </div>
-                <Link href="/contact" className="btn-primary w-full justify-center" data-cursor="button">
-                  Begin Your Journey Now
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ProcessSection />
 
         {/* ── COST CALCULATOR ─────────────────── */}
         <CostCalculator />

@@ -334,10 +334,10 @@ export function ClientMarquee() {
 /* ── 5. BENTO GRID ── */
 export function BentoGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full cq-bento">
-      {/* Cell 1: Unmistakably You (2 cols, tall) */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full cq-bento">
+      {/* Cell 1: Unmistakably You (stays col-span-1) */}
       <div
-        className="col-span-1 sm:col-span-2 lg:col-span-2 border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 md:p-9 flex flex-col justify-between relative overflow-hidden transition-all duration-300 bento-cell min-h-[140px]"
+        className="col-span-1 border border-[var(--cq-linen)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 bento-cell min-h-[140px]"
         style={{
           background: "var(--cq-parchment)",
         }}
@@ -354,7 +354,7 @@ export function BentoGrid() {
         </div>
       </div>
 
-      {/* Cell 2: 48hr Turnaround (1 col) */}
+      {/* Cell 2: 48hr Turnaround (stays col-span-1) */}
       <div
         className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
       >
@@ -371,37 +371,45 @@ export function BentoGrid() {
         </div>
       </div>
 
-      {/* Cell 3: Expert Craft (1 col) */}
+      {/* Cell 3: Expert Craft (col-span-2) */}
       <div
-        className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between bento-cell min-h-[140px]"
+        className="col-span-1 md:col-span-2 border border-[var(--cq-linen)] bg-[var(--cq-parchment)] rounded-[var(--radius-xl)] p-6 md:p-8 bento-cell min-h-[140px]"
       >
-        <span className="text-3xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
-          Expert Craft
-        </span>
-        <div className="mt-4">
-          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
-            Every piece goes through strict multi-phase checks, ensuring flawless execution that builds trust.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-start md:gap-12 md:justify-between w-full">
+          <div className="md:min-w-[200px]">
+            <h3 className="text-2xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
+              Expert Craft
+            </h3>
+          </div>
+          <div className="md:max-w-[480px]">
+            <p className="text-sm text-[var(--cq-ink-mid)] font-light leading-relaxed">
+              Every piece goes through strict multi-phase checks, ensuring flawless execution that builds trust.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Cell 4: Story-Driven (1 col) */}
+      {/* Cell 4: Story-Driven (col-span-2) */}
       <div
-        className="col-span-1 border border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)] rounded-[var(--radius-xl)] p-6 md:p-8 flex flex-col justify-between relative overflow-hidden bento-cell min-h-[140px]"
+        className="col-span-1 md:col-span-2 border border-[var(--cq-linen)] bg-[var(--cq-parchment-mid)] rounded-[var(--radius-xl)] p-6 md:p-8 relative overflow-hidden bento-cell min-h-[140px]"
       >
-        <span className="text-3xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
-          Story-Driven
-        </span>
-        <div className="mt-4">
-          <p className="text-xs text-[var(--cq-ink-mid)] font-light leading-relaxed">
-            Deep narrative strategy that connects emotionally with audiences, transforming readers into buyers.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-start md:gap-12 md:justify-between w-full">
+          <div className="md:min-w-[200px]">
+            <h3 className="text-2xl font-display font-light text-[var(--cq-ink)] tracking-tight leading-none">
+              Story-Driven
+            </h3>
+          </div>
+          <div className="md:max-w-[480px]">
+            <p className="text-sm text-[var(--cq-ink-mid)] font-light leading-relaxed">
+              Deep narrative strategy that connects emotionally with audiences, transforming readers into buyers.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Cell 5: Pull Quote (2 cols) */}
+      {/* Cell 5: Pull Quote (col-span-2) */}
       <div
-        className="col-span-1 sm:col-span-2 lg:col-span-2 border-none bg-[var(--cq-teal)] rounded-[var(--radius-xl)] p-6 md:p-8 flex items-center bento-cell min-h-[140px]"
+        className="col-span-1 md:col-span-2 border-none bg-[var(--cq-teal)] rounded-[var(--radius-xl)] p-6 md:p-8 flex items-center bento-cell min-h-[140px]"
       >
         <blockquote className="font-display italic text-lg md:text-xl leading-relaxed text-[var(--cq-teal-text)] border-l-4 border-[var(--cq-ink-muted)] pl-5 m-0">
           &ldquo;Strategic content isn&apos;t a cost — it&apos;s your best marketing investment.&rdquo;
@@ -457,7 +465,7 @@ export function AiVsHuman() {
   const showHuman = () => setSliderPos(5);
 
   return (
-    <div style={{ margin: "4rem 0" }} className="w-full">
+    <div style={{ margin: "1.5rem 0" }} className="w-full">
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <span className="badge-label">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

@@ -547,7 +547,7 @@ export default function AboutPage() {
         </section>
 
         {/* Process Snap-scroll Timeline */}
-        <section style={{ background: "var(--background)", padding: "5rem 1.5rem", borderTop: "1px solid var(--border)" }}>
+        <section className="section-md" style={{ background: "var(--background)", paddingLeft: "1.5rem", paddingRight: "1.5rem", borderTop: "1px solid var(--border)" }}>
           <div className="ab-team-inner" style={{ maxWidth: "72rem", margin: "0 auto" }}>
             <div className="ab-team-header" style={{ textAlign: "center", marginBottom: "3rem" }}>
               <div className="flex flex-col gap-2 mb-4 text-center">
@@ -559,7 +559,7 @@ export default function AboutPage() {
                   Our Process
                 </span>
               </div>
-              <h2 className="ab-team-h2" data-cursor="text">How We Work</h2>
+              <h2 className="font-display text-4xl md:text-5xl text-[var(--cq-ink)] tracking-tight font-normal" data-cursor="text">How We Work</h2>
               <p className="ab-team-desc" data-cursor="text">
                 From the first call to the final file, each project is guided by our 6-step framework.
               </p>
