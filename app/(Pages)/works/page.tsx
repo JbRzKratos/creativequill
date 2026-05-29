@@ -172,6 +172,7 @@ export default function WorksPage() {
             {projects.map((project) => (
               <div key={project.id} className="wk-card">
                 <div className="wk-card-img-wrap">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={project.img}
                     alt={project.title}

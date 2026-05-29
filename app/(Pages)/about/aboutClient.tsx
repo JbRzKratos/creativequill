@@ -133,6 +133,7 @@ export function TeamSection({ team }: { team: TeamMember[] }) {
                 }}
                 className="cq-member-img-wrap"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={member.fallback}
                   alt={member.name}

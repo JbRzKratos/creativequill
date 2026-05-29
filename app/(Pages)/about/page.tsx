@@ -366,6 +366,7 @@ export default function AboutPage() {
         <section className="ab-story">
           <div className="ab-story-inner">
             <div className="ab-story-img" data-cursor="card">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=800&auto=format&fit=crop"
                 alt="Writing at desk"

@@ -727,6 +727,8 @@ export function ContentAuditCard() {
 /* ── 8. SOCIAL PROOF MARQUEE ── */
 export function SocialProofMarquee() {
   const [isPaused, setIsPaused] = useState(false);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+
   const testimonials = [
     { quote: "Creative Quill took my rough outline and transformed it into a breathtaking romance novel. Their ability to capture my voice was remarkable.", author: "Sarah M.", role: "Author" },
     { quote: "The structured development process gave me so much peace of mind. They hit every deadline and character arcs were deep.", author: "David L.", role: "Novelist" },
@@ -734,54 +736,185 @@ export function SocialProofMarquee() {
     { quote: "Their team delivered clean, engaging content on-time, boosting our traffic. Professional from start to finish.", author: "TechCorp", role: "Content Manager" }
   ];
 
-  return (
-    <section className="section-sm" style={{ background: "var(--cq-cream-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", position: "relative" }}>
-      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <span className="label-text">What Our Clients Say</span>
-      </div>
+  const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.currentTarget;
+    const scrollLeft = target.scrollLeft;
+    const cardEl = target.querySelector('.mobile-testimonial-card');
+    if (!cardEl) return;
+    const cardWidth = cardEl.getBoundingClientRect().width;
+    const gap = 16;
+    const stepWidth = cardWidth + gap;
+    const index = Math.round(scrollLeft / stepWidth);
+    setMobileActiveIndex(Math.min(testimonials.length - 1, Math.max(0, index)));
+  };
 
-      <div 
-        className="cq-testimonial-marquee-container" 
-        style={{ display: "flex", overflow: "hidden", width: "100%", position: "relative" }}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
-        onTouchCancel={() => setIsPaused(false)}
-      >
-        {/* Left fade overlay */}
-        <div style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: "80px",
-          background: "linear-gradient(to right, var(--cq-cream-mid), transparent)",
-          zIndex: 10,
-          pointerEvents: "none"
-        }} />
-        {/* Right fade overlay */}
-        <div style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: "80px",
-          background: "linear-gradient(to left, var(--cq-cream-mid), transparent)",
-          zIndex: 10,
-          pointerEvents: "none"
-        }} />
+  return (
+    <>
+      {/* ── DESKTOP: Testimonials Marquee ── */}
+      <section className="hidden lg:block section-sm" style={{ background: "var(--cq-cream-mid)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", position: "relative" }}>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <span className="label-text">What Our Clients Say</span>
+        </div>
 
         <div 
-          className="cq-testimonial-marquee-inner" 
-          style={{ display: "flex", gap: "1.5rem", animationPlayState: isPaused ? "paused" : "running" }}
+          className="cq-testimonial-marquee-container" 
+          style={{ display: "flex", overflow: "hidden", width: "100%", position: "relative" }}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          onTouchCancel={() => setIsPaused(false)}
         >
-          {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
+          {/* Left fade overlay */}
+          <div style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: "80px",
+            background: "linear-gradient(to right, var(--cq-cream-mid), transparent)",
+            zIndex: 10,
+            pointerEvents: "none"
+          }} />
+          {/* Right fade overlay */}
+          <div style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "80px",
+            background: "linear-gradient(to left, var(--cq-cream-mid), transparent)",
+            zIndex: 10,
+            pointerEvents: "none"
+          }} />
+
+          <div 
+            className="cq-testimonial-marquee-inner" 
+            style={{ display: "flex", gap: "1.5rem", animationPlayState: isPaused ? "paused" : "running" }}
+          >
+            {testimonials.concat(testimonials).concat(testimonials).map((t, idx) => (
+              <div
+                key={`testimonial-${idx}`}
+                className="cq-testimonial-card"
+                data-cursor="card"
+              >
+                <div>
+                  <div className="text-xs sm:text-sm text-[var(--cq-teal)] mb-2 tracking-widest">★★★★★</div>
+                  <div style={{ position: "relative" }}>
+                    <span style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "2.5rem",
+                      color: "var(--cq-cream-dark)",
+                      lineHeight: 0,
+                      position: "absolute",
+                      left: "-0.5rem",
+                      top: "0.25rem",
+                      pointerEvents: "none"
+                    }}>&ldquo;</span>
+                    <p className="font-serif italic text-sm md:text-base font-light text-[var(--cq-ink-mid)] leading-relaxed pl-3" style={{ margin: 0, textIndent: "0.25rem" }}>
+                      {t.quote}
+                    </p>
+                  </div>
+                </div>
+                <div style={{ borderTop: "1px solid var(--cq-cream-dark)", paddingTop: "0.75rem" }}>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 500, color: "var(--cq-ink)", margin: 0 }}>
+                    {t.author}
+                  </p>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.75rem", color: "var(--cq-ink-muted)", margin: 0, letterSpacing: "var(--tracking-wide)" }}>
+                    {t.role}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <style>{`
+          .cq-testimonial-card {
+            background: var(--cq-cream);
+            border: 1px solid var(--cq-cream-dark);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            min-width: 260px;
+            max-width: 380px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+          }
+          @media (min-width: 768px) {
+            .cq-testimonial-card {
+              min-width: 320px;
+            }
+          }
+          .cq-testimonial-marquee-inner {
+            animation: marquee-scroll-reverse 45s linear infinite;
+          }
+          .cq-testimonial-marquee-container:hover .cq-testimonial-marquee-inner {
+            animation-play-state: paused;
+          }
+          @keyframes marquee-scroll-reverse {
+            0% { transform: translateX(-33.33%); }
+            100% { transform: translateX(0); }
+          }
+        `}</style>
+      </section>
+
+      {/* ── MOBILE: Touch & Swipe Cards Carousel ── */}
+      <section
+        className="block lg:hidden section-sm"
+        style={{
+          background: "var(--cq-cream-mid)",
+          borderTop: "1px solid var(--border)",
+          borderBottom: "1px solid var(--border)",
+          position: "relative",
+          overflow: "hidden"
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <span className="label-text">What Our Clients Say</span>
+        </div>
+
+        {/* Swipe container */}
+        <div
+          onScroll={handleMobileScroll}
+          className="no-scrollbar"
+          style={{
+            display: "flex",
+            gap: "16px",
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            paddingBottom: "8px",
+          }}
+        >
+          <style>{`
+            .no-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+          {testimonials.map((t, idx) => (
             <div
-              key={`testimonial-${idx}`}
-              className="cq-testimonial-card"
-              data-cursor="card"
+              key={`testimonial-mob-${idx}`}
+              className="mobile-testimonial-card"
+              style={{
+                flex: "0 0 82vw",
+                maxWidth: "320px",
+                scrollSnapAlign: "center",
+                background: "var(--cq-cream)",
+                border: "1px solid var(--cq-cream-dark)",
+                borderRadius: "16px",
+                padding: "24px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "1.5rem",
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.02)",
+              }}
             >
               <div>
-                <div className="text-xs sm:text-sm text-[var(--cq-teal)] mb-2 tracking-widest">★★★★★</div>
+                <div className="text-xs text-[var(--cq-teal)] mb-2 tracking-widest">★★★★★</div>
                 <div style={{ position: "relative" }}>
                   <span style={{
                     fontFamily: "var(--font-display)",
@@ -793,7 +926,7 @@ export function SocialProofMarquee() {
                     top: "0.25rem",
                     pointerEvents: "none"
                   }}>&ldquo;</span>
-                  <p className="font-serif italic text-sm md:text-base font-light text-[var(--cq-ink-mid)] leading-relaxed pl-3" style={{ margin: 0, textIndent: "0.25rem" }}>
+                  <p className="font-serif italic text-sm font-light text-[var(--cq-ink-mid)] leading-relaxed pl-3" style={{ margin: 0, textIndent: "0.25rem" }}>
                     {t.quote}
                   </p>
                 </div>
@@ -809,38 +942,33 @@ export function SocialProofMarquee() {
             </div>
           ))}
         </div>
-      </div>
-      <style>{`
-        .cq-testimonial-card {
-          background: var(--cq-cream);
-          border: 1px solid var(--cq-cream-dark);
-          border-radius: var(--radius-lg);
-          padding: var(--space-6);
-          min-width: 260px;
-          max-width: 380px;
-          flex-shrink: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          gap: 1rem;
-        }
-        @media (min-width: 768px) {
-          .cq-testimonial-card {
-            min-width: 320px;
-          }
-        }
-        .cq-testimonial-marquee-inner {
-          animation: marquee-scroll-reverse 45s linear infinite;
-        }
-        .cq-testimonial-marquee-container:hover .cq-testimonial-marquee-inner {
-          animation-play-state: paused;
-        }
-        @keyframes marquee-scroll-reverse {
-          0% { transform: translateX(-33.33%); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
-    </section>
+
+        {/* Mobile Dot Navigation */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "8px",
+            marginTop: "16px",
+          }}
+        >
+          {testimonials.map((_, i) => (
+            <div
+              key={`dot-${i}`}
+              style={{
+                width: i === mobileActiveIndex ? "16px" : "6px",
+                height: "6px",
+                borderRadius: "3px",
+                background: i === mobileActiveIndex
+                  ? "var(--cq-teal)"
+                  : "var(--cq-cream-dark)",
+                transition: "width 250ms ease, background 250ms ease",
+              }}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 
